@@ -1,0 +1,34 @@
+{
+  "name": "@yakapa/core",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "neurosoup <neurosoup@gmail.com>",
+  "homepage": "https://github.com/quickysoft-apps/yakapa-nw#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
+  },
+  "main": "http://localhost:8080/index.html",
+  "node-remote": [
+    "*://*/*"
+  ],
+  "window": {
+    "width": 800,
+    "height": 600,
+    "frame": true
+  },
+  "chromium-args": "--enable-logging=stderr --load-extension=../../react-devtools,../settings --remote-debugging-port=9222",
+  "scripts": {
+    "start": "node bootstrap.js",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.81",
+    "@types/nw.gui": "0.0.20",
+    "@types/nw.js": "^0.13.8",
+    "express": "^4.16.4",
+    "nw": "sdk"
+  },
+  "dependencies": {}
+}
