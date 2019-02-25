@@ -18,7 +18,7 @@
     "height": 600,
     "frame": true
   },
-  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../extensions/ssettings --remote-debugging-port=9222",
+  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings --remote-debugging-port=9222",
   "scripts": {
     "start": "node bootstrap.js",
     "test": "echo \"Error: run tests from root\" && exit 1"
