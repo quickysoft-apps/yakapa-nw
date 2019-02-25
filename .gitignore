@@ -4,4 +4,5 @@ npm-debug.log
 packages/*/lib
 packages/*/dist
 packages/*/.cache
-react-devtools
+extensions
+.DS_Store
