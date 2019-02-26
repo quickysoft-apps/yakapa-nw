@@ -17,6 +17,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "devDependencies": {
+    "@types/chrome": "0.0.81",
     "concurrently": "^4.1.0",
     "cpx": "^1.5.0"
   }

@@ -13,5 +13,6 @@
       "matches": ["http://*/*"],
       "js": ["build/content.js"]
     }
-  ]
+  ],
+  "minimum_chrome_version": "49"
 }
