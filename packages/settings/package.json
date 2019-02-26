@@ -1,17 +1,17 @@
 {
   "name": "@extensions/settings",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "Core settings",
   "author": "neurosoup <neurosoup@gmail.com>",
   "homepage": "https://github.com/quickysoft-apps/yakapa-nw#readme",
   "license": "ISC",
-  "main": "index.html",
+  "main": "dist/index.html",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "start": "../../node_modules/.bin/parcel index.html -p 8081 --target electron --no-autoinstall",
+    "start": "../../node_modules/.bin/parcel index.html -p 8081 --target browser --no-autoinstall",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "devDependencies": {}

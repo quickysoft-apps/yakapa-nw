@@ -17,34 +17,31 @@ class App extends Component<{}, State> {
     };
   }
   render() {
+    console.log('----->', this.state.source);
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
           Hello World
         </Button>
-        <webview src={this.state.source} />
+        <webview id="app" partition="trusted" src={this.state.source} />
       </div>
     );
   }
 
   private readonly onClick = () => {
-    this.setState({
-      source:
-        'chrome-extension://kffcccokkgaooalajeihldalfjkfokob/dist/index.html'
+    chrome.management.getAll(result => {
+      console.log(result);
+      const ext = result.find(x => x.shortName === 'Settings');
+      if (ext) {
+        chrome.management.getPermissionWarningsById(ext.id, warnings => {
+          warnings.forEach(x => console.log(x));
+        });
+
+        this.setState({
+          source: `chrome-extension://${ext.id}/index.html`
+        });
+      }
     });
-    // chrome.tabs.create({
-    //   url: 'chrome-extension://kffcccokkgaooalajeihldalfjkfokob/dist/index.html'
-    // });
-    // chrome.management.getAll(result => {
-    //   console.log(result);
-    // });
-    // chrome.runtime.sendMessage({ injectApp: true }, response => {
-    //   console.log('RESPONSE', response);
-    // });
-    // chrome.tabs.query({ index: 0 }, tabs => {
-    //   const tabId = tabs[0].id || tabs[0].index;
-    //   chrome.tabs.sendMessage(tabId, { injectApp: true });
-    // });
   };
 }
 
