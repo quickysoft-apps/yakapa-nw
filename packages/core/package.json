@@ -31,7 +31,8 @@
     "@types/nw.js": "^0.13.8",
     "concurrently": "^4.1.0",
     "express": "^4.16.4",
-    "nw": "0.36.2-sdk"
+    "nw": "0.36.2-sdk",
+    "wait-on": "^3.2.0"
   },
   "dependencies": {}
 }
