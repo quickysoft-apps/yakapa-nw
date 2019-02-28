@@ -20,9 +20,10 @@
   },
   "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../../extensions/settings",
   "scripts": {
-    "start-parcel": "../../node_modules/.bin/parcel index.html -p 8080 --out-dir dist -o index --target browser --no-autoinstall",
-    "start-nw": "run .",
+    "start-parcel": "../../node_modules/.bin/parcel index.html -p 8080 --no-autoinstall",
+    "start-nw": "run --x64 --mirror https://dl.nwjs.io/ .",
     "start": "concurrently --kill-others \"npm:start-*\"",
+    "build": "build --tasks mac-x64 --mirror https://dl.nwjs.io/ .",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "build": {
