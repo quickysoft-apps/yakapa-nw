@@ -21,9 +21,17 @@
   "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../../extensions/settings",
   "scripts": {
     "start-parcel": "../../node_modules/.bin/parcel index.html -p 8080 --out-dir dist -o index --target browser --no-autoinstall",
-    "start-nw": "nw --url=http://localhost:8080",
+    "start-nw": "run .",
     "start": "concurrently --kill-others \"npm:start-*\"",
     "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "build": {
+    "nwVersion": "0.36.2",
+    "overriddenProperties": {
+      "chromium-args": "--load-extension=../../extensions/settings"
+    },
+    "output": "bin/",
+    "files": "**/*"
   },
   "devDependencies": {
     "@types/chrome": "0.0.81",
@@ -31,7 +39,7 @@
     "@types/nw.js": "^0.13.8",
     "concurrently": "^4.1.0",
     "express": "^4.16.4",
-    "nw": "0.36.2-sdk",
+    "nwjs-builder-phoenix": "^1.15.0",
     "wait-on": "^3.2.0"
   },
   "dependencies": {}
