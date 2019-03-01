@@ -1,7 +1,8 @@
 {
   "name": "@yakapa/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "> TODO: description",
+  "product_string": "yakapa",
   "author": "neurosoup <neurosoup@gmail.com>",
   "homepage": "https://github.com/quickysoft-apps/yakapa-nw#readme",
   "license": "ISC",
@@ -23,16 +24,52 @@
     "start-parcel": "../../node_modules/.bin/parcel index.html -p 8080 --no-autoinstall",
     "start-nw": "run --x64 --mirror https://dl.nwjs.io/ .",
     "start": "concurrently --kill-others \"npm:start-*\"",
-    "build": "build --tasks mac-x64 --mirror https://dl.nwjs.io/ .",
+    "build-parcel": "../../node_modules/.bin/parcel build index.html --public-url ./",
+    "build-nw": "build --tasks --mac --x64 --mirror https://dl.nwjs.io/ .",
+    "build": "concurrently --kill-others \"npm:build-*\"",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "build": {
+    "appId": "yakapa",
     "nwVersion": "0.36.2",
     "overriddenProperties": {
-      "chromium-args": "--load-extension=../../extensions/settings"
+      "chromium-args": "--load-extension=../../extensions/settings",
+      "files": [
+        "dist/**/*",
+        "package.json"
+      ]
     },
     "output": "bin/",
-    "files": "**/*"
+    "packed": false,
+    "targets": [
+      "zip",
+      "nsis7z"
+    ],
+    "strippedProperties": [
+      "scripts",
+      "devDependencies",
+      "build"
+    ],
+    "outputPattern": "${NAME} ${VERSION} ${PLATFORM} ${ARCH}",
+    "win": {
+      "productName": "Yakapa",
+      "companyName": "QuickySoft",
+      "copyright": "copyright",
+      "icon": "./assets/pd.ico"
+    },
+    "mac": {
+      "displayName": "Yakapa",
+      "copyright": "copyright",
+      "icon": "./assets/pd.icns",
+      "plistStrings": {
+        "CFBundleIdentifier": "yakapa",
+        "CFBundleDocumentTypes": []
+      }
+    },
+    "nsis": {
+      "installDirectory": "$PROGRAMFILES\\${_COMPANYNAME}\\${_APPNAME}",
+      "diffUpdaters": true
+    }
   },
   "devDependencies": {
     "@types/chrome": "0.0.81",
