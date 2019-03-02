@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "description",
   "product_string": "yakapa",
-  "main": "http://localhost:8080/index.html",
+  "node-main": "./server.js",
+  "main": "http://localhost:8080",
   "node-remote": [
     "*://*/*"
   ],
@@ -15,14 +16,12 @@
     "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "start:parcel": "../../node_modules/.bin/parcel src/index.html -p 8080 --no-autoinstall",
-    "_start:extension": "../../node_modules/.bin/cpx \"src/package.json\" \"./dist\"",
-    "_start:parcel": "node parcel.js",
+    "start:parcel": "../../node_modules/.bin/parcel watch src/**/* --public-url ./",
     "start:nw": "run --x64 --mirror https://dl.nwjs.io/ .",
-    "start": "../../node_modules/.bin/npm-run-all -lp start:*",
-    "build:parcel": "../../node_modules/.bin/parcel build index.html --public-url ./dist",
+    "start": "../../node_modules/.bin/npm-run-all -nrp start:*",
+    "build:parcel": "../../node_modules/.bin/parcel build index.html",
     "build:nw": "build --tasks --win --x64 --mirror https://dl.nwjs.io/ .",
-    "build": "../../node_modules/.bin/npm-run-all -lrp build:*",
+    "build": "../../node_modules/.bin/npm-run-all -rp build:*",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "window": {

@@ -11,9 +11,9 @@
     "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "start:parcel": "../../node_modules/.bin/parcel watch src/**/* --out-dir ../core/dist/extensions/settings/build --no-autoinstall --no-hmr",
+    "start:parcel": "../../node_modules/.bin/parcel watch src/**/* --out-dir ../core/dist/extensions/settings/build",
     "start:extension": "../../node_modules/.bin/cpx \"manifest.json\" \"../core/dist/extensions/settings\"",
-    "start": "../../node_modules/.bin/npm-run-all -lp start:*",
+    "start": "../../node_modules/.bin/npm-run-all -np start:*",
     "deploy-src": "../../node_modules/.bin/parcel build src/*.ts src/*.tsx -d ../core/dist/extensions/settings/build",
     "deploy-manifest": "../../node_modules/.bin/cpx \"manifest.json\" \"../core/dist/extensions/settings\"",
     "deploy": "../../node_modules/.bin/npm-run-all -lp deploy:*",

@@ -7,7 +7,7 @@ class Content extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Je suis une fucking EXTENSION !
+          Je suis une fucking EXTENSIONdddff
         </Button>
       </div>
     );
@@ -22,17 +22,21 @@ document.addEventListener('injectExtension', data => {
   injectExtension();
 });
 
-chrome.runtime.onMessageExternal.addListener(function(
-  request,
-  sender,
-  sendResponse
-) {
-  alert(request);
-});
-
 function injectExtension() {
   const root = document.getElementById('extension');
   if (root) {
     render(<Content />, root);
   }
+}
+
+if (module.hot) {
+  module.hot.dispose(function(data) {
+    console.log('hmr', data);
+    chrome.runtime.sendMessage({ hmrAccept: true });
+  });
+
+  module.hot.accept(function() {
+    console.log('hmr');
+    chrome.runtime.sendMessage({ hmrAccept: true });
+  });
 }

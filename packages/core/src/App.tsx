@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Hello World
+          Hello World !sdfsdf
         </Button>
         <div id="extension" />
       </div>
@@ -24,7 +24,6 @@ class App extends Component {
         });
 
         //Send inject event
-        chrome.runtime.sendMessage(ext.id, { injectExtension: ext.name });
 
         const event = document.createEvent('Event');
         event.initEvent('injectExtension');
