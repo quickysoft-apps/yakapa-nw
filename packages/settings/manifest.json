@@ -10,9 +10,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*"],
+      "matches": ["*://*/*"],
       "js": ["build/content.js"]
     }
   ],
+  "externally_connectable": {
+    "matches": ["*://*/*"]
+  },
   "minimum_chrome_version": "49"
 }

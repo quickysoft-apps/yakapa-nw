@@ -7,7 +7,7 @@ class Content extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Je suis une fucking EXTENSION !ddfggfgdd
+          Je suis une fucking EXTENSION !
         </Button>
       </div>
     );
@@ -20,6 +20,14 @@ class Content extends Component {
 
 document.addEventListener('injectExtension', data => {
   injectExtension();
+});
+
+chrome.runtime.onMessageExternal.addListener(function(
+  request,
+  sender,
+  sendResponse
+) {
+  alert(request);
 });
 
 function injectExtension() {

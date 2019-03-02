@@ -11,14 +11,15 @@
     "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "deploy-src": "../../node_modules/.bin/parcel build src/*.ts src/*.tsx -d ../../extensions/settings/build",
-    "deploy-manifest": "cpx \"manifest.json\" \"../../extensions/settings\"",
-    "start": "concurrently \"npm:deploy-*\"",
+    "start:parcel": "../../node_modules/.bin/parcel watch src/**/* --out-dir ../core/dist/extensions/settings/build --no-autoinstall --no-hmr",
+    "start:extension": "../../node_modules/.bin/cpx \"manifest.json\" \"../core/dist/extensions/settings\"",
+    "start": "../../node_modules/.bin/npm-run-all -lp start:*",
+    "deploy-src": "../../node_modules/.bin/parcel build src/*.ts src/*.tsx -d ../core/dist/extensions/settings/build",
+    "deploy-manifest": "../../node_modules/.bin/cpx \"manifest.json\" \"../core/dist/extensions/settings\"",
+    "deploy": "../../node_modules/.bin/npm-run-all -lp deploy:*",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.81",
-    "concurrently": "^4.1.0",
-    "cpx": "^1.5.0"
+    "@types/chrome": "0.0.81"
   }
 }

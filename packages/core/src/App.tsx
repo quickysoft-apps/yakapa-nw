@@ -22,7 +22,10 @@ class App extends Component {
         chrome.management.getPermissionWarningsById(ext.id, warnings => {
           warnings.forEach(x => console.log(x));
         });
+
         //Send inject event
+        chrome.runtime.sendMessage(ext.id, { injectExtension: ext.name });
+
         const event = document.createEvent('Event');
         event.initEvent('injectExtension');
         document.dispatchEvent(event);
