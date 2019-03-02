@@ -24,27 +24,28 @@
     "start-parcel": "../../node_modules/.bin/parcel index.html -p 8080 --no-autoinstall",
     "start-nw": "run --x64 --mirror https://dl.nwjs.io/ .",
     "start": "concurrently --kill-others \"npm:start-*\"",
-    "build-parcel": "../../node_modules/.bin/parcel build index.html --public-url ./",
-    "build-nw": "build --tasks --mac --x64 --mirror https://dl.nwjs.io/ .",
+    "build-parcel": "../../node_modules/.bin/parcel build index.html --public-url ./dist",
+    "build-nw": "build --tasks --win --x64 --mirror https://dl.nwjs.io/ .",
     "build": "concurrently --kill-others \"npm:build-*\"",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "build": {
     "appId": "yakapa",
     "nwVersion": "0.36.2",
+    "nwFlavor": "normal",
     "overriddenProperties": {
-      "chromium-args": "--load-extension=../../extensions/settings",
+      "chromium-args": "--enable-logging=stderr --load-extension=./extensions/react-devtools_3.6.0_0,./extensions/settings/*",
       "files": [
         "dist/**/*",
-        "package.json"
+        "package.json",
+        "../../extensions/**/*"
+      ],
+      "excludes": [
+        "src"
       ]
     },
     "output": "bin/",
     "packed": false,
-    "targets": [
-      "zip",
-      "nsis7z"
-    ],
     "strippedProperties": [
       "scripts",
       "devDependencies",
@@ -54,8 +55,7 @@
     "win": {
       "productName": "Yakapa",
       "companyName": "QuickySoft",
-      "copyright": "copyright",
-      "icon": "./assets/pd.ico"
+      "copyright": "copyright"
     },
     "mac": {
       "displayName": "Yakapa",
