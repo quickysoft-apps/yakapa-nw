@@ -7,14 +7,14 @@ class Content extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Je suis une fucking EXTENSIONdddff
+          Je suis une fucking EXTENSION
         </Button>
       </div>
     );
   }
 
   private readonly onClick = () => {
-    chrome.runtime.sendMessage('background');
+    chrome.runtime.sendMessage({ clicked: true });
   };
 }
 
@@ -27,16 +27,4 @@ function injectExtension() {
   if (root) {
     render(<Content />, root);
   }
-}
-
-if (module.hot) {
-  module.hot.dispose(function(data) {
-    console.log('hmr', data);
-    chrome.runtime.sendMessage({ hmrAccept: true });
-  });
-
-  module.hot.accept(function() {
-    console.log('hmr');
-    chrome.runtime.sendMessage({ hmrAccept: true });
-  });
 }

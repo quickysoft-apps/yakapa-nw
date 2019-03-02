@@ -4,12 +4,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   //   periodInMinutes: 0.1
   // });
   console.log('message', message, sender);
-  if (true) {
-    const id = chrome.runtime.id;
-    console.log('Reload extension', id);
-    chrome.management.setEnabled(id, false);
-    chrome.management.setEnabled(id, true);
-  }
 });
 
 // chrome.alarms.onAlarm.addListener(function(alarm) {

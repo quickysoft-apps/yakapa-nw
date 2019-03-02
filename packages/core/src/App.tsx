@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Hello World !sdfsdf
+          Hello World !ddddd
         </Button>
         <div id="extension" />
       </div>
@@ -34,3 +34,18 @@ class App extends Component {
 }
 
 render(<App />, document.getElementById('root'));
+
+if (module.hot) {
+  module.hot.dispose(function(data) {});
+
+  module.hot.accept(function() {
+    chrome.management.getAll(result => {
+      const extensions = result.filter(x => x.type === 'extension');
+      extensions.forEach(x => {
+        console.log('Reloading', x.id);
+        chrome.management.setEnabled(x.id, false);
+        chrome.management.setEnabled(x.id, true);
+      });
+    });
+  });
+}
