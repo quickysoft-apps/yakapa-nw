@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Hello World !ddddd
+          Hello World !dd
         </Button>
         <div id="extension" />
       </div>

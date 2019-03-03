@@ -16,12 +16,8 @@
     "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "start:parcel": "../../node_modules/.bin/parcel watch src/**/* --public-url ./",
-    "start:nw": "run --x64 --mirror https://dl.nwjs.io/ .",
     "start": "../../node_modules/.bin/gulp start",
-    "build:parcel": "../../node_modules/.bin/parcel build index.html",
-    "build:nw": "build --tasks --win --x64 --mirror https://dl.nwjs.io/ .",
-    "build": "../../node_modules/.bin/npm-run-all -rp build:*",
+    "build": "../../node_modules/.bin/gulp build",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "window": {
@@ -29,19 +25,19 @@
     "height": 600,
     "frame": true
   },
-  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,./dist/extensions/settings",
+  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/dist",
   "build": {
     "appId": "yakapa",
     "nwVersion": "0.36.3",
     "nwFlavor": "normal",
     "overriddenProperties": {
-      "chromium-args": "--enable-logging=stderr --load-extension=./extensions/settings",
-      "excludes": [
-        "src",
-        "__tests__",
-        "tsconfig.json"
-      ]
+      "chromium-args": "--enable-logging=stderr --load-extension=dist/extensions/settings"
     },
+    "excludes": [
+      "_tests_/**/*",
+      "src/**/*",
+      "tsconfig.json"
+    ],
     "output": "../../release/",
     "packed": false,
     "outputPattern": "${NAME} ${VERSION} ${PLATFORM} ${ARCH}",

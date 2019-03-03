@@ -6,4 +6,5 @@ packages/*/dist
 packages/*/bin
 packages/*/.cache
 extensions
+release
 .DS_Store
