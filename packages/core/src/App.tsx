@@ -42,7 +42,7 @@ if (module.hot) {
     chrome.management.getAll(result => {
       const extensions = result.filter(x => x.type === 'extension');
       extensions.forEach(x => {
-        console.log('Reloading', x.id);
+        console.log('Reloading', x.name, x.type, x.id);
         chrome.management.setEnabled(x.id, false);
         chrome.management.setEnabled(x.id, true);
       });

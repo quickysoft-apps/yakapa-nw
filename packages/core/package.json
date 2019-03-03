@@ -18,7 +18,7 @@
   "scripts": {
     "start:parcel": "../../node_modules/.bin/parcel watch src/**/* --public-url ./",
     "start:nw": "run --x64 --mirror https://dl.nwjs.io/ .",
-    "start": "../../node_modules/.bin/npm-run-all -nrp start:*",
+    "start": "../../node_modules/.bin/gulp start",
     "build:parcel": "../../node_modules/.bin/parcel build index.html",
     "build:nw": "build --tasks --win --x64 --mirror https://dl.nwjs.io/ .",
     "build": "../../node_modules/.bin/npm-run-all -rp build:*",
