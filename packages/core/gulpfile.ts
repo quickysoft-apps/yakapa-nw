@@ -23,12 +23,17 @@ async function startParcel(cb: (err?: Error) => void) {
   cb();
 }
 
-function startNW(cb: Function) {
-  const runner = new Runner({ x64: true, mirror: 'https://dl.nwjs.io/' }, [
-    '.'
-  ]);
-  runner.run();
-  cb();
+async function startNW(cb: Function) {
+  const runner = new Runner(
+    { x64: true, mirror: 'https://dl.nwjs.io/', detached: true },
+    ['.']
+  );
+  const code = await runner.run();
+  if (code !== 0) {
+    cb(new Error(`Runner exit with code ${code}`));
+  } else {
+    cb();
+  }
 }
 
 export const start = series(cleanDist, startParcel, startNW);

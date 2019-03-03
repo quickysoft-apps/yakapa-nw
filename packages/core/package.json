@@ -44,11 +44,6 @@
     },
     "output": "../../release/",
     "packed": false,
-    "strippedProperties": [
-      "scripts",
-      "devDependencies",
-      "build"
-    ],
     "outputPattern": "${NAME} ${VERSION} ${PLATFORM} ${ARCH}",
     "win": {
       "productName": "Yakapa",
