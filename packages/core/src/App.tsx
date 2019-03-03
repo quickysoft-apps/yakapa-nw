@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Hello World !dd
+          Hello World !ghg
         </Button>
         <div id="extension" />
       </div>
@@ -22,16 +22,17 @@ class App extends Component {
         chrome.management.getPermissionWarningsById(ext.id, warnings => {
           warnings.forEach(x => console.log(x));
         });
-
-        //Send inject event
-
-        const event = document.createEvent('Event');
-        event.initEvent('injectExtension');
-        document.dispatchEvent(event);
+        injectExtension(ext.id);
       }
     });
   };
 }
+
+const injectExtension = (id: string) => {
+  const event = document.createEvent('Event');
+  event.initEvent(JSON.stringify({ inject: id }));
+  document.dispatchEvent(event);
+};
 
 render(<App />, document.getElementById('root'));
 
@@ -40,11 +41,9 @@ if (module.hot) {
 
   module.hot.accept(function() {
     chrome.management.getAll(result => {
-      const extensions = result.filter(x => x.type === 'extension');
+      const extensions = result.filter(x => x.type === 'extension' && x.name !== 'React Developer Tools');
       extensions.forEach(x => {
-        console.log('Reloading', x.name, x.type, x.id);
-        chrome.management.setEnabled(x.id, false);
-        chrome.management.setEnabled(x.id, true);
+        injectExtension(x.id);
       });
     });
   });

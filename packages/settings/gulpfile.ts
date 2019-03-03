@@ -1,4 +1,4 @@
-import { series, src, dest } from 'gulp';
+import { series, src, dest, watch } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
 
@@ -28,3 +28,5 @@ async function buildParcel() {
 
 export const start = series(clean, copyManifest, startParcel);
 export const build = series(clean, copyManifest, buildParcel);
+
+watch('manifest.json', copyManifest);
