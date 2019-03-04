@@ -28,9 +28,10 @@ async function buildParcel(cb: TaskCallback) {
   });
   await bundler.bundle();
   cb();
+  process.exit(0);
 }
 
 export const start = series(clean, copyManifest, startParcel);
 export const build = series(clean, copyManifest, buildParcel);
 
-watch('manifest.json', copyManifest);
+watch('manifest.json', { queue: true }, copyManifest);
