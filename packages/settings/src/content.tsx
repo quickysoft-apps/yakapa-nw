@@ -7,7 +7,7 @@ class Content extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Je suis une fucking EXTENSIONvv
+          Je suis une fucking EXTENSION
         </Button>
       </div>
     );
@@ -19,10 +19,8 @@ class Content extends Component {
 }
 
 const eventType = JSON.stringify({ inject: chrome.runtime.id });
-console.log('--------', eventType);
 
 document.addEventListener(eventType, e => {
-  console.log('---------------', e);
   injectExtension();
 });
 
@@ -31,4 +29,17 @@ function injectExtension() {
   if (root) {
     render(<Content />, root);
   }
+}
+
+if (module.hot) {
+  module.hot.accept(function() {
+    const id = chrome.runtime.id;
+    console.log('Hot reload extension', chrome.runtime.getManifest().name, `(chrome-extension://${id})`);
+    chrome.runtime.sendMessage({ reload: id }, response => {
+      console.log(response);
+      if (response.inject) {
+        injectExtension();
+      }
+    });
+  });
 }
