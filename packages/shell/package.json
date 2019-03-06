@@ -5,6 +5,7 @@
   "product_string": "yakapa",
   "node-main": "./server.js",
   "main": "http://localhost:8080",
+  "bg-script": "./background.js",
   "node-remote": [
     "*://*/*"
   ],

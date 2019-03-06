@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Hello World !f
+          Hello World !
         </Button>
         <div id="extension" />
       </div>
@@ -32,9 +32,6 @@ class App extends Component {
 const injectExtension = (id: string) => {
   const chromeExtensionUrl = `chrome-extension://${id}`;
   console.log('Inject', `(${chromeExtensionUrl})`);
-  if (process.env.NODE_ENV !== 'production') {
-    chrome.tabs.create({ url: chromeExtensionUrl });
-  }
   const event = document.createEvent('Event');
   event.initEvent(JSON.stringify({ inject: id }));
   document.dispatchEvent(event);

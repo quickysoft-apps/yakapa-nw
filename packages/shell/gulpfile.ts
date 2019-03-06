@@ -23,9 +23,10 @@ async function startParcel(cb: TaskCallback) {
 
 async function startNW(cb: TaskCallback) {
   const runner = new Runner({ x64: true, mirror: 'https://dl.nwjs.io/', detached: false }, ['.']);
-  const code = await runner.run();
+  runner.run().then(code => {
+    process.exit(code);
+  });
   cb();
-  process.exit(code);
 }
 
 function createReleaseFolder() {
