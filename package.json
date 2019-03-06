@@ -12,8 +12,6 @@
     "@types/react-dom": "16.8.2",
     "@types/webpack-env": "^1.13.8",
     "del": "^3.0.0",
-    "gulp": "^4.0.0",
-    "gulp-cli": "^2.0.1",
     "gulp-typescript": "^5.0.0",
     "lerna": "^3.13.0",
     "parcel-bundler": "^1.11.0",
@@ -25,7 +23,9 @@
     "@material-ui/core": "^3.9.2",
     "mobx-react": "5.4.3",
     "react": "16.8.2",
-    "react-dom": "16.8.2"
+    "react-dom": "16.8.2",
+    "gulp": "^4.0.0",
+    "gulp-cli": "^2.0.1"
   },
   "scripts": {
     "start": "lerna run start --stream watch",

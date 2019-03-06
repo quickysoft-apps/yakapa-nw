@@ -17,8 +17,8 @@
     "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "start": "../../node_modules/.bin/gulp start",
-    "build": "../../node_modules/.bin/gulp build",
+    "start": "node_modules/.bin/gulp start",
+    "build": "node_modules/.bin/gulp build",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "window": {
@@ -63,10 +63,13 @@
   },
   "devDependencies": {
     "@types/chrome": "0.0.81",
+    "ts-node": "^8.0.2",
     "@types/nw.gui": "0.0.20",
     "@types/nw.js": "^0.13.8",
     "express": "^4.16.4",
     "nwjs-builder-phoenix": "^1.15.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "gulp": "^4.0.0"
+  }
 }
