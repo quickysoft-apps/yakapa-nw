@@ -41,16 +41,3 @@ const injectExtension = (id: string) => {
 };
 
 render(<App />, document.getElementById('root'));
-
-if (module.hot) {
-  module.hot.dispose(function(data) {});
-
-  module.hot.accept(function() {
-    // chrome.management.getAll(result => {
-    //   const extensions = result.filter(x => x.type === 'extension' && x.name !== 'React Developer Tools');
-    //   extensions.forEach(x => {
-    //     injectExtension(x.id);
-    //   });
-    // });
-  });
-}
