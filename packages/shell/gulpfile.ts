@@ -46,6 +46,12 @@ async function startNW(cb: TaskCallback) {
     { stdio: [process.stdin, process.stdout, process.stderr] }
   );
 
+  process.stdout.on("data", function(data) {
+    const str = data.toString();
+    const lines = str.split(/(\r?\n)/g);
+    console.log(lines.join(""));
+  });
+
   runProcess.on("close", function(code) {
     process.exit(code);
   });
@@ -66,7 +72,7 @@ function copyExtensions() {
 
 async function cleanBuild() {
   await del([`${buildDestination}/**/*`], { force: true });
-  return del([`${extensionsDist}/**/*`]);
+  return del([`${extensionsDist}/**/*`], { force: true });
 }
 
 async function buildParcel(cb: TaskCallback) {
@@ -82,6 +88,7 @@ async function buildNW(cb: TaskCallback) {
   const builder = new Builder(
     {
       win: true,
+      mac: true,
       x64: true,
       mirror: "https://dl.nwjs.io/",
       destination: buildDestination

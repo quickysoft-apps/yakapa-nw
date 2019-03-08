@@ -14,7 +14,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "removeComments": true,
-    "sourceMap": true
+    "sourceMap": true,
   },
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

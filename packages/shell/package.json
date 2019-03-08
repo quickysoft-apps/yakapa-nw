@@ -2,7 +2,6 @@
   "name": "@yakapa/shell",
   "version": "0.0.1",
   "description": "description",
-  "product_string": "yakapa",
   "node-main": "./server.js",
   "main": "http://localhost:8080",
   "bg-script": "./background.js",
@@ -30,7 +29,7 @@
   "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/dist",
   "build": {
     "appId": "yakapa",
-    "nwVersion": "0.36.3",
+    "nwVersion": "0.36.4",
     "nwFlavor": "normal",
     "overriddenProperties": {
       "chromium-args": "--enable-logging=stderr --load-extension=dist/extensions/settings"
@@ -71,17 +70,17 @@
   },
   "devDependencies": {
     "@types/chrome": "0.0.81",
-    "ts-node": "^8.0.2",
     "@types/nw.gui": "0.0.20",
-    "@types/nw.js": "^0.13.8",
-    "express": "^4.16.4"
+    "@types/nw.js": "^0.13.8"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "gulp": "^4.0.0",
     "nwjs-builder-phoenix": "^1.15.0",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "parcel-bundler": "^1.11.0",
+    "express": "^4.16.4",
+    "gulp-typescript": "^5.0.0",
+    "ts-node": "^8.0.2"
   }
 }
