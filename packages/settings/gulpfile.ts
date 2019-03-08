@@ -46,8 +46,10 @@ async function startParcel(cb: TaskCallback) {
   npmRun("./node_modules/.bin/parcel", [
     "watch",
     "src/**/*",
-    "--public-url ./",
-    "--out-dir ./dist/build"
+    "--public-url",
+    " ./",
+    "--out-dir",
+    "./dist/build"
   ]).then(_ => cb());
 }
 

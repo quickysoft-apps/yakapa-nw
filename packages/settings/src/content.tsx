@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import { render } from 'react-dom';
+import React, { Component } from "react";
+import Button from "@material-ui/core/Button";
+import { render } from "react-dom";
 
 class Content extends Component {
   render() {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Je suis une fucking EXTENSION !!!!!!
+          Je suis une fucking EXTENSION
         </Button>
       </div>
     );
   }
 
   private readonly onClick = () => {
-    console.log('toto');
+    console.log("toto");
     chrome.runtime.sendMessage({ clicked: true });
   };
 }
@@ -26,7 +26,7 @@ document.addEventListener(eventType, e => {
 });
 
 function injectExtension() {
-  const root = document.getElementById('extension');
+  const root = document.getElementById("extension");
   if (root) {
     render(<Content />, root);
   }
@@ -35,7 +35,11 @@ function injectExtension() {
 if (module.hot) {
   module.hot.accept(function() {
     const id = chrome.runtime.id;
-    console.log('Hot reload extension', chrome.runtime.getManifest().name, `(chrome-extension://${id})`);
+    console.log(
+      "Hot reload extension",
+      chrome.runtime.getManifest().name,
+      `(chrome-extension://${id})`
+    );
     chrome.runtime.sendMessage({ reload: id }, response => {
       console.log(response);
       if (response.inject) {
