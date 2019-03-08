@@ -24,7 +24,8 @@
   "window": {
     "width": 800,
     "height": 600,
-    "frame": true
+    "frame": true,
+    "icon": "./assets/pd.png"
   },
   "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/dist",
   "build": {
@@ -40,16 +41,23 @@
       "tsconfig.json"
     ],
     "output": "../../release/",
-    "packed": false,
+    "packed": true,
+    "targets": [
+      "zip",
+      "nsis7z"
+    ],
+    "strippedProperties": [
+      "build"
+    ],
     "outputPattern": "${NAME} ${VERSION} ${PLATFORM} ${ARCH}",
     "win": {
       "productName": "Yakapa",
       "companyName": "QuickySoft",
-      "copyright": "© 2019-2020 QuickySoft"
+      "copyright": "2019-2020 QuickySoft"
     },
     "mac": {
       "displayName": "Yakapa",
-      "copyright": "© 2019-2020 QuickySoft",
+      "copyright": "2019-2020 QuickySoft",
       "icon": "./assets/pd.icns",
       "plistStrings": {
         "CFBundleIdentifier": "yakapa",

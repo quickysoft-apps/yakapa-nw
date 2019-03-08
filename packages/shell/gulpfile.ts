@@ -47,7 +47,6 @@ async function startNW(cb: TaskCallback) {
   );
 
   runProcess.on("close", function(code) {
-    console.log("process exit code " + code);
     process.exit(code);
   });
 
