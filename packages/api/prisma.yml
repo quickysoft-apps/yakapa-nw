@@ -1,0 +1,6 @@
+endpoint: https://yakapa-api-0587a23090.herokuapp.com/api/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: typescript-client
+    output: ./generated/prisma-client/

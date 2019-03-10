@@ -1,0 +1,24 @@
+type User {
+  id: ID! @unique
+  name: String!
+  endUsers: [EndUser!]! @relation(name: "UserOnEndUser")
+}
+
+type Agent @model {
+  createdAt: DateTime!
+  endUser: EndUser @relation(name: "EndUserOnAgent")
+  id: ID! @unique
+  nickname: String
+  tag: String @isUnique
+  updatedAt: DateTime!
+}
+
+type EndUser @model {
+  agents: [Agent!]! @relation(name: "EndUserOnAgent")
+  createdAt: DateTime!
+  email: String! @unique
+  fullName: String
+  id: ID! @unique
+  updatedAt: DateTime!
+  users: [User!]! @relation(name: "UserOnEndUser")
+}

@@ -76,11 +76,11 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "express": "^4.16.4",
     "gulp": "^4.0.0",
+    "gulp-typescript": "^5.0.0",
     "nwjs-builder-phoenix": "^1.15.0",
     "parcel-bundler": "^1.11.0",
-    "express": "^4.16.4",
-    "gulp-typescript": "^5.0.0",
     "ts-node": "^8.0.2"
   }
 }

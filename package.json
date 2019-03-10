@@ -16,7 +16,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
-    "mobx-react": "5.4.3",
+    "prisma-client-lib": "^1.28.2",
     "react": "16.8.2",
     "react-dom": "16.8.2",
     "typescript": "^3.3.3"
