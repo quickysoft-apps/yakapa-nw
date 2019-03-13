@@ -1,4 +1,7 @@
 {
     "javascript.format.enable": false,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "prettier.singleQuote": true,
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false
 }
