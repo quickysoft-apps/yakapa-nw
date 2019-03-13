@@ -1,15 +1,60 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import {} from 'prisma-client-lib';
 import { render } from 'react-dom';
+import PubNubReact from 'pubnub-react';
 
-class Content extends Component {
+interface Props {}
+class Content extends Component<Props> {
+  private pubnub: any;
+
+  constructor(props: Props) {
+    super(props);
+    this.pubnub = new PubNubReact({
+      publishKey: 'pub-c-e151911f-1da3-4590-8ac7-8e5cb0332af0',
+      subscribeKey: 'sub-c-b1756fc2-4328-11e9-b827-4e8ff5d9951b'
+    });
+    this.pubnub.init(this);
+  }
+
+  componentWillMount() {
+    this.pubnub.subscribe({
+      channels: ['channel1'],
+      withPresence: true
+    });
+
+    this.pubnub.getMessage('channel1', (msg: string) => {
+      console.log(msg);
+    });
+
+    this.pubnub.getStatus((st: any) => {
+      this.pubnub.publish({
+        message: 'hello world from react',
+        channel: 'channel1'
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.pubnub.unsubscribe({
+      channels: ['channel1']
+    });
+  }
+
   render() {
+    const messages = this.pubnub.getMessage('channel1');
+
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
           Je suis une fucking EXTENSION
         </Button>
+        <div>
+          <ul>
+            {messages.map((m: any, index: number) => (
+              <li key={'message' + index}>{m.message}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }

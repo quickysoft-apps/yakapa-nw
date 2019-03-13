@@ -15,7 +15,7 @@
     "noUnusedLocals": true,
     "removeComments": true,
     "sourceMap": true,
-    "lib": ["es2016", "esnext.asynciterable"]
+    "lib": ["es2016", "esnext.asynciterable", "dom"]
   },
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

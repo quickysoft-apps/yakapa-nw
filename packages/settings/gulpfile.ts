@@ -23,12 +23,17 @@ function onExit(childProcess: ChildProcess): Promise<void> {
 
 async function npmRun(command: string, args: string[]) {
   const fullpath = path.resolve(__dirname, command);
+  console.log('---------------------', fullpath);
   const npmProcess = spawn(fullpath, args, {
     stdio: [process.stdin, process.stdout, process.stderr]
   });
 
   npmProcess.on('close', function(code) {
     process.exit(code);
+  });
+
+  npmProcess.on('error', (err: Error) => {
+    console.log('Error', err.message);
   });
 
   onExit(npmProcess);
@@ -43,7 +48,7 @@ function copyManifest() {
 }
 
 async function startParcel(cb: TaskCallback) {
-  npmRun('./node_modules/.bin/parcel', [
+  npmRun('./node_modules/.bin/parcel.cmd', [
     'watch',
     'src/**/*',
     '--public-url',
