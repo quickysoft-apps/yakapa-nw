@@ -7,7 +7,7 @@
   "license": "ISC",
   "main": "lib/common.js",
   "directories": {
-    "lib": "dist",
+    "lib": "lib",
     "test": "__tests__"
   },
   "files": [
