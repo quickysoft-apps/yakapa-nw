@@ -16,14 +16,10 @@ function onExit(childProcess: ChildProcess): Promise<void> {
   });
 }
 
-export async function npmRun(
-  command: string,
-  args: string[]
-): Promise<string[]> {
-  const cmd = `./node_modules/.bin/${command}${
-    process.platform === 'win32' ? '.cmd' : ''
-  }`;
-  const fullpath = path.resolve(__dirname, cmd);
+export async function npmRun(command: string, args: string[]): Promise<string[]> {
+  const cmd = `./node_modules/.bin/${command}${process.platform === 'win32' ? '.cmd' : ''}`;
+  const fullpath = path.resolve(process.cwd(), cmd);
+
   const npmProcess = spawn(fullpath, args, { stdio: 'pipe' });
 
   let lines: string[] = [];
@@ -34,6 +30,12 @@ export async function npmRun(
       lines = str.split(/(\r?\n)/g);
     });
   }
-  await onExit(npmProcess);
-  return lines;
+  try {
+    await onExit(npmProcess);
+    return lines;
+  } catch (err) {
+    console.log('Error executing npm script:', err.message);
+    process.exit(1);
+    return [err.message];
+  }
 }

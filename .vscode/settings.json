@@ -3,5 +3,6 @@
     "editor.formatOnSave": true,
     "prettier.singleQuote": true,
     "editor.tabSize": 2,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "editor.wordWrapColumn": 160
 }
