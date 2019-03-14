@@ -74,6 +74,7 @@
     "@types/nw.js": "^0.13.8"
   },
   "dependencies": {
+    "@yakapa/common": "^0.0.0",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "express": "^4.16.4",

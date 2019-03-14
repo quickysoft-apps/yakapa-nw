@@ -20,7 +20,7 @@ export async function npmRun(command: string, args: string[]): Promise<string[]>
   const cmd = `./node_modules/.bin/${command}${process.platform === 'win32' ? '.cmd' : ''}`;
   const fullpath = path.resolve(process.cwd(), cmd);
 
-  const npmProcess = spawn(fullpath, args, { stdio: 'pipe' });
+  const npmProcess = spawn(fullpath, args, { stdio: [process.stdin, process.stdout, process.stderr, 'pipe'] });
 
   let lines: string[] = [];
   if (npmProcess.stdout) {

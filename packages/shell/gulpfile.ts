@@ -2,28 +2,12 @@ import { series, src, dest } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
 import { Builder } from 'nwjs-builder-phoenix';
-import { spawn, ChildProcess } from 'child_process';
-import path from 'path';
+import { npmRun } from '@yakapa/common';
 
 type TaskCallback = (err?: Error) => void;
 
 const buildDestination = '../../release';
 const extensionsDist = './dist/extensions/';
-
-function onExit(childProcess: ChildProcess): Promise<void> {
-  return new Promise((resolve, reject) => {
-    childProcess.once('exit', (code: number, signal: string) => {
-      if (code === 0) {
-        resolve(undefined);
-      } else {
-        reject(new Error('Exit with error code: ' + code));
-      }
-    });
-    childProcess.once('error', (err: Error) => {
-      reject(err);
-    });
-  });
-}
 
 function cleanStart() {
   return del(['dist/*.+(js|html|map)']);
@@ -39,24 +23,7 @@ async function startParcel(cb: TaskCallback) {
 }
 
 async function startNW(cb: TaskCallback) {
-  const runPath = path.join(__dirname, './node_modules/.bin/run.cmd');
-  const runProcess = spawn(
-    runPath,
-    ['.', '--x64', '--mirror https://dl.nwjs.io/'],
-    { stdio: [process.stdin, process.stdout, process.stderr] }
-  );
-
-  // process.stdout.on('data', function(data) {
-  //   const str = data.toString();
-  //   const lines = str.split(/(\r?\n)/g);
-  //   console.log(lines.join(''));
-  // });
-
-  runProcess.on('close', function(code) {
-    process.exit(code);
-  });
-
-  onExit(runProcess).then(_ => cb());
+  npmRun('run', ['.', '--x64', '--mirror https://dl.nwjs.io/']).then(_ => cb());
 }
 
 function createReleaseFolder() {
