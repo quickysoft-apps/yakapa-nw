@@ -20,6 +20,7 @@
     "@types/node": "^11.10.5"
   },
   "dependencies": {
+    "@yakapa/common": "^0.0.0",
     "del": "^4.0.0",
     "gulp": "^4.0.0",
     "gulp-typescript": "^5.0.0",
