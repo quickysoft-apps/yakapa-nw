@@ -16,7 +16,8 @@ function cleanStart() {
 async function startParcel(cb: TaskCallback) {
   const bundler = new ParcelBundler('src/**/*', {
     watch: true,
-    publicUrl: './'
+    publicUrl: './',
+    outDir: './lib'
   });
   await bundler.bundle();
   cb();
@@ -45,7 +46,8 @@ async function cleanBuild() {
 async function buildParcel(cb: TaskCallback) {
   const bundler = new ParcelBundler('src/**/*', {
     watch: false,
-    publicUrl: './'
+    publicUrl: './',
+    outDir: './lib'
   });
   await bundler.bundle();
   cb();

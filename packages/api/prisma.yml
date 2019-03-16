@@ -8,3 +8,4 @@ generate:
 hooks:
   post-deploy:
     - prisma generate
+    - tsc -b .

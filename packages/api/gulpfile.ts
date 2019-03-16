@@ -1,4 +1,4 @@
-import { watch } from 'gulp';
+import { series, watch } from 'gulp';
 import { npmRun } from '@yakapa/shared';
 
 type TaskCallback = (err?: Error) => void;
@@ -7,4 +7,6 @@ export async function deploy(cb: TaskCallback) {
   npmRun('prisma', ['deploy'], false).then(_ => cb());
 }
 
-watch('./*.+(prisma|yml)', { queue: true }, deploy);
+export const start = series(deploy);
+
+watch('./*.+(prisma|yml)', start);

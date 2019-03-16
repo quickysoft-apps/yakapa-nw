@@ -2,11 +2,9 @@ node_modules
 lerna-debug.log
 npm-debug.log
 packages/*/lib
-packages/*/dist
-packages/*/bin
 packages/*/.cache
-packages/*/generated
-/**/.env
+generated
+.env
 extensions
 release
 .DS_Store
