@@ -1,3 +1,0 @@
-# `common`
-
-Common functions & types

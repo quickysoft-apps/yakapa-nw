@@ -1,9 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.settings.json",
   "compilerOptions": {
     "jsx": "react",
-    "outDir": "dist",
-    "declaration": true
+    "outDir": "lib",
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "references": [{ "path": "../shared" }],
+  "exclude": ["gulpfile.ts"]
 }

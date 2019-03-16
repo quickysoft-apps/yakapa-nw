@@ -2,15 +2,15 @@ import { series, src, dest } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
 import { Builder } from 'nwjs-builder-phoenix';
-import { npmRun } from '../common';
+import { npmRun } from '@yakapa/shared';
 
 type TaskCallback = (err?: Error) => void;
 
 const buildDestination = '../../release';
-const extensionsDist = './dist/extensions/';
+const extensionsDist = './lib/extensions/';
 
 function cleanStart() {
-  return del(['dist/*.+(js|html|map)']);
+  return del(['lib/*.+(js|html|map)']);
 }
 
 async function startParcel(cb: TaskCallback) {
@@ -33,7 +33,7 @@ function createReleaseFolder() {
 function copyExtensions() {
   return src('*.*', { read: false })
     .pipe(dest(extensionsDist))
-    .pipe(src('../settings/dist/**/*'))
+    .pipe(src('../settings/lib/**/*'))
     .pipe(dest(`${extensionsDist}/settings/`));
 }
 

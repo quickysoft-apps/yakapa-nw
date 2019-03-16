@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src"
-  },
-  "references": [{ "path": "../shared" }],
-  "exclude": ["gulpfile.ts"]
+  }
 }

@@ -11,19 +11,20 @@
     "@types/react": "16.8.3",
     "@types/react-dom": "16.8.2",
     "@types/webpack-env": "^1.13.8",
-    "prettier": "1.16.4"
+    "lerna-update-wizard": "^0.11.1",
+    "prettier": "1.16.4",
+    "typescript": "^3.3.3333"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "prisma-client-lib": "^1.28.2",
     "react": "16.8.2",
-    "react-dom": "16.8.2",
-    "typescript": "^3.3.3"
+    "react-dom": "16.8.2"
   },
   "scripts": {
     "start": "lerna run start --stream watch",
-    "build": "lerna run build --stream",
-    "clean": "lerna clean --yes && rm -rf ./node_modules"
+    "clean": "lerna clean --yes && rm -rf ./node_modules",
+    "bootstrap": "npm i && lerna bootstrap"
   }
 }
