@@ -1,8 +1,7 @@
 import { series, src, dest, watch } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
-
-import { npmRun } from '@yakapa/common';
+import { npmRun } from '../common';
 
 type TaskCallback = (err?: Error) => void;
 
@@ -15,14 +14,7 @@ function copyManifest() {
 }
 
 async function startParcel(cb: TaskCallback) {
-  npmRun('parcel', [
-    'watch',
-    'src/**/*',
-    '--public-url',
-    ' ./',
-    '--out-dir',
-    './dist/build'
-  ]).then(_ => cb());
+  npmRun('parcel', ['watch', 'src/**/*', '--public-url', ' ./', '--out-dir', './dist/build']).then(_ => cb());
 }
 
 async function buildParcel(cb: TaskCallback) {

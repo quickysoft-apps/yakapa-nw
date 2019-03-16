@@ -81,11 +81,7 @@ function injectExtension() {
 if (module.hot) {
   module.hot.accept(function() {
     const id = chrome.runtime.id;
-    console.log(
-      'Hot reload extension',
-      chrome.runtime.getManifest().name,
-      `(chrome-extension://${id})`
-    );
+    console.log('Hot reload extension', chrome.runtime.getManifest().name, `(chrome-extension://${id})`);
     chrome.runtime.sendMessage({ reload: id }, response => {
       console.log(response);
       if (response.inject) {

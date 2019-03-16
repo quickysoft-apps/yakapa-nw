@@ -32,6 +32,7 @@ export async function npmRun(command: string, args: string[]): Promise<string[]>
   }
   try {
     await onExit(npmProcess);
+    process.exit(0);
     return lines;
   } catch (err) {
     console.log('Error executing npm script:', err.message);

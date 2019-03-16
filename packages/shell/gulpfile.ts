@@ -2,7 +2,7 @@ import { series, src, dest } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
 import { Builder } from 'nwjs-builder-phoenix';
-import { npmRun } from '@yakapa/common';
+import { npmRun } from '../common';
 
 type TaskCallback = (err?: Error) => void;
 
@@ -67,10 +67,4 @@ async function buildNW(cb: TaskCallback) {
 }
 
 export const start = series(cleanStart, startParcel, startNW);
-export const build = series(
-  createReleaseFolder,
-  cleanBuild,
-  copyExtensions,
-  buildParcel,
-  buildNW
-);
+export const build = series(createReleaseFolder, cleanBuild, copyExtensions, buildParcel, buildNW);
