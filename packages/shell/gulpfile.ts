@@ -23,7 +23,8 @@ async function startParcel(cb: TaskCallback) {
 }
 
 async function startNW(cb: TaskCallback) {
-  npmRun('run', ['.', '--x64', '--mirror https://dl.nwjs.io/']).then(_ => cb());
+  npmRun('run', ['.', '--x64', '--mirror https://dl.nwjs.io/']);
+  cb();
 }
 
 function createReleaseFolder() {
@@ -53,20 +54,7 @@ async function buildParcel(cb: TaskCallback) {
 }
 
 async function buildNW(cb: TaskCallback) {
-  // const builder = new Builder(
-  //   {
-  //     win: true,
-  //     //mac: true,
-  //     x64: true,
-  //     mirror: 'https://dl.nwjs.io/',
-  //     destination: buildDestination
-  //   },
-  //   '.'
-  // );
-  // await builder.build();
-  // cb();
-  await npmRun('build', ['--tasks', 'win-x64,mac-x64', '--mirror', 'https://dl.nwjs.io/', '.']);
-  cb();
+  npmRun('build', ['--tasks', 'win-x64,mac-x64', '--mirror', 'https://dl.nwjs.io/', '.']).then(_ => cb());
 }
 
 export const start = series(cleanStart, startParcel, startNW);

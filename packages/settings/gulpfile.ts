@@ -14,7 +14,8 @@ function copyManifest() {
 }
 
 async function startParcel(cb: TaskCallback) {
-  npmRun('parcel', ['watch', 'src/**/*', '--public-url', ' ./', '--out-dir', './lib/build']).then(_ => cb());
+  npmRun('parcel', ['watch', 'src/**/*', '--public-url', ' ./', '--out-dir', './lib/build']);
+  cb();
 }
 
 async function buildParcel(cb: TaskCallback) {
