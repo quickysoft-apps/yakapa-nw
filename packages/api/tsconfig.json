@@ -5,5 +5,5 @@
     "rootDir": "src"
   },
   "references": [{ "path": "../shared" }],
-  "exclude": ["gulpfile.ts"]
+  "exclude": ["./*.ts", "lib"]
 }

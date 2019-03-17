@@ -40,7 +40,7 @@
       "tsconfig.json"
     ],
     "output": "../../release/",
-    "packed": true,
+    "packed": false,
     "targets": [
       "zip",
       "nsis7z"

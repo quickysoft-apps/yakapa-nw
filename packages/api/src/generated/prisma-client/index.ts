@@ -554,7 +554,7 @@ export interface AgentScalarWhereInput {
 }
 
 export interface UserCreateInput {
-  name: String;
+  name?: String;
   endUsers?: EndUserCreateManyWithoutUsersInput;
 }
 
@@ -639,7 +639,7 @@ export interface EndUserUpdateManyMutationInput {
 }
 
 export interface UserCreateWithoutEndUsersInput {
-  name: String;
+  name?: String;
 }
 
 export interface AgentUpdateManyDataInput {
@@ -869,7 +869,7 @@ export interface BatchPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  name: String;
+  name?: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -946,7 +946,7 @@ export interface AgentEdgeSubscription
 
 export interface User {
   id: ID_Output;
-  name: String;
+  name?: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {

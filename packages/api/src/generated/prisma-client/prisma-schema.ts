@@ -637,7 +637,7 @@ type Subscription {
 
 type User {
   id: ID!
-  name: String!
+  name: String
   endUsers(where: EndUserWhereInput, orderBy: EndUserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EndUser!]
 }
 
@@ -648,7 +648,7 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  name: String!
+  name: String
   endUsers: EndUserCreateManyWithoutUsersInput
 }
 
@@ -658,7 +658,7 @@ input UserCreateManyWithoutEndUsersInput {
 }
 
 input UserCreateWithoutEndUsersInput {
-  name: String!
+  name: String
 }
 
 type UserEdge {
@@ -679,7 +679,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  name: String!
+  name: String
 }
 
 input UserScalarWhereInput {

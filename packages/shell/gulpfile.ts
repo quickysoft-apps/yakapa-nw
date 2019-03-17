@@ -1,7 +1,6 @@
 import { series, src, dest } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
-import { Builder } from 'nwjs-builder-phoenix';
 import { npmRun } from '@yakapa/shared';
 
 type TaskCallback = (err?: Error) => void;
@@ -54,17 +53,19 @@ async function buildParcel(cb: TaskCallback) {
 }
 
 async function buildNW(cb: TaskCallback) {
-  const builder = new Builder(
-    {
-      win: true,
-      mac: true,
-      x64: true,
-      mirror: 'https://dl.nwjs.io/',
-      destination: buildDestination
-    },
-    '.'
-  );
-  await builder.build();
+  // const builder = new Builder(
+  //   {
+  //     win: true,
+  //     //mac: true,
+  //     x64: true,
+  //     mirror: 'https://dl.nwjs.io/',
+  //     destination: buildDestination
+  //   },
+  //   '.'
+  // );
+  // await builder.build();
+  // cb();
+  await npmRun('build', ['--tasks', 'win-x64,mac-x64', '--mirror', 'https://dl.nwjs.io/', '.']);
   cb();
 }
 

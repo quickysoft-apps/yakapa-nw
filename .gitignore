@@ -1,9 +1,7 @@
 node_modules
-lerna-debug.log
-npm-debug.log
-packages/*/lib
-packages/*/.cache
-generated
+*.log
+lib
+.cache
 .env
 extensions
 release
