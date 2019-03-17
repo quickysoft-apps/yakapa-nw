@@ -5,6 +5,7 @@ export const renderExtension = <P>(element: ReactElement<P>, hotModule: NodeModu
   const eventType = JSON.stringify({ inject: chrome.runtime.id });
 
   const onInject = (e: Event) => {
+    console.log('Injecting extension component');
     inject(element);
   };
 

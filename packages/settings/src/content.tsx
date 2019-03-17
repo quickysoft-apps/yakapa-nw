@@ -3,6 +3,8 @@ import Button from '@material-ui/core/Button';
 import PubNubReact from 'pubnub-react';
 import { renderExtension } from '@yakapa/shared';
 
+import { SettingsForm } from './components/SettingsForm';
+
 interface Props {}
 
 class Content extends Component<Props> {
@@ -29,7 +31,7 @@ class Content extends Component<Props> {
 
     this.pubnub.getStatus((st: any) => {
       this.pubnub.publish({
-        message: 'hello world from react',
+        message: `status ${JSON.stringify(st, null, 2)}`,
         channel: 'channel1'
       });
     });
@@ -47,8 +49,9 @@ class Content extends Component<Props> {
     return (
       <div>
         <Button onClick={this.onClick} variant="contained" color="primary">
-          Click ME !!!!
+          Click ME
         </Button>
+        <SettingsForm />
         <div>
           <ul>
             {messages.map((m: any, index: number) => (
