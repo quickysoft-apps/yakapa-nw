@@ -5,14 +5,8 @@
   "author": "Lawrence Zémour <lawrence.zemour@exagroup.biz>",
   "homepage": "https://github.com/quickysoft-apps/yakapa-nw#readme",
   "license": "ISC",
-  "main": "lib/api.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://neurosoup@github.com/quickysoft-apps/yakapa-nw.git"
@@ -25,16 +19,15 @@
     "@types/graphql": "^14.0.7",
     "@types/node": "^11.10.5",
     "@types/url-parse": "^1.4.3",
-    "prisma": "^1.28.2"
-  },
-  "dependencies": {
-    "dotenv": "^6.2.0",
-    "graphql": "^14.1.1",
-    "gulp": "^4.0.0",
+    "typescript": "^3.3.3333",
     "gulp-typescript": "^5.0.0",
-    "heroku": "^7.22.4",
     "prisma": "^1.28.1",
     "ts-node": "^8.0.2",
-    "url-parse": "^1.4.4"
+    "gulp": "^4.0.0",
+    "del": "^4.0.0"
+  },
+  "dependencies": {
+    "graphql": "^14.1.1",
+    "@yakapa/shared": "^0.0.0"
   }
 }

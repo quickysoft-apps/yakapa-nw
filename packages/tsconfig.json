@@ -1,0 +1,4 @@
+{
+  "files": [],
+  "references": [{ "path": "shared" }, { "path": "api" }, { "path": "settings" }, { "path": "shell" }]
+}

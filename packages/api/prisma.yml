@@ -3,4 +3,9 @@ datamodel: datamodel.prisma
 
 generate:
   - generator: typescript-client
-    output: ./generated/prisma-client/
+    output: ./src/generated/prisma-client/
+
+hooks:
+  post-deploy:
+    - prisma generate
+    - tsc -b .

@@ -1,34 +1,27 @@
 import { series, src, dest, watch } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
-
-import { npmRun } from '@yakapa/common';
+import { npmRun } from '@yakapa/shared';
 
 type TaskCallback = (err?: Error) => void;
 
 function clean() {
-  return del(['./dist/**/*.+(js|html|map|json)']);
+  return del(['./lib/**/*.+(js|html|map|json)']);
 }
 
 function copyManifest() {
-  return src('manifest.json').pipe(dest('./dist/'));
+  return src('manifest.json').pipe(dest('./lib/'));
 }
 
 async function startParcel(cb: TaskCallback) {
-  npmRun('parcel', [
-    'watch',
-    'src/**/*',
-    '--public-url',
-    ' ./',
-    '--out-dir',
-    './dist/build'
-  ]).then(_ => cb());
+  npmRun('parcel', ['watch', 'src/**/*', '--public-url', ' ./', '--out-dir', './lib/build']);
+  cb();
 }
 
 async function buildParcel(cb: TaskCallback) {
   const bundler = new ParcelBundler('src/**/*', {
     watch: false,
-    outDir: './dist/build'
+    outDir: './lib/build'
   });
   await bundler.bundle();
   cb();

@@ -26,13 +26,13 @@
     "frame": true,
     "icon": "./assets/pd.png"
   },
-  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/dist",
+  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/lib",
   "build": {
     "appId": "yakapa",
     "nwVersion": "0.36.4",
     "nwFlavor": "normal",
     "overriddenProperties": {
-      "chromium-args": "--enable-logging=stderr --load-extension=dist/extensions/settings"
+      "chromium-args": "--enable-logging=stderr --load-extension=lib/extensions/settings"
     },
     "excludes": [
       "_tests_/**/*",
@@ -40,7 +40,7 @@
       "tsconfig.json"
     ],
     "output": "../../release/",
-    "packed": true,
+    "packed": false,
     "targets": [
       "zip",
       "nsis7z"
@@ -71,17 +71,19 @@
   "devDependencies": {
     "@types/chrome": "0.0.81",
     "@types/nw.gui": "0.0.20",
-    "@types/nw.js": "^0.13.8"
+    "@types/nw.js": "^0.13.8",
+    "typescript": "^3.3.3333",
+    "gulp-typescript": "^5.0.0",
+    "ts-node": "^8.0.2",
+    "gulp": "^4.0.0",
+    "nwjs-builder-phoenix": "^1.15.0",
+    "parcel-bundler": "^1.11.0",
+    "del": "^4.0.0"
   },
   "dependencies": {
-    "@yakapa/common": "^0.0.0",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "express": "^4.16.4",
-    "gulp": "^4.0.0",
-    "gulp-typescript": "^5.0.0",
-    "nwjs-builder-phoenix": "^1.15.0",
-    "parcel-bundler": "^1.11.0",
-    "ts-node": "^8.0.2"
+    "@yakapa/shared": "^0.0.0"
   }
 }

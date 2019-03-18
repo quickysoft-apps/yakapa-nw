@@ -1,27 +1,21 @@
 {
-  "name": "@yakapa/common",
+  "name": "@yakapa/shared",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "Lawrence Zémour <lawrence.zemour@exagroup.biz>",
   "homepage": "https://github.com/quickysoft-apps/yakapa-nw#readme",
   "license": "ISC",
-  "main": "dist/common.js",
-  "directories": {
-    "lib": "dist",
-    "test": "__tests__"
-  },
-  "files": [
-    "dist"
-  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://neurosoup@github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "start": "../../node_modules/.bin/tsc -w",
+    "start": "tsc -b . --watch",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
-  "bugs": {
-    "url": "https://github.com/quickysoft-apps/yakapa-nw/issues"
+  "devDependencies": {
+    "typescript": "^3.3.3333"
   }
 }

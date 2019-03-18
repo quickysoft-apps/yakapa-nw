@@ -16,7 +16,7 @@ function onExit(childProcess: ChildProcess): Promise<void> {
   });
 }
 
-export async function npmRun(command: string, args: string[]): Promise<string[]> {
+export async function npmRun(command: string, args: string[], exitProcess: boolean = true): Promise<string[]> {
   const cmd = `./node_modules/.bin/${command}${process.platform === 'win32' ? '.cmd' : ''}`;
   const fullpath = path.resolve(process.cwd(), cmd);
 
@@ -32,6 +32,9 @@ export async function npmRun(command: string, args: string[]): Promise<string[]>
   }
   try {
     await onExit(npmProcess);
+    if (exitProcess) {
+      process.exit(0);
+    }
     return lines;
   } catch (err) {
     console.log('Error executing npm script:', err.message);

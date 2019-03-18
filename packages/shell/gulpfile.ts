@@ -1,29 +1,30 @@
 import { series, src, dest } from 'gulp';
 import del from 'del';
 import ParcelBundler from 'parcel-bundler';
-import { Builder } from 'nwjs-builder-phoenix';
-import { npmRun } from '@yakapa/common';
+import { npmRun } from '@yakapa/shared';
 
 type TaskCallback = (err?: Error) => void;
 
 const buildDestination = '../../release';
-const extensionsDist = './dist/extensions/';
+const extensionsDist = './lib/extensions/';
 
 function cleanStart() {
-  return del(['dist/*.+(js|html|map)']);
+  return del(['lib/*.+(js|html|map)']);
 }
 
 async function startParcel(cb: TaskCallback) {
   const bundler = new ParcelBundler('src/**/*', {
     watch: true,
-    publicUrl: './'
+    publicUrl: './',
+    outDir: './lib'
   });
   await bundler.bundle();
   cb();
 }
 
 async function startNW(cb: TaskCallback) {
-  npmRun('run', ['.', '--x64', '--mirror https://dl.nwjs.io/']).then(_ => cb());
+  npmRun('run', ['.', '--x64', '--mirror https://dl.nwjs.io/']);
+  cb();
 }
 
 function createReleaseFolder() {
@@ -33,7 +34,7 @@ function createReleaseFolder() {
 function copyExtensions() {
   return src('*.*', { read: false })
     .pipe(dest(extensionsDist))
-    .pipe(src('../settings/dist/**/*'))
+    .pipe(src('../settings/lib/**/*'))
     .pipe(dest(`${extensionsDist}/settings/`));
 }
 
@@ -45,32 +46,16 @@ async function cleanBuild() {
 async function buildParcel(cb: TaskCallback) {
   const bundler = new ParcelBundler('src/**/*', {
     watch: false,
-    publicUrl: './'
+    publicUrl: './',
+    outDir: './lib'
   });
   await bundler.bundle();
   cb();
 }
 
 async function buildNW(cb: TaskCallback) {
-  const builder = new Builder(
-    {
-      win: true,
-      mac: true,
-      x64: true,
-      mirror: 'https://dl.nwjs.io/',
-      destination: buildDestination
-    },
-    '.'
-  );
-  await builder.build();
-  cb();
+  npmRun('build', ['--tasks', 'win-x64,mac-x64', '--mirror', 'https://dl.nwjs.io/', '.']).then(_ => cb());
 }
 
 export const start = series(cleanStart, startParcel, startNW);
-export const build = series(
-  createReleaseFolder,
-  cleanBuild,
-  copyExtensions,
-  buildParcel,
-  buildNW
-);
+export const build = series(createReleaseFolder, cleanBuild, copyExtensions, buildParcel, buildNW);

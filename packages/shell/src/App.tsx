@@ -1,25 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
-import {
-  withStyles,
-  AppBar,
-  CssBaseline,
-  Divider,
-  Drawer,
-  Hidden,
-  IconButton,
-  List,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-  ListItem
-} from '@material-ui/core';
+import { withStyles, AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItemIcon, ListItemText, Toolbar, Typography, ListItem } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
 import InboxIcon from '@material-ui/icons/Inbox';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const drawerWidth = 240;
+const drawerWidth = 241;
 
 const styles = (theme: any) => ({
   root: {
@@ -158,8 +144,6 @@ class ResponsiveDrawer extends React.Component<Props, State> {
     chrome.management.getAll(result => {
       const ext = result.find(x => x.shortName === 'Settings');
       if (ext) {
-        console.log('Found extension', ext.name, process.env.NODE_ENV);
-
         chrome.management.getPermissionWarningsById(ext.id, warnings => {
           warnings.forEach(x => console.log(x));
         });

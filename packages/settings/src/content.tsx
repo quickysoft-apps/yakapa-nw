@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import { render } from 'react-dom';
 import PubNubReact from 'pubnub-react';
+import { renderExtension } from '@yakapa/shared';
+
+import { SettingsForm } from './components/SettingsForm';
 
 interface Props {}
+
 class Content extends Component<Props> {
   private pubnub: any;
 
@@ -32,7 +35,7 @@ class Content extends Component<Props> {
 
     this.pubnub.getStatus((st: any) => {
       this.pubnub.publish({
-        message: 'hello world from react',
+        message: `status ${JSON.stringify(st, null, 2)}`,
         channel: 'channel1'
       });
     });
@@ -58,22 +61,17 @@ class Content extends Component<Props> {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <Button onClick={this.onClick} variant="contained" color="primary">
-            Je suis une fucking EXTENSION
-          </Button>
-          <div>
-            <ul>
-              {messages.map((m: any, index: number) => (
-                <li key={'message' + index}>{m.message}</li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <input type="text" name="newMessage" />
-            <button type="submit" value="submit" />
-          </div>
-        </form>
+        <Button onClick={this.onClick} variant="contained" color="primary">
+          Click ME
+        </Button>
+        <SettingsForm />
+        <div>
+          <ul>
+            {messages.map((m: any, index: number) => (
+              <li key={'message' + index}>{m.message}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
@@ -84,32 +82,4 @@ class Content extends Component<Props> {
   };
 }
 
-const eventType = JSON.stringify({ inject: chrome.runtime.id });
-
-document.addEventListener(eventType, e => {
-  injectExtension();
-});
-
-function injectExtension() {
-  const root = document.getElementById('extension');
-  if (root) {
-    render(<Content />, root);
-  }
-}
-
-if (module.hot) {
-  module.hot.accept(function() {
-    const id = chrome.runtime.id;
-    console.log(
-      'Hot reload extension',
-      chrome.runtime.getManifest().name,
-      `(chrome-extension://${id})`
-    );
-    chrome.runtime.sendMessage({ reload: id }, response => {
-      console.log(response);
-      if (response.inject) {
-        injectExtension();
-      }
-    });
-  });
-}
+renderExtension(<Content />, module);
