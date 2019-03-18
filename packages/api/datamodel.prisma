@@ -8,7 +8,8 @@ type Agent @model {
   createdAt: DateTime!
   endUser: EndUser @relation(name: "EndUserOnAgent")
   id: ID! @unique
-  nickname: String
+  nickname: String!
+  email: String! @unique
   tag: String @isUnique
   updatedAt: DateTime!
 }
