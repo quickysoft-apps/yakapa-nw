@@ -1,6 +1,7 @@
-import React, { useReducer, ChangeEvent, FormEvent } from 'react';
+import React, { useReducer, ChangeEvent, FormEvent, useCallback } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { prisma } from '@yakapa/api';
 
 interface State {
   nickname: string;
@@ -59,7 +60,7 @@ export const SettingsForm = () => {
           nickname: action.value,
           nicknameError: validateNickname(action.value)
         };
-      case 'SET_NICKNAME':
+      case 'SET_EMAIL_ADDRESS':
         return {
           ...state,
           emailAddress: action.value,
@@ -69,8 +70,6 @@ export const SettingsForm = () => {
         const nicknameError = validateNickname(action.nickname);
         const emailAddressError = validateEmailAddress(action.emailAddress);
         if (nicknameError === '' && emailAddressError === '') {
-          // Store nickname and emailAdress somewhere... :)
-          // prisma ...
           return {
             ...state,
             submitted: true
@@ -87,6 +86,14 @@ export const SettingsForm = () => {
     }
   }, defaultState);
 
+  useCallback(async () => {
+    if (state.submitted) {
+      const { nickname, emailAddress } = state;
+      const agent = await prisma.createAgent({ nickname, email: emailAddress });
+      console.log('______________', agent);
+    }
+  }, [state.submitted]);
+
   return (
     <form
       noValidate
@@ -102,19 +109,25 @@ export const SettingsForm = () => {
     >
       <TextField
         id="nickname"
-        label="Nickname"
+        error={state.nicknameError !== ''}
+        label={state.nicknameError || 'Nickname'}
         value={state.nickname}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => dispatch({ type: 'SET_NICKNAME', value: e.currentTarget.value })}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          dispatch({ type: 'SET_NICKNAME', value: e.currentTarget.value })
+        }
         margin="normal"
       />
       <TextField
         id="emailAddress"
-        label="Email Address"
+        error={state.emailAddressError !== ''}
+        label={state.emailAddressError || 'Email Address'}
         value={state.emailAddress}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => dispatch({ type: 'SET_EMAIL_ADDRESS', value: e.currentTarget.value })}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          dispatch({ type: 'SET_EMAIL_ADDRESS', value: e.currentTarget.value })
+        }
         margin="normal"
       />
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" type="submit">
         Save
       </Button>
     </form>

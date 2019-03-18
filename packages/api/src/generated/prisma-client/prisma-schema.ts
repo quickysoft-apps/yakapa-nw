@@ -6,7 +6,8 @@ export const typeDefs = /* GraphQL */ `type Agent {
   createdAt: DateTime!
   endUser: EndUser
   id: ID!
-  nickname: String
+  nickname: String!
+  email: String!
   tag: String
   updatedAt: DateTime!
 }
@@ -19,7 +20,8 @@ type AgentConnection {
 
 input AgentCreateInput {
   endUser: EndUserCreateOneWithoutAgentsInput
-  nickname: String
+  nickname: String!
+  email: String!
   tag: String
 }
 
@@ -29,7 +31,8 @@ input AgentCreateManyWithoutEndUserInput {
 }
 
 input AgentCreateWithoutEndUserInput {
-  nickname: String
+  nickname: String!
+  email: String!
   tag: String
 }
 
@@ -45,6 +48,8 @@ enum AgentOrderByInput {
   id_DESC
   nickname_ASC
   nickname_DESC
+  email_ASC
+  email_DESC
   tag_ASC
   tag_DESC
   updatedAt_ASC
@@ -54,7 +59,8 @@ enum AgentOrderByInput {
 type AgentPreviousValues {
   createdAt: DateTime!
   id: ID!
-  nickname: String
+  nickname: String!
+  email: String!
   tag: String
   updatedAt: DateTime!
 }
@@ -96,6 +102,20 @@ input AgentScalarWhereInput {
   nickname_not_starts_with: String
   nickname_ends_with: String
   nickname_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
   tag: String
   tag_not: String
   tag_in: [String!]
@@ -144,16 +164,19 @@ input AgentSubscriptionWhereInput {
 input AgentUpdateInput {
   endUser: EndUserUpdateOneWithoutAgentsInput
   nickname: String
+  email: String
   tag: String
 }
 
 input AgentUpdateManyDataInput {
   nickname: String
+  email: String
   tag: String
 }
 
 input AgentUpdateManyMutationInput {
   nickname: String
+  email: String
   tag: String
 }
 
@@ -176,6 +199,7 @@ input AgentUpdateManyWithWhereNestedInput {
 
 input AgentUpdateWithoutEndUserDataInput {
   nickname: String
+  email: String
   tag: String
 }
 
@@ -228,6 +252,20 @@ input AgentWhereInput {
   nickname_not_starts_with: String
   nickname_ends_with: String
   nickname_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
   tag: String
   tag_not: String
   tag_in: [String!]
@@ -257,6 +295,7 @@ input AgentWhereInput {
 
 input AgentWhereUniqueInput {
   id: ID
+  email: String
 }
 
 type AggregateAgent {
