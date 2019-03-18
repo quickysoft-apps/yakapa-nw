@@ -14,6 +14,10 @@ class Content extends Component<Props> {
       subscribeKey: 'sub-c-b1756fc2-4328-11e9-b827-4e8ff5d9951b'
     });
     this.pubnub.init(this);
+
+    this.state = {
+      newMessage: ''
+    };
   }
 
   componentWillMount() {
@@ -40,21 +44,36 @@ class Content extends Component<Props> {
     });
   }
 
+  handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    this.pubnub.publish({
+      message: event.target.value,
+      channel: 'channel1'
+    });
+  };
+
   render() {
     const messages = this.pubnub.getMessage('channel1');
 
     return (
       <div>
-        <Button onClick={this.onClick} variant="contained" color="primary">
-          Je suis une fucking EXTENSION
-        </Button>
-        <div>
-          <ul>
-            {messages.map((m: any, index: number) => (
-              <li key={'message' + index}>{m.message}</li>
-            ))}
-          </ul>
-        </div>
+        <form onSubmit={this.handleSubmit}>
+          <Button onClick={this.onClick} variant="contained" color="primary">
+            Je suis une fucking EXTENSION
+          </Button>
+          <div>
+            <ul>
+              {messages.map((m: any, index: number) => (
+                <li key={'message' + index}>{m.message}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <input type="text" name="newMessage" />
+            <button type="submit" value="submit" />
+          </div>
+        </form>
       </div>
     );
   }
