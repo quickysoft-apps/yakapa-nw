@@ -2,9 +2,7 @@
   "extends": "../tsconfig.settings.json",
   "compilerOptions": {
     "jsx": "react",
-    "outDir": "lib",
-    "rootDir": "src"
+    "outDir": "lib"
   },
-  "references": [{ "path": "../shared" }],
-  "exclude": ["./*.ts", "lib"]
+  "include": ["src"]
 }

@@ -1,7 +1,7 @@
 import React, { useReducer, ChangeEvent, FormEvent, useCallback } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { prisma } from '@yakapa/api';
+import { prisma } from '../../../api/generated/prisma-client';
 
 interface State {
   nickname: string;

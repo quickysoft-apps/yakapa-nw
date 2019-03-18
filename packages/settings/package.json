@@ -29,7 +29,6 @@
   "dependencies": {
     "pubnub": "^4.22.0",
     "pubnub-react": "^1.2.0",
-    "@yakapa/shared": "^0.0.0",
-    "@yakapa/api": "^0.0.0"
+    "@yakapa/shared": "^0.0.0"
   }
 }
