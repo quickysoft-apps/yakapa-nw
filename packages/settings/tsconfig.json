@@ -4,9 +4,7 @@
     "paths": { "*": ["types/*"] },
     "baseUrl": ".",
     "jsx": "react",
-    "outDir": "lib",
-    "rootDir": "src"
+    "outDir": "lib"
   },
-  "references": [{ "path": "../shared" }, { "path": "../api" }],
-  "exclude": ["./*.ts", "lib"]
+  "include": ["src"]
 }

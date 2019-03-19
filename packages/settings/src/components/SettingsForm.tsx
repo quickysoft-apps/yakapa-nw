@@ -38,6 +38,8 @@ interface Submit {
 type Actions = SetNickname | SetEmailAddress | Submit;
 
 const validateNickname = (value: string) => {
+  console.log('----------', value);
+  debugger;
   const error = value ? '' : 'You must enter a nickname';
   return error;
 };
@@ -52,47 +54,51 @@ const validateEmailAddress = (value: string): string => {
 };
 
 export const SettingsForm = () => {
-  const [state, dispatch] = useReducer((state: State, action: Actions) => {
-    switch (action.type) {
-      case 'SET_NICKNAME':
-        return {
-          ...state,
-          nickname: action.value,
-          nicknameError: validateNickname(action.value)
-        };
-      case 'SET_EMAIL_ADDRESS':
-        return {
-          ...state,
-          emailAddress: action.value,
-          emailAddressError: validateEmailAddress(action.value)
-        };
-      case 'SUBMIT':
-        const nicknameError = validateNickname(action.nickname);
-        const emailAddressError = validateEmailAddress(action.emailAddress);
-        if (nicknameError === '' && emailAddressError === '') {
+  const [{ submitted, ...state }, dispatch] = useReducer(
+    (state: State, action: Actions) => {
+      switch (action.type) {
+        case 'SET_NICKNAME':
           return {
             ...state,
-            submitted: true
+            nickname: action.value,
+            nicknameError: validateNickname(action.value)
           };
-        } else {
+        case 'SET_EMAIL_ADDRESS':
           return {
             ...state,
-            nicknameError,
-            emailAddressError
+            emailAddress: action.value,
+            emailAddressError: validateEmailAddress(action.value)
           };
-        }
-      default:
-        return state;
-    }
-  }, defaultState);
+        case 'SUBMIT':
+          const nicknameError = validateNickname(action.nickname);
+          const emailAddressError = validateEmailAddress(action.emailAddress);
+          if (nicknameError === '' && emailAddressError === '') {
+            return {
+              ...state,
+              submitted: true
+            };
+          } else {
+            return {
+              ...state,
+              nicknameError,
+              emailAddressError
+            };
+          }
+        default:
+          return state;
+      }
+    },
+    defaultState
+  );
 
   useCallback(async () => {
-    if (state.submitted) {
+    debugger;
+    if (submitted) {
       const { nickname, emailAddress } = state;
       const agent = await prisma.createAgent({ nickname, email: emailAddress });
       console.log('______________', agent);
     }
-  }, [state.submitted]);
+  }, [submitted]);
 
   return (
     <form
@@ -127,9 +133,7 @@ export const SettingsForm = () => {
         }
         margin="normal"
       />
-      <Button variant="contained" color="primary" type="submit">
-        Save
-      </Button>
+      <Button type="submit">Save</Button>
     </form>
   );
 };
