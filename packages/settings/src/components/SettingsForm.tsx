@@ -1,7 +1,7 @@
 import React, { useReducer, ChangeEvent, FormEvent, useCallback } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { prisma } from '../../../api/generated/prisma-client';
+import { prisma } from '@yakapa/api';
 
 interface State {
   nickname: string;
@@ -127,9 +127,7 @@ export const SettingsForm = () => {
         }
         margin="normal"
       />
-      <Button variant="contained" color="primary" type="submit">
-        Save
-      </Button>
+      <Button type="submit">Save</Button>
     </form>
   );
 };
