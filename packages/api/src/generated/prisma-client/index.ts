@@ -227,49 +227,10 @@ export type EndUserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: UserScalarWhereInput[] | UserScalarWhereInput;
-  OR?: UserScalarWhereInput[] | UserScalarWhereInput;
-  NOT?: UserScalarWhereInput[] | UserScalarWhereInput;
-}
-
 export type AgentWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   email?: String;
 }>;
-
-export interface EndUserUpsertWithoutAgentsInput {
-  update: EndUserUpdateWithoutAgentsDataInput;
-  create: EndUserCreateWithoutAgentsInput;
-}
 
 export interface AgentWhereInput {
   createdAt?: DateTimeInput;
@@ -350,10 +311,74 @@ export interface AgentWhereInput {
   NOT?: AgentWhereInput[] | AgentWhereInput;
 }
 
-export interface AgentUpdateManyMutationInput {
-  nickname?: String;
+export interface EndUserWhereInput {
+  agents_every?: AgentWhereInput;
+  agents_some?: AgentWhereInput;
+  agents_none?: AgentWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
   email?: String;
-  tag?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  fullName?: String;
+  fullName_not?: String;
+  fullName_in?: String[] | String;
+  fullName_not_in?: String[] | String;
+  fullName_lt?: String;
+  fullName_lte?: String;
+  fullName_gt?: String;
+  fullName_gte?: String;
+  fullName_contains?: String;
+  fullName_not_contains?: String;
+  fullName_starts_with?: String;
+  fullName_not_starts_with?: String;
+  fullName_ends_with?: String;
+  fullName_not_ends_with?: String;
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  users_every?: UserWhereInput;
+  users_some?: UserWhereInput;
+  users_none?: UserWhereInput;
+  AND?: EndUserWhereInput[] | EndUserWhereInput;
+  OR?: EndUserWhereInput[] | EndUserWhereInput;
+  NOT?: EndUserWhereInput[] | EndUserWhereInput;
 }
 
 export interface UserWhereInput {
@@ -393,6 +418,49 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
+export type EndUserWhereUniqueInput = AtLeastOne<{
+  email: String;
+  id?: ID_Input;
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface AgentCreateInput {
+  endUser?: EndUserCreateOneWithoutAgentsInput;
+  nickname: String;
+  email: String;
+  tag?: String;
+}
+
+export interface EndUserCreateOneWithoutAgentsInput {
+  create?: EndUserCreateWithoutAgentsInput;
+  connect?: EndUserWhereUniqueInput;
+}
+
+export interface EndUserCreateWithoutAgentsInput {
+  email: String;
+  fullName?: String;
+  users?: UserCreateManyWithoutEndUsersInput;
+}
+
+export interface UserCreateManyWithoutEndUsersInput {
+  create?: UserCreateWithoutEndUsersInput[] | UserCreateWithoutEndUsersInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+}
+
+export interface UserCreateWithoutEndUsersInput {
+  name?: String;
+}
+
+export interface AgentUpdateInput {
+  endUser?: EndUserUpdateOneWithoutAgentsInput;
+  nickname?: String;
+  email?: String;
+  tag?: String;
+}
+
 export interface EndUserUpdateOneWithoutAgentsInput {
   create?: EndUserCreateWithoutAgentsInput;
   update?: EndUserUpdateWithoutAgentsDataInput;
@@ -402,26 +470,10 @@ export interface EndUserUpdateOneWithoutAgentsInput {
   connect?: EndUserWhereUniqueInput;
 }
 
-export interface AgentUpdateManyWithWhereNestedInput {
-  where: AgentScalarWhereInput;
-  data: AgentUpdateManyDataInput;
-}
-
 export interface EndUserUpdateWithoutAgentsDataInput {
   email?: String;
   fullName?: String;
   users?: UserUpdateManyWithoutEndUsersInput;
-}
-
-export interface EndUserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: EndUserWhereInput;
-  AND?: EndUserSubscriptionWhereInput[] | EndUserSubscriptionWhereInput;
-  OR?: EndUserSubscriptionWhereInput[] | EndUserSubscriptionWhereInput;
-  NOT?: EndUserSubscriptionWhereInput[] | EndUserSubscriptionWhereInput;
 }
 
 export interface UserUpdateManyWithoutEndUsersInput {
@@ -442,28 +494,14 @@ export interface UserUpdateManyWithoutEndUsersInput {
     | UserUpdateManyWithWhereNestedInput;
 }
 
-export interface UserUpdateManyMutationInput {
-  name?: String;
-}
-
 export interface UserUpdateWithWhereUniqueWithoutEndUsersInput {
   where: UserWhereUniqueInput;
   data: UserUpdateWithoutEndUsersDataInput;
 }
 
-export interface EndUserUpdateManyWithWhereNestedInput {
-  where: EndUserScalarWhereInput;
-  data: EndUserUpdateManyDataInput;
-}
-
 export interface UserUpdateWithoutEndUsersDataInput {
   name?: String;
 }
-
-export type EndUserWhereUniqueInput = AtLeastOne<{
-  email: String;
-  id?: ID_Input;
-}>;
 
 export interface UserUpsertWithWhereUniqueWithoutEndUsersInput {
   where: UserWhereUniqueInput;
@@ -471,36 +509,118 @@ export interface UserUpsertWithWhereUniqueWithoutEndUsersInput {
   create: UserCreateWithoutEndUsersInput;
 }
 
-export interface EndUserUpdateWithoutUsersDataInput {
-  agents?: AgentUpdateManyWithoutEndUserInput;
-  email?: String;
-  fullName?: String;
+export interface UserScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: UserScalarWhereInput[] | UserScalarWhereInput;
+  OR?: UserScalarWhereInput[] | UserScalarWhereInput;
+  NOT?: UserScalarWhereInput[] | UserScalarWhereInput;
 }
-
-export interface EndUserCreateManyWithoutUsersInput {
-  create?: EndUserCreateWithoutUsersInput[] | EndUserCreateWithoutUsersInput;
-  connect?: EndUserWhereUniqueInput[] | EndUserWhereUniqueInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
 
 export interface UserUpdateManyWithWhereNestedInput {
   where: UserScalarWhereInput;
   data: UserUpdateManyDataInput;
 }
 
-export interface UserUpdateInput {
+export interface UserUpdateManyDataInput {
   name?: String;
-  endUsers?: EndUserUpdateManyWithoutUsersInput;
 }
 
-export interface AgentCreateInput {
-  endUser?: EndUserCreateOneWithoutAgentsInput;
+export interface EndUserUpsertWithoutAgentsInput {
+  update: EndUserUpdateWithoutAgentsDataInput;
+  create: EndUserCreateWithoutAgentsInput;
+}
+
+export interface AgentUpdateManyMutationInput {
+  nickname?: String;
+  email?: String;
+  tag?: String;
+}
+
+export interface EndUserCreateInput {
+  agents?: AgentCreateManyWithoutEndUserInput;
+  email: String;
+  fullName?: String;
+  users?: UserCreateManyWithoutEndUsersInput;
+}
+
+export interface AgentCreateManyWithoutEndUserInput {
+  create?: AgentCreateWithoutEndUserInput[] | AgentCreateWithoutEndUserInput;
+  connect?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
+}
+
+export interface AgentCreateWithoutEndUserInput {
   nickname: String;
   email: String;
   tag?: String;
+}
+
+export interface EndUserUpdateInput {
+  agents?: AgentUpdateManyWithoutEndUserInput;
+  email?: String;
+  fullName?: String;
+  users?: UserUpdateManyWithoutEndUsersInput;
+}
+
+export interface AgentUpdateManyWithoutEndUserInput {
+  create?: AgentCreateWithoutEndUserInput[] | AgentCreateWithoutEndUserInput;
+  delete?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
+  connect?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
+  set?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
+  disconnect?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
+  update?:
+    | AgentUpdateWithWhereUniqueWithoutEndUserInput[]
+    | AgentUpdateWithWhereUniqueWithoutEndUserInput;
+  upsert?:
+    | AgentUpsertWithWhereUniqueWithoutEndUserInput[]
+    | AgentUpsertWithWhereUniqueWithoutEndUserInput;
+  deleteMany?: AgentScalarWhereInput[] | AgentScalarWhereInput;
+  updateMany?:
+    | AgentUpdateManyWithWhereNestedInput[]
+    | AgentUpdateManyWithWhereNestedInput;
+}
+
+export interface AgentUpdateWithWhereUniqueWithoutEndUserInput {
+  where: AgentWhereUniqueInput;
+  data: AgentUpdateWithoutEndUserDataInput;
+}
+
+export interface AgentUpdateWithoutEndUserDataInput {
+  nickname?: String;
+  email?: String;
+  tag?: String;
+}
+
+export interface AgentUpsertWithWhereUniqueWithoutEndUserInput {
+  where: AgentWhereUniqueInput;
+  update: AgentUpdateWithoutEndUserDataInput;
+  create: AgentCreateWithoutEndUserInput;
 }
 
 export interface AgentScalarWhereInput {
@@ -581,98 +701,9 @@ export interface AgentScalarWhereInput {
   NOT?: AgentScalarWhereInput[] | AgentScalarWhereInput;
 }
 
-export interface EndUserWhereInput {
-  agents_every?: AgentWhereInput;
-  agents_some?: AgentWhereInput;
-  agents_none?: AgentWhereInput;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  email?: String;
-  email_not?: String;
-  email_in?: String[] | String;
-  email_not_in?: String[] | String;
-  email_lt?: String;
-  email_lte?: String;
-  email_gt?: String;
-  email_gte?: String;
-  email_contains?: String;
-  email_not_contains?: String;
-  email_starts_with?: String;
-  email_not_starts_with?: String;
-  email_ends_with?: String;
-  email_not_ends_with?: String;
-  fullName?: String;
-  fullName_not?: String;
-  fullName_in?: String[] | String;
-  fullName_not_in?: String[] | String;
-  fullName_lt?: String;
-  fullName_lte?: String;
-  fullName_gt?: String;
-  fullName_gte?: String;
-  fullName_contains?: String;
-  fullName_not_contains?: String;
-  fullName_starts_with?: String;
-  fullName_not_starts_with?: String;
-  fullName_ends_with?: String;
-  fullName_not_ends_with?: String;
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  users_every?: UserWhereInput;
-  users_some?: UserWhereInput;
-  users_none?: UserWhereInput;
-  AND?: EndUserWhereInput[] | EndUserWhereInput;
-  OR?: EndUserWhereInput[] | EndUserWhereInput;
-  NOT?: EndUserWhereInput[] | EndUserWhereInput;
-}
-
-export interface UserUpdateManyDataInput {
-  name?: String;
-}
-
-export interface UserCreateInput {
-  name?: String;
-  endUsers?: EndUserCreateManyWithoutUsersInput;
-}
-
-export interface EndUserCreateWithoutAgentsInput {
-  email: String;
-  fullName?: String;
-  users?: UserCreateManyWithoutEndUsersInput;
-}
-
-export interface EndUserUpdateManyMutationInput {
-  email?: String;
-  fullName?: String;
-}
-
-export interface UserCreateWithoutEndUsersInput {
-  name?: String;
+export interface AgentUpdateManyWithWhereNestedInput {
+  where: AgentScalarWhereInput;
+  data: AgentUpdateManyDataInput;
 }
 
 export interface AgentUpdateManyDataInput {
@@ -681,44 +712,30 @@ export interface AgentUpdateManyDataInput {
   tag?: String;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface EndUserCreateInput {
-  agents?: AgentCreateManyWithoutEndUserInput;
-  email: String;
-  fullName?: String;
-  users?: UserCreateManyWithoutEndUsersInput;
-}
-
-export interface EndUserUpdateManyDataInput {
+export interface EndUserUpdateManyMutationInput {
   email?: String;
   fullName?: String;
 }
 
-export interface AgentCreateManyWithoutEndUserInput {
-  create?: AgentCreateWithoutEndUserInput[] | AgentCreateWithoutEndUserInput;
-  connect?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
+export interface UserCreateInput {
+  name?: String;
+  endUsers?: EndUserCreateManyWithoutUsersInput;
 }
 
-export interface EndUserUpsertWithWhereUniqueWithoutUsersInput {
-  where: EndUserWhereUniqueInput;
-  update: EndUserUpdateWithoutUsersDataInput;
-  create: EndUserCreateWithoutUsersInput;
+export interface EndUserCreateManyWithoutUsersInput {
+  create?: EndUserCreateWithoutUsersInput[] | EndUserCreateWithoutUsersInput;
+  connect?: EndUserWhereUniqueInput[] | EndUserWhereUniqueInput;
 }
 
-export interface AgentCreateWithoutEndUserInput {
-  nickname: String;
+export interface EndUserCreateWithoutUsersInput {
+  agents?: AgentCreateManyWithoutEndUserInput;
   email: String;
-  tag?: String;
+  fullName?: String;
+}
+
+export interface UserUpdateInput {
+  name?: String;
+  endUsers?: EndUserUpdateManyWithoutUsersInput;
 }
 
 export interface EndUserUpdateManyWithoutUsersInput {
@@ -739,85 +756,21 @@ export interface EndUserUpdateManyWithoutUsersInput {
     | EndUserUpdateManyWithWhereNestedInput;
 }
 
-export interface EndUserUpdateInput {
-  agents?: AgentUpdateManyWithoutEndUserInput;
-  email?: String;
-  fullName?: String;
-  users?: UserUpdateManyWithoutEndUsersInput;
-}
-
-export interface EndUserCreateOneWithoutAgentsInput {
-  create?: EndUserCreateWithoutAgentsInput;
-  connect?: EndUserWhereUniqueInput;
-}
-
-export interface AgentUpdateInput {
-  endUser?: EndUserUpdateOneWithoutAgentsInput;
-  nickname?: String;
-  email?: String;
-  tag?: String;
-}
-
-export interface AgentUpsertWithWhereUniqueWithoutEndUserInput {
-  where: AgentWhereUniqueInput;
-  update: AgentUpdateWithoutEndUserDataInput;
-  create: AgentCreateWithoutEndUserInput;
-}
-
-export interface AgentUpdateWithoutEndUserDataInput {
-  nickname?: String;
-  email?: String;
-  tag?: String;
-}
-
-export interface AgentUpdateWithWhereUniqueWithoutEndUserInput {
-  where: AgentWhereUniqueInput;
-  data: AgentUpdateWithoutEndUserDataInput;
-}
-
-export interface AgentUpdateManyWithoutEndUserInput {
-  create?: AgentCreateWithoutEndUserInput[] | AgentCreateWithoutEndUserInput;
-  delete?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
-  connect?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
-  set?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
-  disconnect?: AgentWhereUniqueInput[] | AgentWhereUniqueInput;
-  update?:
-    | AgentUpdateWithWhereUniqueWithoutEndUserInput[]
-    | AgentUpdateWithWhereUniqueWithoutEndUserInput;
-  upsert?:
-    | AgentUpsertWithWhereUniqueWithoutEndUserInput[]
-    | AgentUpsertWithWhereUniqueWithoutEndUserInput;
-  deleteMany?: AgentScalarWhereInput[] | AgentScalarWhereInput;
-  updateMany?:
-    | AgentUpdateManyWithWhereNestedInput[]
-    | AgentUpdateManyWithWhereNestedInput;
-}
-
-export interface AgentSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: AgentWhereInput;
-  AND?: AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput;
-  OR?: AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput;
-  NOT?: AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput;
-}
-
-export interface UserCreateManyWithoutEndUsersInput {
-  create?: UserCreateWithoutEndUsersInput[] | UserCreateWithoutEndUsersInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-}
-
-export interface EndUserCreateWithoutUsersInput {
-  agents?: AgentCreateManyWithoutEndUserInput;
-  email: String;
-  fullName?: String;
-}
-
 export interface EndUserUpdateWithWhereUniqueWithoutUsersInput {
   where: EndUserWhereUniqueInput;
   data: EndUserUpdateWithoutUsersDataInput;
+}
+
+export interface EndUserUpdateWithoutUsersDataInput {
+  agents?: AgentUpdateManyWithoutEndUserInput;
+  email?: String;
+  fullName?: String;
+}
+
+export interface EndUserUpsertWithWhereUniqueWithoutUsersInput {
+  where: EndUserWhereUniqueInput;
+  update: EndUserUpdateWithoutUsersDataInput;
+  create: EndUserCreateWithoutUsersInput;
 }
 
 export interface EndUserScalarWhereInput {
@@ -884,263 +837,55 @@ export interface EndUserScalarWhereInput {
   NOT?: EndUserScalarWhereInput[] | EndUserScalarWhereInput;
 }
 
+export interface EndUserUpdateManyWithWhereNestedInput {
+  where: EndUserScalarWhereInput;
+  data: EndUserUpdateManyDataInput;
+}
+
+export interface EndUserUpdateManyDataInput {
+  email?: String;
+  fullName?: String;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface AgentSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: AgentWhereInput;
+  AND?: AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput;
+  OR?: AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput;
+  NOT?: AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput;
+}
+
+export interface EndUserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: EndUserWhereInput;
+  AND?: EndUserSubscriptionWhereInput[] | EndUserSubscriptionWhereInput;
+  OR?: EndUserSubscriptionWhereInput[] | EndUserSubscriptionWhereInput;
+  NOT?: EndUserSubscriptionWhereInput[] | EndUserSubscriptionWhereInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface UserPreviousValues {
-  id: ID_Output;
-  name?: String;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateAgent {
-  count: Int;
-}
-
-export interface AggregateAgentPromise
-  extends Promise<AggregateAgent>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateAgentSubscription
-  extends Promise<AsyncIterator<AggregateAgent>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface EndUserSubscriptionPayload {
-  mutation: MutationType;
-  node: EndUser;
-  updatedFields: String[];
-  previousValues: EndUserPreviousValues;
-}
-
-export interface EndUserSubscriptionPayloadPromise
-  extends Promise<EndUserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = EndUserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = EndUserPreviousValuesPromise>() => T;
-}
-
-export interface EndUserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<EndUserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = EndUserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = EndUserPreviousValuesSubscription>() => T;
-}
-
-export interface AgentEdge {
-  node: Agent;
-  cursor: String;
-}
-
-export interface AgentEdgePromise extends Promise<AgentEdge>, Fragmentable {
-  node: <T = AgentPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface AgentEdgeSubscription
-  extends Promise<AsyncIterator<AgentEdge>>,
-    Fragmentable {
-  node: <T = AgentSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface User {
-  id: ID_Output;
-  name?: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  endUsers: <T = FragmentableArray<EndUser>>(
-    args?: {
-      where?: EndUserWhereInput;
-      orderBy?: EndUserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  endUsers: <T = Promise<AsyncIterator<EndUserSubscription>>>(
-    args?: {
-      where?: EndUserWhereInput;
-      orderBy?: EndUserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateEndUser {
-  count: Int;
-}
-
-export interface AggregateEndUserPromise
-  extends Promise<AggregateEndUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateEndUserSubscription
-  extends Promise<AsyncIterator<AggregateEndUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AgentConnection {
-  pageInfo: PageInfo;
-  edges: AgentEdge[];
-}
-
-export interface AgentConnectionPromise
-  extends Promise<AgentConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<AgentEdge>>() => T;
-  aggregate: <T = AggregateAgentPromise>() => T;
-}
-
-export interface AgentConnectionSubscription
-  extends Promise<AsyncIterator<AgentConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<AgentEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateAgentSubscription>() => T;
-}
-
-export interface EndUserConnection {
-  pageInfo: PageInfo;
-  edges: EndUserEdge[];
-}
-
-export interface EndUserConnectionPromise
-  extends Promise<EndUserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<EndUserEdge>>() => T;
-  aggregate: <T = AggregateEndUserPromise>() => T;
-}
-
-export interface EndUserConnectionSubscription
-  extends Promise<AsyncIterator<EndUserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<EndUserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateEndUserSubscription>() => T;
 }
 
 export interface Agent {
@@ -1171,90 +916,6 @@ export interface AgentSubscription
   nickname: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
   tag: () => Promise<AsyncIterator<String>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface AgentPreviousValues {
-  createdAt: DateTimeOutput;
-  id: ID_Output;
-  nickname: String;
-  email: String;
-  tag?: String;
-  updatedAt: DateTimeOutput;
-}
-
-export interface AgentPreviousValuesPromise
-  extends Promise<AgentPreviousValues>,
-    Fragmentable {
-  createdAt: () => Promise<DateTimeOutput>;
-  id: () => Promise<ID_Output>;
-  nickname: () => Promise<String>;
-  email: () => Promise<String>;
-  tag: () => Promise<String>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface AgentPreviousValuesSubscription
-  extends Promise<AsyncIterator<AgentPreviousValues>>,
-    Fragmentable {
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  nickname: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  tag: () => Promise<AsyncIterator<String>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface AgentSubscriptionPayload {
-  mutation: MutationType;
-  node: Agent;
-  updatedFields: String[];
-  previousValues: AgentPreviousValues;
-}
-
-export interface AgentSubscriptionPayloadPromise
-  extends Promise<AgentSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = AgentPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = AgentPreviousValuesPromise>() => T;
-}
-
-export interface AgentSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<AgentSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = AgentSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = AgentPreviousValuesSubscription>() => T;
-}
-
-export interface EndUserPreviousValues {
-  createdAt: DateTimeOutput;
-  email: String;
-  fullName?: String;
-  id: ID_Output;
-  updatedAt: DateTimeOutput;
-}
-
-export interface EndUserPreviousValuesPromise
-  extends Promise<EndUserPreviousValues>,
-    Fragmentable {
-  createdAt: () => Promise<DateTimeOutput>;
-  email: () => Promise<String>;
-  fullName: () => Promise<String>;
-  id: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface EndUserPreviousValuesSubscription
-  extends Promise<AsyncIterator<EndUserPreviousValues>>,
-    Fragmentable {
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  email: () => Promise<AsyncIterator<String>>;
-  fullName: () => Promise<AsyncIterator<String>>;
-  id: () => Promise<AsyncIterator<ID_Output>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -1328,6 +989,143 @@ export interface EndUserSubscription
   ) => T;
 }
 
+export interface User {
+  id: ID_Output;
+  name?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  endUsers: <T = FragmentableArray<EndUser>>(
+    args?: {
+      where?: EndUserWhereInput;
+      orderBy?: EndUserOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  endUsers: <T = Promise<AsyncIterator<EndUserSubscription>>>(
+    args?: {
+      where?: EndUserWhereInput;
+      orderBy?: EndUserOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface AgentConnection {
+  pageInfo: PageInfo;
+  edges: AgentEdge[];
+}
+
+export interface AgentConnectionPromise
+  extends Promise<AgentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<AgentEdge>>() => T;
+  aggregate: <T = AggregateAgentPromise>() => T;
+}
+
+export interface AgentConnectionSubscription
+  extends Promise<AsyncIterator<AgentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AgentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAgentSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AgentEdge {
+  node: Agent;
+  cursor: String;
+}
+
+export interface AgentEdgePromise extends Promise<AgentEdge>, Fragmentable {
+  node: <T = AgentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface AgentEdgeSubscription
+  extends Promise<AsyncIterator<AgentEdge>>,
+    Fragmentable {
+  node: <T = AgentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateAgent {
+  count: Int;
+}
+
+export interface AggregateAgentPromise
+  extends Promise<AggregateAgent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateAgentSubscription
+  extends Promise<AsyncIterator<AggregateAgent>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface EndUserConnection {
+  pageInfo: PageInfo;
+  edges: EndUserEdge[];
+}
+
+export interface EndUserConnectionPromise
+  extends Promise<EndUserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<EndUserEdge>>() => T;
+  aggregate: <T = AggregateEndUserPromise>() => T;
+}
+
+export interface EndUserConnectionSubscription
+  extends Promise<AsyncIterator<EndUserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<EndUserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateEndUserSubscription>() => T;
+}
+
 export interface EndUserEdge {
   node: EndUser;
   cursor: String;
@@ -1343,6 +1141,22 @@ export interface EndUserEdgeSubscription
     Fragmentable {
   node: <T = EndUserSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateEndUser {
+  count: Int;
+}
+
+export interface AggregateEndUserPromise
+  extends Promise<AggregateEndUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateEndUserSubscription
+  extends Promise<AsyncIterator<AggregateEndUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserConnection {
@@ -1366,6 +1180,23 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
 export interface AggregateUser {
   count: Int;
 }
@@ -1382,23 +1213,185 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
+export interface BatchPayload {
+  count: Long;
+}
 
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number;
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
 
-export type Long = string;
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AgentSubscriptionPayload {
+  mutation: MutationType;
+  node: Agent;
+  updatedFields: String[];
+  previousValues: AgentPreviousValues;
+}
+
+export interface AgentSubscriptionPayloadPromise
+  extends Promise<AgentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = AgentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = AgentPreviousValuesPromise>() => T;
+}
+
+export interface AgentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AgentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = AgentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = AgentPreviousValuesSubscription>() => T;
+}
+
+export interface AgentPreviousValues {
+  createdAt: DateTimeOutput;
+  id: ID_Output;
+  nickname: String;
+  email: String;
+  tag?: String;
+  updatedAt: DateTimeOutput;
+}
+
+export interface AgentPreviousValuesPromise
+  extends Promise<AgentPreviousValues>,
+    Fragmentable {
+  createdAt: () => Promise<DateTimeOutput>;
+  id: () => Promise<ID_Output>;
+  nickname: () => Promise<String>;
+  email: () => Promise<String>;
+  tag: () => Promise<String>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface AgentPreviousValuesSubscription
+  extends Promise<AsyncIterator<AgentPreviousValues>>,
+    Fragmentable {
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  nickname: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  tag: () => Promise<AsyncIterator<String>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface EndUserSubscriptionPayload {
+  mutation: MutationType;
+  node: EndUser;
+  updatedFields: String[];
+  previousValues: EndUserPreviousValues;
+}
+
+export interface EndUserSubscriptionPayloadPromise
+  extends Promise<EndUserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = EndUserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = EndUserPreviousValuesPromise>() => T;
+}
+
+export interface EndUserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<EndUserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = EndUserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = EndUserPreviousValuesSubscription>() => T;
+}
+
+export interface EndUserPreviousValues {
+  createdAt: DateTimeOutput;
+  email: String;
+  fullName?: String;
+  id: ID_Output;
+  updatedAt: DateTimeOutput;
+}
+
+export interface EndUserPreviousValuesPromise
+  extends Promise<EndUserPreviousValues>,
+    Fragmentable {
+  createdAt: () => Promise<DateTimeOutput>;
+  email: () => Promise<String>;
+  fullName: () => Promise<String>;
+  id: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface EndUserPreviousValuesSubscription
+  extends Promise<AsyncIterator<EndUserPreviousValues>>,
+    Fragmentable {
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  email: () => Promise<AsyncIterator<String>>;
+  fullName: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  name?: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -1411,9 +1404,16 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
-export type String = string;
+export type Int = number;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
+export type Long = string;
 
 /**
  * Model Metadata
