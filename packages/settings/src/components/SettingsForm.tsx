@@ -1,4 +1,4 @@
-import React, { useReducer, ChangeEvent, FormEvent, useCallback } from 'react';
+import React, { useReducer, ChangeEvent, FormEvent, Dispatch } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { prisma } from '@yakapa/api';
@@ -38,8 +38,6 @@ interface Submit {
 type Actions = SetNickname | SetEmailAddress | Submit;
 
 const validateNickname = (value: string) => {
-  console.log('----------', value);
-  debugger;
   const error = value ? '' : 'You must enter a nickname';
   return error;
 };
@@ -53,52 +51,60 @@ const validateEmailAddress = (value: string): string => {
   return error;
 };
 
-export const SettingsForm = () => {
-  const [{ submitted, ...state }, dispatch] = useReducer(
-    (state: State, action: Actions) => {
-      switch (action.type) {
-        case 'SET_NICKNAME':
-          return {
-            ...state,
-            nickname: action.value,
-            nicknameError: validateNickname(action.value)
-          };
-        case 'SET_EMAIL_ADDRESS':
-          return {
-            ...state,
-            emailAddress: action.value,
-            emailAddressError: validateEmailAddress(action.value)
-          };
-        case 'SUBMIT':
-          const nicknameError = validateNickname(action.nickname);
-          const emailAddressError = validateEmailAddress(action.emailAddress);
-          if (nicknameError === '' && emailAddressError === '') {
-            return {
-              ...state,
-              submitted: true
-            };
-          } else {
-            return {
-              ...state,
-              nicknameError,
-              emailAddressError
-            };
-          }
-        default:
-          return state;
-      }
-    },
-    defaultState
-  );
+function dispatchMiddleware(dispatch: Dispatch<Actions>) {
+  return async (action: Actions) => {
+    switch (action.type) {
+      case 'SUBMIT':
+        const agent = await prisma.createAgent({
+          nickname: action.nickname,
+          email: action.emailAddress
+        });
+        console.log('Agent created', agent);
+        dispatch(action);
+        break;
 
-  useCallback(async () => {
-    debugger;
-    if (submitted) {
-      const { nickname, emailAddress } = state;
-      const agent = await prisma.createAgent({ nickname, email: emailAddress });
-      console.log('______________', agent);
+      default:
+        return dispatch(action);
     }
-  }, [submitted]);
+  };
+}
+
+function reducer(state: State, action: Actions) {
+  switch (action.type) {
+    case 'SET_NICKNAME':
+      return {
+        ...state,
+        nickname: action.value,
+        nicknameError: validateNickname(action.value)
+      };
+    case 'SET_EMAIL_ADDRESS':
+      return {
+        ...state,
+        emailAddress: action.value,
+        emailAddressError: validateEmailAddress(action.value)
+      };
+    case 'SUBMIT':
+      const nicknameError = validateNickname(action.nickname);
+      const emailAddressError = validateEmailAddress(action.emailAddress);
+      if (nicknameError === '' && emailAddressError === '') {
+        return {
+          ...state,
+          submitted: true
+        };
+      } else {
+        return {
+          ...state,
+          nicknameError,
+          emailAddressError
+        };
+      }
+    default:
+      return state;
+  }
+}
+
+export const SettingsForm = () => {
+  const [{ submitted, ...state }, dispatch] = useReducer(reducer, defaultState);
 
   return (
     <form
@@ -106,7 +112,8 @@ export const SettingsForm = () => {
       autoComplete="off"
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch({
+        const dispatchWithEffect = dispatchMiddleware(dispatch);
+        dispatchWithEffect({
           type: 'SUBMIT',
           nickname: state.nickname,
           emailAddress: state.emailAddress
