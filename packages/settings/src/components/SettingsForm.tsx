@@ -53,19 +53,14 @@ const validateEmailAddress = (value: string): string => {
 
 function dispatchMiddleware(dispatch: Dispatch<Actions>) {
   return async (action: Actions) => {
-    switch (action.type) {
-      case 'SUBMIT':
-        const agent = await prisma.createAgent({
-          nickname: action.nickname,
-          email: action.emailAddress
-        });
-        console.log('Agent created', agent);
-        dispatch(action);
-        break;
-
-      default:
-        return dispatch(action);
+    if (action.type === 'SUBMIT') {
+      const agent = await prisma.createAgent({
+        nickname: action.nickname,
+        email: action.emailAddress
+      });
+      console.log('Agent created', agent);
     }
+    dispatch(action);
   };
 }
 

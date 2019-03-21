@@ -26,7 +26,7 @@
     "frame": true,
     "icon": "./assets/pd.png"
   },
-  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/lib",
+  "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/lib,../runner/lib",
   "build": {
     "appId": "yakapa",
     "nwVersion": "0.36.4",
