@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "Runner",
+  "description": "whatever",
+  "version": "1.0.0",
+  "permissions": [
+    "management",
+    "tabs",
+    "background",
+    "notifications",
+    "alarms"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "background": {
+    "scripts": ["build/background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["build/content.js"]
+    }
+  ],
+  "minimum_chrome_version": "49"
+}

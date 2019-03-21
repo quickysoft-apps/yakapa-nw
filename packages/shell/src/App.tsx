@@ -1,9 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItemIcon, ListItemText, Toolbar, Typography, ListItem } from '@material-ui/core';
-import MailIcon from '@material-ui/icons/Mail';
-import InboxIcon from '@material-ui/icons/Inbox';
 import MenuIcon from '@material-ui/icons/Menu';
+import { useState } from 'react';
 
 const drawerWidth = 241;
 
@@ -45,122 +44,133 @@ interface Props {
   container?: any;
 }
 
-interface State {
-  mobileOpen: boolean;
+interface Extension {
+  name: string;
+  title: string;
+  extra?: boolean;
 }
 
-class ResponsiveDrawer extends React.Component<Props, State> {
-  /**
-   *
-   */
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      mobileOpen: false
-    };
-  }
+const Shell = (props: Props) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [extension, setExtension] = useState({ title: '' });
 
-  handleDrawerToggle = () => {
-    this.setState((state: any) => ({ mobileOpen: !state.mobileOpen }));
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
-  render() {
-    const { classes, theme } = this.props;
-
-    const drawer = (
-      <div>
-        <div className={classes.toolbar} />
-        <Divider />
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text} onClick={this.onClick}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
-
-    return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerToggle} className={classes.menuButton}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              Responsive drawer
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <nav className={classes.drawer}>
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-          <Hidden smUp implementation="css">
-            <Drawer
-              container={this.props.container}
-              variant="temporary"
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          <Hidden xsDown implementation="css">
-            <Drawer
-              classes={{
-                paper: classes.drawerPaper
-              }}
-              variant="permanent"
-              open
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-        </nav>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <div id="extension" />
-        </main>
-      </div>
-    );
-  }
-
-  private readonly onClick = () => {
+  const onMenuItemClick = (extensionName: string) => () => {
     chrome.management.getAll(result => {
-      const ext = result.find(x => x.shortName === 'Settings');
+      const ext = result.find(x => x.shortName === extensionName);
       if (ext) {
         chrome.management.getPermissionWarningsById(ext.id, warnings => {
           warnings.forEach(x => console.log(x));
         });
-        this.injectExtension(ext.id);
+        injectExtension(ext.id);
+        setExtension({ title: ext.name });
       }
     });
   };
 
-  injectExtension = (id: string) => {
+  const injectExtension = (id: string) => {
     const chromeExtensionUrl = `chrome-extension://${id}`;
     console.log('Inject', `(${chromeExtensionUrl})`);
     const event = document.createEvent('Event');
     event.initEvent(JSON.stringify({ inject: id }));
     document.dispatchEvent(event);
   };
-}
 
-const App = withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+  const { classes, theme, container } = props;
+
+  const availableExtensions: Extension[] = [
+    {
+      name: 'Settings',
+      title: 'Chatbox'
+    },
+    {
+      name: 'Runner',
+      title: 'Runner'
+    },
+    {
+      name: 'TODO',
+      title: 'Settings',
+      extra: true
+    }
+  ];
+
+  const drawer = (
+    <div>
+      <div className={classes.toolbar} />
+      <Divider />
+      <List>
+        {availableExtensions
+          .filter(x => !x.extra)
+          .map(ext => (
+            <ListItem button key={ext.name} onClick={onMenuItemClick(ext.name)}>
+              <ListItemText primary={ext.title} />
+            </ListItem>
+          ))}
+      </List>
+      <Divider />
+      <List>
+        {availableExtensions
+          .filter(x => !!x.extra)
+          .map(ext => (
+            <ListItem button key={ext.name}>
+              <ListItemText primary={ext.title} />
+            </ListItem>
+          ))}
+      </List>
+    </div>
+  );
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <IconButton color="inherit" aria-label="Open drawer" onClick={handleDrawerToggle} className={classes.menuButton}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit" noWrap>
+            {extension.title}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <nav className={classes.drawer}>
+        <Hidden smUp implementation="css">
+          <Drawer
+            container={container}
+            variant="temporary"
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper
+            }}
+            variant="permanent"
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <div id="extension" />
+      </main>
+    </div>
+  );
+};
+
+const App = withStyles(styles, { withTheme: true })(Shell);
 
 render(<App />, document.getElementById('root'));
