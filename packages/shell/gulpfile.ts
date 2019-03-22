@@ -54,7 +54,7 @@ async function buildParcel(cb: TaskCallback) {
 }
 
 async function buildNW(cb: TaskCallback) {
-  npmRun('build', ['--tasks', 'win-x64,mac-x64', '--mirror', 'https://dl.nwjs.io/', '.']).then(_ => cb());
+  npmRun('build', ['--tasks', 'win-x64,mac-x64', '--mirror', 'https://dl.nwjs.io/', '.']).then((_: any) => cb());
 }
 
 export const start = series(cleanStart, startParcel, startNW);
