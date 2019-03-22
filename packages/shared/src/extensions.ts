@@ -1,16 +1,25 @@
 import { ReactElement } from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 
 export const renderExtension = <P>(element: ReactElement<P>, hotModule: NodeModule) => {
-  const eventType = JSON.stringify({ inject: chrome.runtime.id });
+  const injectEvent = JSON.stringify({ inject: chrome.runtime.id });
+  const removeEvent = JSON.stringify({ remove: chrome.runtime.id });
 
   const onInject = (e: Event) => {
     console.log('Injecting extension component');
     inject(element);
   };
 
-  document.removeEventListener(eventType, onInject);
-  document.addEventListener(eventType, onInject);
+  const onRemove = (e: Event) => {
+    console.log('Removing extension component');
+    remove(element);
+  };
+
+  document.removeEventListener(injectEvent, onInject);
+  document.addEventListener(injectEvent, onInject);
+
+  document.removeEventListener(removeEvent, onRemove);
+  document.addEventListener(removeEvent, onRemove);
 
   if (hotModule.hot) {
     hotModule.hot.accept(function() {
@@ -25,5 +34,12 @@ const inject = <P>(element: ReactElement<P>) => {
   const root = document.getElementById('extension');
   if (root) {
     render(element, root);
+  }
+};
+
+const remove = <P>(element: ReactElement<P>) => {
+  const root = document.getElementById('extension');
+  if (root) {
+    unmountComponentAtNode(root);
   }
 };

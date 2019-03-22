@@ -3,7 +3,7 @@ import del from 'del';
 import ParcelBundler from 'parcel-bundler';
 import { npmRun } from '@yakapa/shared';
 
-type TaskCallback = (err?: Error) => void;
+type TaskCallback = (err?: Error) => injectEvent;
 
 function clean() {
   return del(['./lib/**/*.+(js|html|map|json)']);
