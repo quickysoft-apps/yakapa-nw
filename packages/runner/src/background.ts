@@ -1,5 +1,8 @@
+import { register } from 'ts-node';
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.script) {
-    sendResponse({ result: 'TODO: compile and execute script' });
+    const result = register().compile(message.script, 'toto.js');
+    sendResponse({ result });
   }
 });

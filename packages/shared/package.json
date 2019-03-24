@@ -12,10 +12,11 @@
     "url": "git+https://neurosoup@github.com/quickysoft-apps/yakapa-nw.git"
   },
   "scripts": {
-    "start": "tsc -b . --watch",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "start": "tsc --watch",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "typescript": "^3.3.3333"
-  }
+  },
+  "dependencies": {}
 }

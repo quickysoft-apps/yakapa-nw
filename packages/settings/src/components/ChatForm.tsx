@@ -49,7 +49,7 @@ export const ChatForm = () => {
         console.log(presenceEvent);
       },
       message: function(msg) {
-        setResponse(msg.message.text);
+        setResponse(msg.message);
       }
     });
     pubnub.subscribe({
