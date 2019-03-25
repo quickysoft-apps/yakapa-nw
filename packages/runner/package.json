@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
   },
+  "browser": {
+    "fs": false
+  },
   "scripts": {
     "start": "node_modules/.bin/gulp start",
     "build": "node_modules/.bin/gulp build",
