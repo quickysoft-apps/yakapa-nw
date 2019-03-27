@@ -8,14 +8,14 @@ export class Compiler {
 
   constructor(code: string) {
     this.js = ts.transpileModule(code, {
-      compilerOptions: { module: ts.ModuleKind.ES2015, esModuleInterop: true }
+      compilerOptions: { module: ts.ModuleKind.CommonJS }
     });
   }
 
   public installDependencies() {}
 
   public evaluate(context?: object) {
-    const ctx = { ...context };
+    const ctx = { ...context, require };
     const source = `(() => {${this.js.outputText}})();`;
 
     // var res = vm.runInNewContext(m.wrap(this.js.outputText), context)(exports, require, module, __filename, __dirname);
