@@ -1,14 +1,19 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import safeEval from 'safe-eval';
 
-export const run = (code: string, context?: object): any => {
-  const source = `(() => {${code}})();`;
+export class Compiler {
+  private js: ts.TranspileOutput;
 
-  const js = ts.transpileModule(source, {
-    compilerOptions: { module: ts.ModuleKind.CommonJS }
-  });
+  constructor(code: string) {
+    this.js = ts.transpileModule(code, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS }
+    });
+  }
 
-  const result = safeEval(js.outputText, context);
+  public installDependencies() {}
 
-  return result;
-};
+  public evaluate(context?: object) {
+    const source = `(() => {${this.js.outputText}})();`;
+    return safeEval(source, context);
+  }
+}

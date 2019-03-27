@@ -1,9 +1,11 @@
-import { run } from '../src/runner';
+// import fs from 'fs';
+import { Compiler } from '../src/runner';
 
 describe('typescript', () => {
   it('returns result from the simpliest script', () => {
     const expected = 'Hello World';
-    const result = run(`return '${expected}'`);
+    const compiler = new Compiler(`return '${expected}'`);
+    const result = compiler.evaluate();
     expect(result).toBe(expected);
   });
 
@@ -19,32 +21,21 @@ describe('typescript', () => {
       const myClass = new MyClass()
       return myClass.helloWorld()`;
 
-    const result = run(code);
+    const compiler = new Compiler(code);
+    const result = compiler.evaluate();
     expect(result).toBe(expected);
   });
 
   it('return result conditioned by input args', () => {
     const expected = 5;
     const code = `return a + b;`;
-    const result = run(code, { a: 3, b: 2 });
+    const compiler = new Compiler(code);
+    const result = compiler.evaluate({ a: 3, b: 2 });
     expect(result).toBe(expected);
   });
 
-  it('return result from a script with imports', () => {
-    const expected = 'Hello World';
-
-    const code = `
-      import path from 'path';
-      
-      class MyClass {
-        public function helloWorld() {
-          return '${expected}';
-        }
-      }
-      const myClass = new MyClass()
-      return myClass.helloWorld()`;
-
-    const result = run(code);
-    expect(result).toBe(expected);
+  it.skip('return result from a script with system import', () => {
+    //const code = fs.readFileSync('../data/watchLog.ts', { encoding: 'utf8' });
+    //const result = run(code, { logfile: './logfile.txt' });
   });
 });
