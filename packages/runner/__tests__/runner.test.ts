@@ -34,8 +34,20 @@ describe('typescript', () => {
     expect(result).toBe(expected);
   });
 
-  it.skip('return result from a script with system import', () => {
-    //const code = fs.readFileSync('../data/watchLog.ts', { encoding: 'utf8' });
-    //const result = run(code, { logfile: './logfile.txt' });
+  it('return result from a script with third party lib import', () => {
+    const code = `      
+      //import faker from 'faker';
+      const faker = require('faker');
+      class MyClass {
+        public function fakeEmail() {
+          return faker.internet.email();
+        }
+      }
+      const myClass = new MyClass();
+      return myClass.fakeEmail()`;
+
+    const compiler = new Compiler(code);
+    const result = compiler.evaluate();
+    expect(result).toMatchInlineSnapshot();
   });
 });
