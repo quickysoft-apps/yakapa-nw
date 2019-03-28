@@ -14,7 +14,8 @@ export class Compiler {
   public installDependencies() {}
 
   public evaluate(context?: object) {
+    const ctx = { ...context, require };
     const source = `(() => {${this.emittedJSSource.getFiles()[0].text}})();`;
-    return safeEval(source, context);
+    return safeEval(source, ctx);
   }
 }
