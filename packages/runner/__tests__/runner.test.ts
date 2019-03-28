@@ -1,4 +1,3 @@
-// import fs from 'fs';
 import { Compiler } from '../src/runner';
 
 describe('typescript', () => {

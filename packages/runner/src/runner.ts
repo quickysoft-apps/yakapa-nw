@@ -1,27 +1,20 @@
-import ts from 'typescript';
+import { Project, MemoryEmitResult } from 'ts-morph';
 import safeEval from 'safe-eval';
-// import m from 'module';
-// import vm from 'vm';
 
 export class Compiler {
-  private js: ts.TranspileOutput;
+  private project: Project;
+  private emittedJSSource: MemoryEmitResult;
 
   constructor(code: string) {
-    this.js = ts.transpileModule(code, {
-      compilerOptions: { module: ts.ModuleKind.CommonJS }
-    });
+    this.project = new Project();
+    this.project.createSourceFile('script.ts', code);
+    this.emittedJSSource = this.project.emitToMemory();
   }
 
   public installDependencies() {}
 
   public evaluate(context?: object) {
-    const ctx = { ...context, require };
-    const source = `(() => {${this.js.outputText}})();`;
-
-    // var res = vm.runInNewContext(m.wrap(this.js.outputText), context)(exports, require, module, __filename, __dirname);
-    // console.log('------------', res);
-
-    return safeEval(source, ctx);
-    // return res;
+    const source = `(() => {${this.emittedJSSource.getFiles()[0].text}})();`;
+    return safeEval(source, context);
   }
 }
