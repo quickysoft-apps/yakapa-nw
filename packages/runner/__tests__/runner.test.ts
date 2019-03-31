@@ -93,25 +93,21 @@ describe('runner', () => {
     const runner = new Runner({ source });
     await runner.install(rootDir);
     fs.mkdirSync(logsDir);
-    let fd = fs.openSync(path.resolve(logsDir, 'log.txt'), 'a');
-    fs.appendFileSync(fd, 'Line1');
+    const filename = path.resolve(logsDir, 'log.txt');
+    let fd = fs.openSync(filename, 'a');
+    fs.appendFileSync(filename, 'Line1');
     fs.closeSync(fd);
 
     const promise = () =>
       new Promise(resolve => {
-        runner.runWithTimeout(
-          3000,
-          (...args: any[]) => {
-            resolve(args);
-          },
-          {
-            filepath: path.resolve(rootDir, logsDir, 'log.txt')
-          }
-        );
-
-        fd = fs.openSync(path.resolve(logsDir, 'log.txt'), 'a');
-        fs.appendFileSync(fd, '\r\nLine2');
-        fs.closeSync(fd);
+        runner.runWithTimeout(5000, (...args) => resolve(args), {
+          filepath: path.resolve(rootDir, logsDir, 'log.txt')
+        });
+        setTimeout(() => {
+          fd = fs.openSync(filename, 'a');
+          fs.appendFileSync(fd, '\r\nLine2');
+          fs.closeSync(fd);
+        }, 1000);
       });
 
     const result = await promise();
