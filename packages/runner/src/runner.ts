@@ -5,6 +5,7 @@ import { NodeVM } from 'vm2';
 import { ModuleKind, ModuleResolutionKind } from 'typescript';
 
 export interface Script {
+  filename?: string;
   source: string;
 }
 
@@ -26,7 +27,7 @@ export class Runner {
     });
 
     this.projectDirectory = project.createDirectory(installPath);
-    this.sourceFile = this.projectDirectory.createSourceFile('source.ts', this.script.source, { overwrite: true });
+    this.sourceFile = this.projectDirectory.createSourceFile(this.script.filename || 'source.ts', this.script.source, { overwrite: true });
     this.sourceFile.save();
     this.sourceFile.emit();
 
@@ -51,7 +52,8 @@ export class Runner {
     }
 
     const emitOutput = this.sourceFile.getEmitOutput();
-    const source = emitOutput.getOutputFiles().find(file => file.getFilePath().includes('source.js'));
+    const match = path.basename(this.script.filename || 'source', '.ts');
+    const source = emitOutput.getOutputFiles().find(file => file.getFilePath().includes(match));
 
     if (source) {
       const vm = new NodeVM({

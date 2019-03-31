@@ -90,7 +90,7 @@ describe('runner', () => {
         });
       }
     `;
-    const runner = new Runner({ source });
+    const runner = new Runner({ source, filename: 'async.ts' });
     await runner.install(rootDir);
     fs.mkdirSync(logsDir);
     const filename = path.resolve(logsDir, 'log.txt');
