@@ -4,34 +4,39 @@ import { Project, ScriptTarget, SourceFile, Directory } from 'ts-morph';
 import { NodeVM } from 'vm2';
 import { ModuleKind, ModuleResolutionKind } from 'typescript';
 
-export class Compiler {
-  private sourceFile: SourceFile;
-  private projectDir: Directory;
+export interface Script {
+  source: string;
+}
 
-  constructor(private projectName: string, source: string) {
-    const scriptsDir = path.resolve(__dirname, '..', 'scripts');
+export class Runner {
+  private sourceFile?: SourceFile;
+  private projectDirectory?: Directory;
 
+  constructor(private script: Script) {}
+
+  public async install(installPath: string) {
     const project = new Project({
       compilerOptions: {
         target: ScriptTarget.ES5,
         module: ModuleKind.CommonJS,
         moduleResolution: ModuleResolutionKind.NodeJs,
         esModuleInterop: true,
-        outDir: `${scriptsDir}/${projectName}/dist`
+        outDir: `${installPath}/dist`
       }
     });
 
-    this.projectDir = project.createDirectory(path.resolve(scriptsDir, this.projectName));
-    this.sourceFile = this.projectDir.createSourceFile('source.ts', source, { overwrite: true });
+    this.projectDirectory = project.createDirectory(installPath);
+    this.sourceFile = this.projectDirectory.createSourceFile('source.ts', this.script.source, { overwrite: true });
     this.sourceFile.save();
     this.sourceFile.emit();
+
+    await this.installPackages();
   }
 
-  public async run(args?: object) {
-    const projectDir = this.projectDir.getPath();
-    const importDeclaration = this.sourceFile.getImportDeclarations()[0];
-    const moduleName = importDeclaration.getModuleSpecifierValue();
-    await pacote.extract(`${moduleName}@latest`, path.resolve(projectDir, 'node_modules', moduleName), { cache: path.resolve(projectDir, 'node_modules', '.cache') });
+  public run(args?: object) {
+    if (!this.sourceFile) {
+      throw new Error('Scripts must be installed first');
+    }
 
     const emitOutput = this.sourceFile.getEmitOutput();
     const source = emitOutput.getOutputFiles().find(file => file.getFilePath().includes('source.js'));
@@ -45,8 +50,18 @@ export class Compiler {
 
       const func = vm.run(source.getText(), source.getFilePath());
       return func(args);
-    } else {
-      return null;
     }
+  }
+
+  private async installPackages() {
+    if (!this.sourceFile || !this.projectDirectory) return;
+
+    const projectPath = this.projectDirectory.getPath();
+    await Promise.all(
+      this.sourceFile.getImportDeclarations().map(async importDeclaration => {
+        const moduleName = importDeclaration.getModuleSpecifierValue();
+        return pacote.extract(`${moduleName}@latest`, path.resolve(projectPath, 'node_modules', moduleName), { cache: path.resolve(projectPath, '.cache') });
+      })
+    );
   }
 }
