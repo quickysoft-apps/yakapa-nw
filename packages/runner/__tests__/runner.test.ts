@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import rimraf from 'rimraf';
 import { Runner } from '../src/runner';
 
@@ -69,5 +70,51 @@ describe('runner', () => {
     await runner.install(path.resolve(scriptsDir, 'imports'));
     const result = runner.run();
     expect(typeof result).toBe('string');
+  });
+
+  it('handles async pattern', async () => {
+    const rootDir = path.resolve(scriptsDir, 'async');
+    const logsDir = path.resolve(rootDir, 'logs');
+    const source = `
+      import fs from 'fs';
+
+      interface Args {
+        filepath: string;
+      }
+
+      export = (callback: (eventType: string, filename: string) => void, args: Args) => {
+        return fs.watch(args.filepath, (eventType, filename) => {
+          if (filename) {
+            callback(eventType, filename);
+          }
+        });
+      }
+    `;
+    const runner = new Runner({ source });
+    await runner.install(rootDir);
+    fs.mkdirSync(logsDir);
+    let fd = fs.openSync(path.resolve(logsDir, 'log.txt'), 'a');
+    fs.appendFileSync(fd, 'Line1');
+    fs.closeSync(fd);
+
+    const promise = () =>
+      new Promise(resolve => {
+        runner.runWithTimeout(
+          3000,
+          (...args: any[]) => {
+            resolve(args);
+          },
+          {
+            filepath: path.resolve(rootDir, logsDir, 'log.txt')
+          }
+        );
+
+        fd = fs.openSync(path.resolve(logsDir, 'log.txt'), 'a');
+        fs.appendFileSync(fd, '\r\nLine2');
+        fs.closeSync(fd);
+      });
+
+    const result = await promise();
+    expect(result).toMatchObject(['change', 'log.txt']);
   });
 });

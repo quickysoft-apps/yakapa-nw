@@ -33,8 +33,20 @@ export class Runner {
     await this.installPackages();
   }
 
-  public run(args?: object) {
-    if (!this.sourceFile) {
+  public run<T>(args?: object): T | null {
+    const func = this.getRunnable();
+    return func(args) as T;
+  }
+
+  public async runWithTimeout(timeout: number, callback: (...args: any[]) => void, args: any) {
+    const func = this.getRunnable();
+    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(func), timeout));
+    const funcPromise = new Promise(_ => func(callback, args));
+    return Promise.race([funcPromise, timeoutPromise]);
+  }
+
+  private getRunnable() {
+    if (!this.sourceFile || !this.projectDirectory) {
       throw new Error('Scripts must be installed first');
     }
 
@@ -44,12 +56,13 @@ export class Runner {
     if (source) {
       const vm = new NodeVM({
         require: {
-          external: true
+          external: true,
+          builtin: ['fs', 'path'],
+          root: this.projectDirectory.getPath()
         }
       });
 
-      const func = vm.run(source.getText(), source.getFilePath());
-      return func(args);
+      return vm.run(source.getText(), source.getFilePath());
     }
   }
 
