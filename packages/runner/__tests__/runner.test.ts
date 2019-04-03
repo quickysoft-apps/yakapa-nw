@@ -13,13 +13,13 @@ describe('runner', () => {
     const expected = 'Hello World';
     const runner = new Runner({ source: `export = () => '${expected}'` });
     await runner.install(path.resolve(scriptsDir, 'hello-world'));
-    const result = runner.run();
+    const result = runner.runSync();
     expect(result).toBe(expected);
   });
 
   it('should throw error when running a script without installation', async () => {
     const runner = new Runner({ source: `export = () => return 'WTF'` });
-    expect(() => runner.run()).toThrow('Scripts must be installed first');
+    expect(() => runner.runSync()).toThrow('Scripts must be installed first');
   });
 
   it('return result from a script with es6 class', async () => {
@@ -39,7 +39,7 @@ describe('runner', () => {
 
     const runner = new Runner({ source });
     await runner.install(path.resolve(scriptsDir, 'es6'));
-    const result = runner.run();
+    const result = runner.runSync();
     expect(result).toBe(expected);
   });
 
@@ -48,7 +48,7 @@ describe('runner', () => {
     const source = `export = (args: {a: number, b: number}) => args.a + args.b;`;
     const runner = new Runner({ source });
     await runner.install(path.resolve(scriptsDir, 'args'));
-    const result = runner.run({ a: 3, b: 2 });
+    const result = runner.runSync({ a: 3, b: 2 });
     expect(result).toBe(expected);
   });
 
@@ -60,7 +60,7 @@ describe('runner', () => {
           return faker.internet.email();
         }
       }
-      export = () => {
+      export = (args: any) => {
         const myClass = new MyClass();
         return myClass.fakeEmail();
       }
@@ -68,7 +68,7 @@ describe('runner', () => {
 
     const runner = new Runner({ source });
     await runner.install(path.resolve(scriptsDir, 'imports'));
-    const result = runner.run();
+    const result = runner.runSync();
     expect(typeof result).toBe('string');
   });
 
@@ -78,11 +78,9 @@ describe('runner', () => {
     const source = `
       import fs from 'fs';
 
-      interface Args {
-        filepath: string;
-      }
+      type WatcherEventHandler = (eventType: string, filename: string) => void;
 
-      export = (callback: (eventType: string, filename: string) => void, args: Args) => {
+      export = (args: {filepath: string}, callback: WatcherEventHandler) => {
         return fs.watch(args.filepath, (eventType, filename) => {
           if (filename) {
             callback(eventType, filename);
@@ -100,8 +98,9 @@ describe('runner', () => {
 
     const promise = () =>
       new Promise(resolve => {
-        runner.runWithTimeout(5000, (...args) => resolve(args), {
-          filepath: path.resolve(rootDir, logsDir, 'log.txt')
+        runner.run({ filepath: path.resolve(rootDir, logsDir, 'log.txt') }, (...args) => {
+          //Send back script results stored in args from here (ex: eventType and filename)
+          resolve(args);
         });
         setTimeout(() => {
           fd = fs.openSync(filename, 'a');

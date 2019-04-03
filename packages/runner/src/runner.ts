@@ -34,15 +34,15 @@ export class Runner {
     await this.installPackages();
   }
 
-  public run<T>(args?: object): T | null {
+  public runSync<T>(args?: object): T | null {
     const func = this.getRunnable();
     return func(args) as T;
   }
 
-  public async runWithTimeout(timeout: number, callback: (...args: any[]) => void, args: any) {
+  public async run(args: object = {}, callback: (...args: any[]) => void, timeout: number = 30000) {
     const func = this.getRunnable();
     const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(func), timeout));
-    const funcPromise = new Promise(_ => func(callback, args));
+    const funcPromise = new Promise(_ => func(args, callback));
     return Promise.race([funcPromise, timeoutPromise]);
   }
 
