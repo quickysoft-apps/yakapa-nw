@@ -1,0 +1,39 @@
+{
+  "name": "@extensions/networks",
+  "version": "0.0.0",
+  "description": "Networks",
+  "author": "neurosoup <neurosoup@gmail.com>",
+  "homepage": "https://github.com/quickysoft-apps/yakapa-nw#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quickysoft-apps/yakapa-nw.git"
+  },
+  "browser": {
+    "fs": false
+  },
+  "scripts": {
+    "start": "node_modules/.bin/gulp start",
+    "build": "node_modules/.bin/gulp build",
+    "test:watch": "jest --watchAll"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.81",
+    "@types/node": "^11.10.5",
+    "@types/pubnub": "^4.0.5",
+    "@types/rimraf": "^2.0.2",
+    "del": "^4.0.0",
+    "gulp": "^4.0.0",
+    "gulp-typescript": "^5.0.0",
+    "jest": "^24.5.0",
+    "parcel-bundler": "^1.11.0",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "@yakapa/api": "^0.0.0",
+    "@yakapa/shared": "^0.0.0"
+  }
+}

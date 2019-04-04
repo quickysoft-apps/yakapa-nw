@@ -1,18 +1,24 @@
+import React from 'react';
 import { ReactElement } from 'react';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { render, unmountComponentAtNode } from 'react-dom';
+import { darkTheme } from './theme';
 
-export const renderExtension = <P>(element: ReactElement<P>, hotModule: NodeModule) => {
+export const renderExtension = <P extends object>(element: ReactElement<P>, hotModule: NodeModule) => {
   const injectEvent = JSON.stringify({ inject: chrome.runtime.id });
   const removeEvent = JSON.stringify({ remove: chrome.runtime.id });
 
-  const onInject = (e: Event) => {
+  const onInject = () => {
     console.log('Injecting extension component');
     inject(element);
   };
 
-  const onRemove = (e: Event) => {
+  const onRemove = () => {
     console.log('Removing extension component');
-    remove(element);
+    const root = document.getElementById('extension');
+    if (root) {
+      unmountComponentAtNode(root);
+    }
   };
 
   document.removeEventListener(injectEvent, onInject);
@@ -28,18 +34,13 @@ export const renderExtension = <P>(element: ReactElement<P>, hotModule: NodeModu
       inject(element);
     });
   }
-};
 
-const inject = <P>(element: ReactElement<P>) => {
-  const root = document.getElementById('extension');
-  if (root) {
-    render(element, root);
-  }
-};
-
-const remove = <P>(element: ReactElement<P>) => {
-  const root = document.getElementById('extension');
-  if (root) {
-    unmountComponentAtNode(root);
-  }
+  const inject = <P extends object>(x: ReactElement<P>) => {
+    const jsxElement = <MuiThemeProvider theme={darkTheme}>{element}</MuiThemeProvider>;
+    const root = document.getElementById('extension');
+    if (root) {
+      unmountComponentAtNode(root);
+      render(jsxElement, root);
+    }
+  };
 };

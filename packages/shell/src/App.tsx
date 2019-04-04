@@ -73,11 +73,16 @@ const availableExtensions: Extension[] = [
   },
   {
     shortName: 'Runner',
-    name: 'Runner'
-  },
+    name: 'Tâches'
+  }
+  ,
+  {
+    shortName: 'Networks',
+    name: 'Réseaux'
+  }
   {
     shortName: 'TODO',
-    name: 'Settings',
+    name: 'Paramètres',
     extra: true
   }
 ];
