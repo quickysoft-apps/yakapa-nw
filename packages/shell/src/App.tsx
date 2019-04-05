@@ -1,28 +1,12 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItemText, Toolbar, Typography, ListItem } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { MuiThemeProvider, Theme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { blueGrey, purple } from '@material-ui/core/colors';
+import { darkTheme } from '@yakapa/shared';
 
 const drawerWidth = 241;
-
-const darkTheme = createMuiTheme({
-  palette: {
-    primary: {
-      light: purple[300],
-      main: purple[500],
-      dark: purple[700]
-    },
-    secondary: {
-      light: blueGrey[300],
-      main: blueGrey[500],
-      dark: blueGrey[700]
-    },
-    type: 'dark'
-  }
-});
 
 const styles = (theme: any) => ({
   root: {
@@ -35,6 +19,7 @@ const styles = (theme: any) => ({
     }
   },
   appBar: {
+    userSelect: 'none',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
@@ -74,12 +59,11 @@ const availableExtensions: Extension[] = [
   {
     shortName: 'Runner',
     name: 'Tâches'
-  }
-  ,
+  },
   {
     shortName: 'Networks',
     name: 'Réseaux'
-  }
+  },
   {
     shortName: 'TODO',
     name: 'Paramètres',
@@ -171,7 +155,11 @@ const Shell = (props: Props) => {
     </div>
   );
 
-  return (
+  const isTheme = (theme: any): theme is Theme => {
+    return !!theme.shape;
+  };
+
+  return isTheme(darkTheme) ? (
     <MuiThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className={classes.root}>
@@ -218,7 +206,7 @@ const Shell = (props: Props) => {
         </main>
       </div>
     </MuiThemeProvider>
-  );
+  ) : null;
 };
 
 const App = withStyles(styles, { withTheme: true })(Shell);
