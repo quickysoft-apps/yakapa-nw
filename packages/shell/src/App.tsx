@@ -57,7 +57,7 @@ const Shell = (props: Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [registeredExtensions, setRegisteredExtensions] = useState<RegisteredExtensionCollection>(defaultRegisteredExtensions);
   const [activeExtension, setActiveExtension] = useState<RegisteredExtension>();
-  const { classes, theme, container } = props;
+  const { classes, container } = props;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -94,27 +94,12 @@ const Shell = (props: Props) => {
         </AppBar>
         <nav className={classes.drawer}>
           <Hidden smUp implementation="css">
-            <Drawer
-              container={container}
-              variant="temporary"
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper
-              }}
-            >
+            <Drawer container={container} open={mobileOpen} onClose={handleDrawerToggle} classes={{ paper: classes.drawerPaper }}>
               <ExtensionMenu extensions={registeredExtensions.extensions} onMenuItemClick={onMenuItemClick} />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
-            <Drawer
-              classes={{
-                paper: classes.drawerPaper
-              }}
-              variant="permanent"
-              open
-            >
+            <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
               <ExtensionMenu extensions={registeredExtensions.extensions} onMenuItemClick={onMenuItemClick} />
             </Drawer>
           </Hidden>
