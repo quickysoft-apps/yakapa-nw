@@ -5,9 +5,9 @@ import { Typography } from '@material-ui/core';
 
 const Content = () => {
   return (
-    <div>
+    <>
       <Typography>Networks Extension here</Typography>
-    </div>
+    </>
   );
 };
 

@@ -1,10 +1,51 @@
-import React from 'react';
-import { ReactElement } from 'react';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import React, { ReactElement } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { darkTheme } from './theme';
 
-export const renderExtension = <P extends object>(element: ReactElement<P>, hotModule: NodeModule) => {
+import { MainTheme } from './theme';
+
+export interface RegisteredExtensionCollection {
+  extensions: RegisteredExtension[];
+}
+
+export type RegisteredExtension = Partial<chrome.management.ExtensionInfo> & {
+  hidden?: boolean;
+};
+
+export const findExtension = (extensionName: string): Promise<chrome.management.ExtensionInfo> => {
+  return new Promise((resolve, reject) => {
+    chrome.management.getAll(result => {
+      const ext = result.find(x => x.name === extensionName);
+      if (ext) {
+        chrome.management.getPermissionWarningsById(ext.id, warnings => {
+          warnings.forEach(x => console.log(x));
+        });
+        resolve(ext);
+      } else {
+        reject(new Error(`Extension not found: ${extensionName}`));
+      }
+    });
+  });
+};
+
+export const injectExtension = (id?: string) => {
+  if (id) {
+    const chromeExtensionUrl = `chrome-extension://${id}`;
+    console.log('Inject', `(${chromeExtensionUrl})`);
+    const event = document.createEvent('Event');
+    event.initEvent(JSON.stringify({ inject: id }));
+    document.dispatchEvent(event);
+  }
+};
+
+export const removeExtension = (id?: string) => {
+  if (id) {
+    const event = document.createEvent('Event');
+    event.initEvent(JSON.stringify({ remove: id }));
+    document.dispatchEvent(event);
+  }
+};
+
+export const renderExtension = <P extends {}>(element: ReactElement<P>, hotModule: NodeModule) => {
   const injectEvent = JSON.stringify({ inject: chrome.runtime.id });
   const removeEvent = JSON.stringify({ remove: chrome.runtime.id });
 
@@ -35,12 +76,11 @@ export const renderExtension = <P extends object>(element: ReactElement<P>, hotM
     });
   }
 
-  const inject = <P extends object>(x: ReactElement<P>) => {
-    const jsxElement = <MuiThemeProvider theme={darkTheme}>{element}</MuiThemeProvider>;
+  const inject = <P extends {}>(element: ReactElement<P>) => {
     const root = document.getElementById('extension');
     if (root) {
       unmountComponentAtNode(root);
-      render(jsxElement, root);
+      render(<MainTheme>{element}</MainTheme>, root);
     }
   };
 };

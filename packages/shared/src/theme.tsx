@@ -1,7 +1,8 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import React from 'react';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { blueGrey, purple } from '@material-ui/core/colors';
 
-export const darkTheme: Theme = createMuiTheme({
+const darkTheme = createMuiTheme({
   typography: {
     useNextVariants: true
   },
@@ -19,3 +20,7 @@ export const darkTheme: Theme = createMuiTheme({
     type: 'dark'
   }
 });
+
+export const MainTheme = <T extends { children: any }>(props: T) => {
+  return <MuiThemeProvider theme={darkTheme}>{props.children}</MuiThemeProvider>;
+};

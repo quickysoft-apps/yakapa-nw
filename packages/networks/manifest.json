@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Networks",
+  "name": "networks",
   "description": "whatever",
   "version": "1.0.0",
   "permissions": ["management", "tabs", "background", "notifications", "alarms"],

@@ -1,13 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography } from '@material-ui/core';
-import { MuiThemeProvider, Theme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { darkTheme } from '@yakapa/shared';
+import { MainTheme, RegisteredExtensionCollection, RegisteredExtension, findExtension, removeExtension, injectExtension } from '@yakapa/shared';
 import { extensions } from '../extensions.json';
 import { useEffect } from 'react';
-import { RegisteredExtensionCollection, RegisteredExtension } from './extensions.js';
 import { ExtensionMenu } from './components/extensionMenu';
 
 export const drawerWidth = 241;
@@ -23,7 +21,7 @@ const styles = (theme: any) => ({
     }
   },
   appBar: {
-    userSelect: 'none',
+    'user-select': 'none',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
@@ -51,40 +49,6 @@ interface Props {
   container?: any;
 }
 
-const findExtension = (extensionName: string): Promise<chrome.management.ExtensionInfo> => {
-  return new Promise((resolve, reject) => {
-    chrome.management.getAll(result => {
-      const ext = result.find(x => x.shortName === extensionName);
-      if (ext) {
-        chrome.management.getPermissionWarningsById(ext.id, warnings => {
-          warnings.forEach(x => console.log(x));
-        });
-        resolve(ext);
-      } else {
-        reject(new Error('Extension not found'));
-      }
-    });
-  });
-};
-
-const injectExtension = (id?: string) => {
-  if (id) {
-    const chromeExtensionUrl = `chrome-extension://${id}`;
-    console.log('Inject', `(${chromeExtensionUrl})`);
-    const event = document.createEvent('Event');
-    event.initEvent(JSON.stringify({ inject: id }));
-    document.dispatchEvent(event);
-  }
-};
-
-const removeExtension = (id?: string) => {
-  if (id) {
-    const event = document.createEvent('Event');
-    event.initEvent(JSON.stringify({ remove: id }));
-    document.dispatchEvent(event);
-  }
-};
-
 const defaultRegisteredExtensions = {
   extensions: []
 };
@@ -106,24 +70,16 @@ const Shell = (props: Props) => {
   const onMenuItemClick = async (extensionName?: string) => {
     if (extensionName) {
       const extension = await findExtension(extensionName);
-      if (extension && activeExtension) {
+      if (activeExtension) {
         removeExtension(activeExtension.id);
       }
-      if (extension) {
-        injectExtension(extension.id);
-        setActiveExtension({ ...extension });
-      } else {
-        console.log(`Unknown extension ${extensionName}`);
-      }
+      injectExtension(extension.id);
+      setActiveExtension({ ...extension });
     }
   };
 
-  const isTheme = (theme: any): theme is Theme => {
-    return !!theme.shape;
-  };
-
-  return isTheme(darkTheme) ? (
-    <MuiThemeProvider theme={darkTheme}>
+  return (
+    <MainTheme>
       <CssBaseline />
       <div className={classes.root}>
         <AppBar position="fixed" className={classes.appBar}>
@@ -168,8 +124,8 @@ const Shell = (props: Props) => {
           <div id="extension" />
         </main>
       </div>
-    </MuiThemeProvider>
-  ) : null;
+    </MainTheme>
+  );
 };
 
 const App = withStyles(styles, { withTheme: true })(Shell);
