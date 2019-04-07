@@ -1,0 +1,9 @@
+{
+  "extensions": [
+    {
+      "shortName": "networks",
+      "name": "Réseaux",
+      "description": "Gérer des réseaux pour toujours avoir un agent sous la main rapidement"
+    }
+  ]
+}

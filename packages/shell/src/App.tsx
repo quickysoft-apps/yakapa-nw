@@ -1,12 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { withStyles, AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItemText, Toolbar, Typography, ListItem } from '@material-ui/core';
+import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { MuiThemeProvider, Theme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
 import { darkTheme } from '@yakapa/shared';
+import { extensions } from '../extensions.json';
+import { useEffect } from 'react';
+import { RegisteredExtensionCollection, RegisteredExtension } from './extensions.js';
+import { ExtensionMenu } from './components/extensionMenu';
 
-const drawerWidth = 241;
+export const drawerWidth = 241;
 
 const styles = (theme: any) => ({
   root: {
@@ -47,30 +51,6 @@ interface Props {
   container?: any;
 }
 
-type Extension = Partial<chrome.management.ExtensionInfo> & {
-  extra?: boolean;
-};
-
-const availableExtensions: Extension[] = [
-  {
-    shortName: 'Settings',
-    name: 'Chatbox'
-  },
-  {
-    shortName: 'Runner',
-    name: 'Tâches'
-  },
-  {
-    shortName: 'Networks',
-    name: 'Réseaux'
-  },
-  {
-    shortName: 'TODO',
-    name: 'Paramètres',
-    extra: true
-  }
-];
-
 const findExtension = (extensionName: string): Promise<chrome.management.ExtensionInfo> => {
   return new Promise((resolve, reject) => {
     chrome.management.getAll(result => {
@@ -105,16 +85,25 @@ const removeExtension = (id?: string) => {
   }
 };
 
+const defaultRegisteredExtensions = {
+  extensions: []
+};
+
 const Shell = (props: Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeExtension, setActiveExtension] = useState<Extension>();
+  const [registeredExtensions, setRegisteredExtensions] = useState<RegisteredExtensionCollection>(defaultRegisteredExtensions);
+  const [activeExtension, setActiveExtension] = useState<RegisteredExtension>();
   const { classes, theme, container } = props;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const onMenuItemClick = (extensionName?: string) => async () => {
+  useEffect(() => {
+    setRegisteredExtensions({ extensions });
+  }, []);
+
+  const onMenuItemClick = async (extensionName?: string) => {
     if (extensionName) {
       const extension = await findExtension(extensionName);
       if (extension && activeExtension) {
@@ -128,32 +117,6 @@ const Shell = (props: Props) => {
       }
     }
   };
-
-  const menu = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        {availableExtensions
-          .filter(x => !x.extra)
-          .map(ext => (
-            <ListItem button key={ext.name} onClick={onMenuItemClick(ext.shortName)}>
-              <ListItemText primary={ext.name} />
-            </ListItem>
-          ))}
-      </List>
-      <Divider />
-      <List>
-        {availableExtensions
-          .filter(x => !!x.extra)
-          .map(ext => (
-            <ListItem button key={ext.name}>
-              <ListItemText primary={ext.name} />
-            </ListItem>
-          ))}
-      </List>
-    </div>
-  );
 
   const isTheme = (theme: any): theme is Theme => {
     return !!theme.shape;
@@ -185,7 +148,7 @@ const Shell = (props: Props) => {
                 paper: classes.drawerPaper
               }}
             >
-              {menu}
+              <ExtensionMenu extensions={registeredExtensions.extensions} onMenuItemClick={onMenuItemClick} />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -196,7 +159,7 @@ const Shell = (props: Props) => {
               variant="permanent"
               open
             >
-              {menu}
+              <ExtensionMenu extensions={registeredExtensions.extensions} onMenuItemClick={onMenuItemClick} />
             </Drawer>
           </Hidden>
         </nav>
