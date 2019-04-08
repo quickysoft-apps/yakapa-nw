@@ -106,7 +106,7 @@ const Shell = (props: Props) => {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div id="extension" />
+          <div id="extension-content" />
         </main>
       </div>
     </MainTheme>

@@ -56,7 +56,7 @@ export const renderExtension = <P extends {}>(element: ReactElement<P>, hotModul
 
   const onRemove = () => {
     console.log('Removing extension component');
-    const root = document.getElementById('extension');
+    const root = document.getElementById('extension-content');
     if (root) {
       unmountComponentAtNode(root);
     }
@@ -77,7 +77,7 @@ export const renderExtension = <P extends {}>(element: ReactElement<P>, hotModul
   }
 
   const inject = <P extends {}>(element: ReactElement<P>) => {
-    const root = document.getElementById('extension');
+    const root = document.getElementById('extension-content');
     if (root) {
       unmountComponentAtNode(root);
       render(<MainTheme>{element}</MainTheme>, root);

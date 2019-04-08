@@ -30,41 +30,41 @@ const styles = (theme: any) => ({
 interface Props {
   classes: any;
   extensions: RegisteredExtension[];
-  onMenuItemClick?: (extensionName?: string) => void;
+  //onMenuItemClick?: (extensionName?: string) => void;
 }
 
 const ExtensionMenuComponent = (props: Props) => {
   const { classes, extensions } = props;
 
-  const onMenuItemClick = (extensionName?: string) => async () => {
-    if (props.onMenuItemClick) {
-      props.onMenuItemClick(extensionName);
-    }
-  };
+  // const onMenuItemClick = (extensionName?: string) => async () => {
+  //   if (props.onMenuItemClick) {
+  //     props.onMenuItemClick(extensionName);
+  //   }
+  // };
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         {extensions.map(ext => (
           <Fragment key={ext.name}>
-            <div className={classes.menu}>
-              <List>
+            <div id={`extension-menu-${ext.name}`} className={classes.menu}>
+              {/* <List>
                 <ListItem button onClick={onMenuItemClick(ext.shortName)}>
                   <ListItemIcon>
                     <MailIcon />
                   </ListItemIcon>
                 </ListItem>
-              </List>
+              </List> */}
             </div>
 
-            <div className={classes.subMenu}>
-              <div className={classes.toolbar} />
+            <div id={`extension-submenu-${ext.name}`} className={classes.subMenu}>
+              {/* <div className={classes.toolbar} />
               <Divider />
               <List>
                 <ListItem button>
                   <ListItemText primary={ext.name} />
                 </ListItem>
-              </List>
+              </List> */}
             </div>
           </Fragment>
         ))}
