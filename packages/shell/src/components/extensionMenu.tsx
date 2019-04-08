@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
-import { withStyles, Divider, List, ListItemText, ListItem, ListItemIcon } from '@material-ui/core';
+import { withStyles, Divider } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import MailIcon from '@material-ui/icons/Mail';
 
 import { RegisteredExtension } from '@yakapa/shared';
 
@@ -23,49 +22,27 @@ const styles = (theme: any) => ({
   subMenu: {
     width: `calc(${drawerWidth}px - ${extensionMenuWidth}px)`,
     backgroundColor: '#2d2d2d'
-  },
-  toolbar: theme.mixins.toolbar
+  }
 });
 
 interface Props {
   classes: any;
   extensions: RegisteredExtension[];
-  //onMenuItemClick?: (extensionName?: string) => void;
 }
 
 const ExtensionMenuComponent = (props: Props) => {
   const { classes, extensions } = props;
-
-  // const onMenuItemClick = (extensionName?: string) => async () => {
-  //   if (props.onMenuItemClick) {
-  //     props.onMenuItemClick(extensionName);
-  //   }
-  // };
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         {extensions.map(ext => (
           <Fragment key={ext.name}>
-            <div id={`extension-menu-${ext.name}`} className={classes.menu}>
-              {/* <List>
-                <ListItem button onClick={onMenuItemClick(ext.shortName)}>
-                  <ListItemIcon>
-                    <MailIcon />
-                  </ListItemIcon>
-                </ListItem>
-              </List> */}
-            </div>
-
-            <div id={`extension-submenu-${ext.name}`} className={classes.subMenu}>
-              {/* <div className={classes.toolbar} />
+            <div>
+              <div id={`extension-menu-${ext.name}`} className={classes.menu} />
               <Divider />
-              <List>
-                <ListItem button>
-                  <ListItemText primary={ext.name} />
-                </ListItem>
-              </List> */}
             </div>
+            <div id={`extension-submenu-${ext.name}`} className={classes.subMenu} />
           </Fragment>
         ))}
       </div>

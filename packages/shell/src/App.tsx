@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { MainTheme, RegisteredExtensionCollection, RegisteredExtension, findExtension, removeExtension, injectExtension } from '@yakapa/shared';
+import { MainTheme, RegisteredExtensionCollection, RegisteredExtension, findExtension, removeExtensionContent, injectExtensionContent } from '@yakapa/shared';
 import { extensions } from '../extensions.json';
 import { useEffect } from 'react';
 import { ExtensionMenu } from './components/extensionMenu';
@@ -71,9 +71,9 @@ const Shell = (props: Props) => {
     if (extensionName) {
       const extension = await findExtension(extensionName);
       if (activeExtension) {
-        removeExtension(activeExtension.id);
+        removeExtensionContent(activeExtension.id);
       }
-      injectExtension(extension.id);
+      injectExtensionContent(extension.id);
       setActiveExtension({ ...extension });
     }
   };
@@ -95,12 +95,12 @@ const Shell = (props: Props) => {
         <nav className={classes.drawer}>
           <Hidden smUp implementation="css">
             <Drawer container={container} open={mobileOpen} onClose={handleDrawerToggle} classes={{ paper: classes.drawerPaper }}>
-              <ExtensionMenu extensions={registeredExtensions.extensions} onMenuItemClick={onMenuItemClick} />
+              <ExtensionMenu extensions={registeredExtensions.extensions} />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
             <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
-              <ExtensionMenu extensions={registeredExtensions.extensions} onMenuItemClick={onMenuItemClick} />
+              <ExtensionMenu extensions={registeredExtensions.extensions} />
             </Drawer>
           </Hidden>
         </nav>

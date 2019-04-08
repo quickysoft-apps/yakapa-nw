@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 import { MainTheme } from './theme';
+import { fireEvent, registerEvent } from './events';
 
 export interface RegisteredExtensionCollection {
   extensions: RegisteredExtension[];
@@ -27,31 +28,27 @@ export const findExtension = (extensionName: string): Promise<chrome.management.
   });
 };
 
-export const injectExtension = (id?: string) => {
+const INJECT_EXTENSION_CONTENT = 'injectContent';
+const REMOVE_EXTENSION_CONTENT = 'removeContent';
+
+export const injectExtensionContent = (id?: string) => {
   if (id) {
     const chromeExtensionUrl = `chrome-extension://${id}`;
     console.log('Inject', `(${chromeExtensionUrl})`);
-    const event = document.createEvent('Event');
-    event.initEvent(JSON.stringify({ inject: id }));
-    document.dispatchEvent(event);
+    fireEvent(INJECT_EXTENSION_CONTENT, id);
   }
 };
 
-export const removeExtension = (id?: string) => {
+export const removeExtensionContent = (id?: string) => {
   if (id) {
-    const event = document.createEvent('Event');
-    event.initEvent(JSON.stringify({ remove: id }));
-    document.dispatchEvent(event);
+    fireEvent(REMOVE_EXTENSION_CONTENT, id);
   }
 };
 
-export const renderExtension = <P extends {}>(element: ReactElement<P>, hotModule: NodeModule) => {
-  const injectEvent = JSON.stringify({ inject: chrome.runtime.id });
-  const removeEvent = JSON.stringify({ remove: chrome.runtime.id });
-
+export const renderExtensionContent = <P extends {}>(element: ReactElement<P>, hotModule: NodeModule) => {
   const onInject = () => {
     console.log('Injecting extension component');
-    inject(element);
+    injectContent(element);
   };
 
   const onRemove = () => {
@@ -62,21 +59,18 @@ export const renderExtension = <P extends {}>(element: ReactElement<P>, hotModul
     }
   };
 
-  document.removeEventListener(injectEvent, onInject);
-  document.addEventListener(injectEvent, onInject);
-
-  document.removeEventListener(removeEvent, onRemove);
-  document.addEventListener(removeEvent, onRemove);
+  registerEvent(INJECT_EXTENSION_CONTENT, chrome.runtime.id, onInject);
+  registerEvent(REMOVE_EXTENSION_CONTENT, chrome.runtime.id, onRemove);
 
   if (hotModule.hot) {
     hotModule.hot.accept(function() {
       const id = chrome.runtime.id;
       console.log('Hot reload extension', chrome.runtime.getManifest().name, `(chrome-extension://${id})`);
-      inject(element);
+      injectContent(element);
     });
   }
 
-  const inject = <P extends {}>(element: ReactElement<P>) => {
+  const injectContent = <P extends {}>(element: ReactElement<P>) => {
     const root = document.getElementById('extension-content');
     if (root) {
       unmountComponentAtNode(root);
