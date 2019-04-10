@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { render, unmountComponentAtNode, createPortal } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 
 import { MainTheme } from './theme';
 import { fireEvent, registerEvent } from './events';
@@ -80,15 +80,9 @@ export const renderExtensionContent = <P extends {}>(element: ReactElement<P>, h
   };
 };
 
-export const getExtensionPortal = async (name: string, domNodeId: string) => {
+export const getExtensionMenu = async (name: string) => {
   const path = `../${name}/lib/build/index.js`;
-  const content = await import(path);
-  const element = document.getElementById('extension-content');
-  return element ? createPortal(content, element) : null;
-};
-
-export const getExtensionContent = async (name: string) => {
-  const path = `../${name}/lib/build/index.js`;
+  console.log(path);
   const extension = await import(path);
-  return <MainTheme>{extension.Content}</MainTheme>;
+  return <>{extension.Menu}</>;
 };

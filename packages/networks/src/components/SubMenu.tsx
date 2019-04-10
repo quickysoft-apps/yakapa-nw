@@ -1,8 +1,6 @@
 import React from 'react';
 import { withStyles, Divider, List, ListItemText, ListItem } from '@material-ui/core';
 
-import manifest from '../../manifest.json';
-
 const styles = (theme: any) => ({
   toolbar: theme.mixins.toolbar
 });

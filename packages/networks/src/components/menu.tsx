@@ -2,15 +2,13 @@ import React from 'react';
 import { withStyles, List, ListItem, ListItemIcon } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
 
-import manifest from '../../manifest.json';
-
 const styles = (theme: any) => ({});
 
 interface Props {
   classes: any;
 }
 
-const ExtensionMenuComponent = (props: Props) => {
+export const MenuComponent = (props: Props) => {
   const onMenuItemClick = () => {
     //FireEvent with (manifest.name)
   };
@@ -26,4 +24,4 @@ const ExtensionMenuComponent = (props: Props) => {
   );
 };
 
-export const ExtensionMenu = withStyles(styles, { withTheme: true })(ExtensionMenuComponent);
+export const Menu = withStyles(styles, { withTheme: true })(MenuComponent);

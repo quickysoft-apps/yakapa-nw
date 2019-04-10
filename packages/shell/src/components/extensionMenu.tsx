@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withStyles, Divider } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 
-import { RegisteredExtension } from '@yakapa/shared';
+import { RegisteredExtension, getExtensionMenu } from '@yakapa/shared';
 
 const drawerWidth = 241;
 const extensionMenuWidth = 60;
@@ -33,19 +33,38 @@ interface Props {
 const ExtensionMenuComponent = (props: Props) => {
   const { classes, extensions } = props;
 
-  return (
-    <div className={classes.root}>
-      <div className={classes.container}>
-        {extensions.map(ext => (
-          <Fragment key={ext.name}>
-            <div>
-              <div id={`extension-menu-${ext.name}`} className={classes.menu} />
-              <Divider />
-            </div>
-            <div id={`extension-submenu-${ext.name}`} className={classes.subMenu} />
+  const [menu, setMenu] = useState<JSX.Element>();
+
+  const loadExtensions = async () => {
+    const menus = await Promise.all(
+      extensions.map(async ext => {
+        console.log(ext);
+        const shortName = ext.shortName;
+        return shortName ? getExtensionMenu(shortName) : null;
+      })
+    );
+
+    const menu = (
+      <div className={classes.menu}>
+        {menus.map((content: JSX.Element | null, index: number) => (
+          <Fragment key={index}>
+            {content}
+            <Divider />
           </Fragment>
         ))}
       </div>
+    );
+
+    setMenu(menu);
+  };
+
+  useEffect(() => {
+    loadExtensions();
+  });
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.container}>{menu}</div>
     </div>
   );
 };
