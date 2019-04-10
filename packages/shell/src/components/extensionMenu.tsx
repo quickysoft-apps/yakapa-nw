@@ -60,7 +60,7 @@ const ExtensionMenuComponent = (props: Props) => {
 
   useEffect(() => {
     loadExtensions();
-  });
+  }, []);
 
   return (
     <div className={classes.root}>

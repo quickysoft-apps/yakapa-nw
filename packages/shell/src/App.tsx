@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { MainTheme, RegisteredExtensionCollection, RegisteredExtension, findExtension, removeExtensionContent, injectExtensionContent } from '@yakapa/shared';
+import { MainTheme, RegisteredExtensionCollection, RegisteredExtension } from '@yakapa/shared';
 import { extensions } from '../extensions.json';
 import { useEffect } from 'react';
 import { ExtensionMenu } from './components/extensionMenu';
