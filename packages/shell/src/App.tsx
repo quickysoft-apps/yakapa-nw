@@ -67,16 +67,16 @@ const Shell = (props: Props) => {
     setRegisteredExtensions({ extensions });
   }, []);
 
-  const onMenuItemClick = async (extensionName?: string) => {
-    if (extensionName) {
-      const extension = await findExtension(extensionName);
-      if (activeExtension) {
-        removeExtensionContent(activeExtension.id);
-      }
-      injectExtensionContent(extension.id);
-      setActiveExtension({ ...extension });
-    }
-  };
+  // const onMenuItemClick = async (extensionName?: string) => {
+  //   if (extensionName) {
+  //     const extension = await findExtension(extensionName);
+  //     if (activeExtension) {
+  //       removeExtensionContent(activeExtension.id);
+  //     }
+  //     injectExtensionContent(extension.id);
+  //     setActiveExtension({ ...extension });
+  //   }
+  // };
 
   return (
     <MainTheme>

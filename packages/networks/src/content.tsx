@@ -1,9 +1,9 @@
 import React from 'react';
-import { renderExtension } from '@yakapa/shared';
+import { renderExtensionContent } from '@yakapa/shared';
 
 import { Typography } from '@material-ui/core';
 
-const Content = () => {
+export const Content = () => {
   return (
     <>
       <Typography>Networks Extension here</Typography>
@@ -11,4 +11,4 @@ const Content = () => {
   );
 };
 
-renderExtension(<Content />, module);
+renderExtensionContent(<Content />, module);
