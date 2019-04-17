@@ -1,16 +1,17 @@
 import React from 'react';
-import { withStyles, List, ListItem, ListItemIcon } from '@material-ui/core';
+import { List, ListItem, ListItemIcon } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
+import { fireExtensionEvent, ExtensionEvent } from '@yakapa/shared';
 
-const styles = (theme: any) => ({});
+//const styles = (theme: any) => ({});
 
 interface Props {
-  classes: any;
+  //classes: any;
 }
 
-export const MenuComponent = (props: Props) => {
+export const Menu = (props: Props) => {
   const onMenuItemClick = () => {
-    //FireEvent with (manifest.name)
+    fireExtensionEvent(ExtensionEvent.InjectContent, chrome.runtime.id);
   };
 
   return (
@@ -24,4 +25,4 @@ export const MenuComponent = (props: Props) => {
   );
 };
 
-export const Menu = withStyles(styles, { withTheme: true })(MenuComponent);
+//export const Menu = withStyles(styles, { withTheme: true })(MenuComponent);

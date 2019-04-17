@@ -1,8 +1,28 @@
-import React, { ReactElement } from 'react';
+import React, { SFCElement } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 import { MainTheme } from './theme';
 import { fireEvent, registerEvent } from './events';
+
+export enum ExtensionPart {
+  Content = 'content',
+  Menu = 'menu',
+  SubMenu = 'submenu'
+}
+
+export enum ExtensionEvent {
+  Ready = 'ready',
+  InjectContent = 'inject-content',
+  InjectMenu = 'inject-menu',
+  InjectSubMenu = 'inject-submenu'
+}
+
+export const getExtensionRootId = (extensionPart: ExtensionPart, extensionId?: string) => `extension-${extensionPart}${extensionId ? `-${extensionId}` : ''}`;
+
+export enum ExtensionRootId {
+  Content = 'extension-content',
+  Menu = ''
+}
 
 export interface RegisteredExtensionCollection {
   extensions: RegisteredExtension[];
@@ -29,60 +49,52 @@ export const findExtension = (extensionName: string): Promise<chrome.management.
   });
 };
 
-const INJECT_EXTENSION_CONTENT = 'injectContent';
-const REMOVE_EXTENSION_CONTENT = 'removeContent';
-
-export const injectExtensionContent = (id?: string) => {
-  if (id) {
-    const chromeExtensionUrl = `chrome-extension://${id}`;
-    console.log('Inject', `(${chromeExtensionUrl})`);
-    fireEvent(INJECT_EXTENSION_CONTENT, id);
+export const fireExtensionEvent = (eventName: string, extensionId?: string) => {
+  if (extensionId) {
+    fireEvent(eventName, extensionId);
   }
 };
 
-export const removeExtensionContent = (id?: string) => {
-  if (id) {
-    fireEvent(REMOVE_EXTENSION_CONTENT, id);
+export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any>, hotModule: NodeModule) => {
+  const id = chrome.runtime.id;
+
+  const onInject = () => injectAt(element, part === ExtensionPart.Content ? getExtensionRootId(part) : getExtensionRootId(part, id));
+
+  switch (part) {
+    case ExtensionPart.Content:
+      registerEvent(ExtensionEvent.InjectContent, id, onInject);
+      break;
+
+    case ExtensionPart.Menu:
+      registerEvent(ExtensionEvent.InjectMenu, id, onInject);
+      break;
+
+    case ExtensionPart.SubMenu:
+      registerEvent(ExtensionEvent.InjectSubMenu, id, onInject);
+      break;
+
+    default:
+      break;
   }
-};
-
-export const renderExtensionContent = <P extends {}>(element: ReactElement<P>, hotModule: NodeModule) => {
-  const onInject = () => {
-    console.log('Injecting extension component');
-    injectContent(element);
-  };
-
-  const onRemove = () => {
-    console.log('Removing extension component');
-    const root = document.getElementById('extension-content');
-    if (root) {
-      unmountComponentAtNode(root);
-    }
-  };
-
-  registerEvent(INJECT_EXTENSION_CONTENT, chrome.runtime.id, onInject);
-  registerEvent(REMOVE_EXTENSION_CONTENT, chrome.runtime.id, onRemove);
 
   if (hotModule.hot) {
     hotModule.hot.accept(function() {
       const id = chrome.runtime.id;
       console.log('Hot reload extension', chrome.runtime.getManifest().name, `(chrome-extension://${id})`);
-      injectContent(element);
+      onInject();
     });
   }
 
-  const injectContent = <P extends {}>(element: ReactElement<P>) => {
-    const root = document.getElementById('extension-content');
+  const injectAt = (element: SFCElement<any>, rootId: string) => {
+    console.log('Finding extension root element', rootId);
+    const root = document.getElementById(rootId);
+    if (!root) {
+      console.log('Extension root element not found', rootId);
+    }
     if (root) {
+      console.log('Found extension root element', rootId, 'and render');
       unmountComponentAtNode(root);
       render(<MainTheme>{element}</MainTheme>, root);
     }
   };
-};
-
-export const getExtensionMenu = async (name: string) => {
-  const path = `../${name}/lib/build/index.js`;
-  console.log(path);
-  const extension = await import(path);
-  return <>{extension.Menu}</>;
 };
