@@ -67,17 +67,6 @@ const Shell = (props: Props) => {
     setRegisteredExtensions({ extensions });
   }, []);
 
-  // const onMenuItemClick = async (extensionName?: string) => {
-  //   if (extensionName) {
-  //     const extension = await findExtension(extensionName);
-  //     if (activeExtension) {
-  //       removeExtensionContent(activeExtension.id);
-  //     }
-  //     injectExtensionContent(extension.id);
-  //     setActiveExtension({ ...extension });
-  //   }
-  // };
-
   return (
     <MainTheme>
       <CssBaseline />
@@ -95,12 +84,12 @@ const Shell = (props: Props) => {
         <nav className={classes.drawer}>
           <Hidden smUp implementation="css">
             <Drawer container={container} open={mobileOpen} onClose={handleDrawerToggle} classes={{ paper: classes.drawerPaper }}>
-              <ExtensionMenu extensions={registeredExtensions.extensions} />
+              <ExtensionMenu identifier="mobile" extensions={registeredExtensions.extensions} />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
             <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
-              <ExtensionMenu extensions={registeredExtensions.extensions} />
+              <ExtensionMenu identifier="desktop" extensions={registeredExtensions.extensions} />
             </Drawer>
           </Hidden>
         </nav>

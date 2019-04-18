@@ -87,14 +87,14 @@ export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any
 
   const injectAt = (element: SFCElement<any>, rootId: string) => {
     console.log('Finding extension root element', rootId);
-    const root = document.getElementById(rootId);
-    if (!root) {
+    const roots = document.querySelectorAll(`[id^='${rootId}']`);
+    if (!roots.length) {
       console.log('Extension root element not found', rootId);
     }
-    if (root) {
-      console.log('Found extension root element', rootId, 'and render');
+    roots.forEach(root => {
+      console.log('Found extension root element', root.id, 'and render');
       unmountComponentAtNode(root);
       render(<MainTheme>{element}</MainTheme>, root);
-    }
+    });
   };
 };

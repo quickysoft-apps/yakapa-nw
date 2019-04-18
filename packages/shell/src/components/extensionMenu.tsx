@@ -28,6 +28,7 @@ const styles = (theme: any) => ({
 interface Props {
   classes: any;
   extensions: RegisteredExtension[];
+  identifier?: string;
 }
 
 const ExtensionMenuComponent = (props: Props) => {
@@ -66,7 +67,7 @@ const ExtensionMenuComponent = (props: Props) => {
           {installedExtensions.map(extension => {
             return (
               <Fragment key={extension.shortName}>
-                <div id={`extension-menu-${extension.id}`} />
+                <div id={`extension-menu-${extension.id}${props.identifier ? `-${props.identifier}` : ''}`} />
               </Fragment>
             );
           })}
