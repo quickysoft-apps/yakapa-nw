@@ -13,7 +13,7 @@ function cleanStart() {
 }
 
 async function startParcel(cb: TaskCallback) {
-  const bundler = new ParcelBundler('src/**/*', {
+  const bundler = new ParcelBundler('src/index.html', {
     watch: true,
     publicUrl: './',
     outDir: './lib'

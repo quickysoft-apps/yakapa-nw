@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, ListItem, ListItemIcon } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
-import { ExtensionEvent, fireEvent } from '@yakapa/shared';
+import { fireEvent, ExtensionEvent } from '@yakapa/shared';
 
 export const Menu = () => {
   const onMenuItemClick = () => {

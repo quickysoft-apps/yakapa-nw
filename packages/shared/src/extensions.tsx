@@ -1,8 +1,7 @@
 import React, { SFCElement } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { render } from 'react-dom';
 
 import { MainTheme } from './theme';
-import { fireEvent, registerEvent } from './events';
 
 export enum ExtensionPart {
   Content = 'content',
@@ -11,11 +10,18 @@ export enum ExtensionPart {
 }
 
 export enum ExtensionEvent {
-  Ready = 'ready',
   InjectContent = 'inject-content',
+  ActivateContent = 'activate-content',
   InjectMenu = 'inject-menu',
   InjectSubMenu = 'inject-submenu'
 }
+
+export interface EventIdentifier {
+  type: ExtensionEvent;
+  token?: string;
+}
+
+const getEventId = ({ type, token }: EventIdentifier) => `${type}${token ? `-${token}` : ''}`;
 
 export const getExtensionRootId = (extensionPart: ExtensionPart, extensionId?: string) => `extension-${extensionPart}${extensionId ? `-${extensionId}` : ''}`;
 
@@ -32,15 +38,30 @@ export type RegisteredExtension = Partial<chrome.management.ExtensionInfo> & {
   hidden?: boolean;
 };
 
+export const registerEvent = (eventIdentifier: EventIdentifier, eventListener: EventListenerOrEventListenerObject) => {
+  const eventId = getEventId(eventIdentifier);
+  console.log('Register event', eventId);
+  document.removeEventListener(eventId, eventListener);
+  document.addEventListener(eventId, eventListener);
+};
+
+export const fireEvent = <T extends { [key: string]: string | number | boolean }>(eventIdentifier: EventIdentifier, payload?: T) => {
+  const eventId = getEventId(eventIdentifier);
+  const event = new CustomEvent(eventId, { detail: payload });
+  console.log('Fire event', eventId, payload);
+  document.dispatchEvent(event);
+};
+
 export const findExtension = (extensionName: string): Promise<chrome.management.ExtensionInfo> => {
   return new Promise((resolve, reject) => {
     chrome.management.getAll(result => {
-      console.log(result);
       const ext = result.find(x => x.name === extensionName);
       if (ext) {
+        const warnings: string[] = [];
         chrome.management.getPermissionWarningsById(ext.id, warnings => {
-          warnings.forEach(x => console.log(x));
+          warnings.forEach(x => warnings.push(x));
         });
+        console.log('Extension', extensionName, 'warnings', warnings);
         resolve(ext);
       } else {
         reject(new Error(`Extension not found: ${extensionName}`));
@@ -49,28 +70,22 @@ export const findExtension = (extensionName: string): Promise<chrome.management.
   });
 };
 
-export const fireExtensionEvent = (eventName: string, extensionId?: string) => {
-  if (extensionId) {
-    fireEvent(eventName, extensionId);
-  }
-};
-
 export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any>, hotModule: NodeModule) => {
   const id = chrome.runtime.id;
 
-  const onInject = () => injectAt(element, part === ExtensionPart.Content ? getExtensionRootId(part) : getExtensionRootId(part, id));
+  const onInject = () => injectAt(element, getExtensionRootId(part, id));
 
   switch (part) {
     case ExtensionPart.Content:
-      registerEvent(ExtensionEvent.InjectContent, id, onInject);
+      registerEvent({ type: ExtensionEvent.InjectContent, token: id }, onInject);
       break;
 
     case ExtensionPart.Menu:
-      registerEvent(ExtensionEvent.InjectMenu, id, onInject);
+      registerEvent({ type: ExtensionEvent.InjectMenu, token: id }, onInject);
       break;
 
     case ExtensionPart.SubMenu:
-      registerEvent(ExtensionEvent.InjectSubMenu, id, onInject);
+      registerEvent({ type: ExtensionEvent.InjectSubMenu, token: id }, onInject);
       break;
 
     default:
@@ -92,8 +107,7 @@ export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any
       console.log('Extension root element not found', rootId);
     }
     roots.forEach(root => {
-      console.log('Found extension root element', root.id, 'and render');
-      unmountComponentAtNode(root);
+      console.log('Render extension at root element', root.id);
       render(<MainTheme>{element}</MainTheme>, root);
     });
   };

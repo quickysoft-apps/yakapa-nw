@@ -2,12 +2,12 @@
   "name": "@yakapa/shell",
   "version": "0.0.1",
   "description": "description",
-  "node-main": "./server.js",
   "main": "http://localhost:8080",
-  "bg-script": "./background.js",
+  "node-main": "./server.js",
   "node-remote": [
     "*://*/*"
   ],
+  "bg-script": "./background.js",
   "author": "neurosoup <neurosoup@gmail.com>",
   "homepage": "https://github.com/quickysoft-apps/yakapa-nw#readme",
   "license": "ISC",
@@ -32,7 +32,7 @@
     "nwVersion": "0.37.1",
     "nwFlavor": "normal",
     "overriddenProperties": {
-      "chromium-args": "--enable-logging=stderr --load-extension=lib/extensions/settings"
+      "chromium-args": "--enable-logging=stderr --load-extension=lib/extensions/settings,lib/extensions/networks"
     },
     "excludes": [
       "_tests_/**/*",

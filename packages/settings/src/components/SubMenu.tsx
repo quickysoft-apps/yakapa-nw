@@ -1,5 +1,11 @@
 import React from 'react';
-import { withStyles, Divider, List, ListItemText, ListItem } from '@material-ui/core';
+import {
+  withStyles,
+  Divider,
+  List,
+  ListItemText,
+  ListItem
+} from '@material-ui/core';
 
 const styles = (theme: any) => ({
   toolbar: theme.mixins.toolbar
@@ -25,4 +31,6 @@ const SubMenuComponent = (props: Props) => {
   );
 };
 
-export const SubMenu = withStyles(styles, { withTheme: true })(SubMenuComponent);
+export const SubMenu = withStyles(styles, { withTheme: true })(
+  SubMenuComponent
+);

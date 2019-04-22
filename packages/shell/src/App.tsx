@@ -1,12 +1,12 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { MainTheme, RegisteredExtensionCollection, RegisteredExtension } from '@yakapa/shared';
-import { extensions } from '../extensions.json';
-import { useEffect } from 'react';
+import { MainTheme, RegisteredExtension, useInstalledExtensions, ExtensionEvent, registerEvent, findExtension } from '@yakapa/shared';
+import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
+import { useEffect } from 'react';
 
 export const drawerWidth = 241;
 
@@ -47,25 +47,32 @@ interface Props {
   classes: any;
   theme: any;
   container?: any;
+  reload?: boolean;
 }
-
-const defaultRegisteredExtensions = {
-  extensions: []
-};
 
 const Shell = (props: Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [registeredExtensions, setRegisteredExtensions] = useState<RegisteredExtensionCollection>(defaultRegisteredExtensions);
-  const [activeExtension, setActiveExtension] = useState<RegisteredExtension>();
+  const [reload, setReload] = useState<boolean | undefined>(props.reload);
+  const installedExtensions = useInstalledExtensions(extensions, reload);
+  const [activeExtensionId, setActiveExtensionId] = useState<string>();
+
+  useEffect(() => {
+    setReload(false);
+  }, []);
+
+  useEffect(() => {
+    installedExtensions.forEach(extension => {
+      if (extension.id) {
+        registerEvent({ type: ExtensionEvent.ActivateContent, token: extension.id }, () => setActiveExtensionId(extension.id));
+      }
+    });
+  }, [installedExtensions]);
+
   const { classes, container } = props;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  useEffect(() => {
-    setRegisteredExtensions({ extensions });
-  }, []);
 
   return (
     <MainTheme>
@@ -77,25 +84,27 @@ const Shell = (props: Props) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
-              {activeExtension ? activeExtension.name : 'Welcome'}
+              {activeExtensionId ? activeExtensionId : 'Welcome'}
             </Typography>
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
           <Hidden smUp implementation="css">
             <Drawer container={container} open={mobileOpen} onClose={handleDrawerToggle} classes={{ paper: classes.drawerPaper }}>
-              <ExtensionMenu identifier="mobile" extensions={registeredExtensions.extensions} />
+              <ExtensionMenu opened={mobileOpen} identifier="mobile" extensions={installedExtensions} />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
             <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
-              <ExtensionMenu identifier="desktop" extensions={registeredExtensions.extensions} />
+              <ExtensionMenu opened={mobileOpen} identifier="desktop" extensions={installedExtensions} />
             </Drawer>
           </Hidden>
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div id="extension-content" />
+          {installedExtensions.map(extension => {
+            return <div key={extension.id} id={`extension-content-${extension.id}`} />;
+          })}
         </main>
       </div>
     </MainTheme>
@@ -105,3 +114,13 @@ const Shell = (props: Props) => {
 const App = withStyles(styles, { withTheme: true })(Shell);
 
 render(<App />, document.getElementById('root'));
+
+if (module.hot) {
+  module.hot.accept(function() {
+    const root = document.getElementById('root');
+    if (root) {
+      unmountComponentAtNode(root);
+      render(<App reload />, root);
+    }
+  });
+}
