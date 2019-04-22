@@ -102,9 +102,9 @@ const Shell = (props: Props) => {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {installedExtensions.map(extension => {
-            return <div key={extension.id} id={`extension-content-${extension.id}`} />;
-          })}
+          {installedExtensions.map(extension => (
+            <div key={extension.id} id={`extension-content-${extension.id}`} style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }} />
+          ))}
         </main>
       </div>
     </MainTheme>
