@@ -1,10 +1,12 @@
 [
   {
+    "index": 2,
     "shortName": "networks",
     "name": "Réseaux",
     "description": "Gérer des réseaux pour toujours avoir un agent sous la main rapidement"
   },
   {
+    "index": 1,
     "shortName": "settings",
     "name": "Configuration",
     "description": "Configuration du compte et de l'agent"

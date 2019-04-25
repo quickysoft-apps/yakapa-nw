@@ -10,6 +10,7 @@ export enum ExtensionPart {
 }
 
 export enum ExtensionEvent {
+  RenderReady = 'render-ready',
   InjectContent = 'inject-content',
   ActivateContent = 'activate-content',
   InjectMenu = 'inject-menu',
@@ -35,6 +36,7 @@ export interface RegisteredExtensionCollection {
 }
 
 export type RegisteredExtension = Partial<chrome.management.ExtensionInfo> & {
+  index: number;
   hidden?: boolean;
 };
 

@@ -17,7 +17,7 @@ export const useInstalledExtensions = (extensions: RegisteredExtension[], reload
     }, Promise.resolve([] as RegisteredExtension[]));
 
     staticInstalledExtensions = [...foundinstalledExtensions];
-    setInstalledExtensions(foundinstalledExtensions);
+    setInstalledExtensions(foundinstalledExtensions.sort((a, b) => a.index - b.index));
   };
 
   useEffect(() => {
@@ -28,6 +28,10 @@ export const useInstalledExtensions = (extensions: RegisteredExtension[], reload
 
   useEffect(() => {
     installedExtensions.forEach(extension => {
+      // registerEvent({ type: ExtensionEvent.RenderReady, token: extension.id }, () => {
+      //   fireEvent({ type: ExtensionEvent.InjectMenu, token: extension.id });
+      //   fireEvent({ type: ExtensionEvent.InjectContent, token: extension.id });
+      // });
       fireEvent({ type: ExtensionEvent.InjectMenu, token: extension.id });
       fireEvent({ type: ExtensionEvent.InjectContent, token: extension.id });
     });

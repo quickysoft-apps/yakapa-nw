@@ -1,7 +1,7 @@
 import React from 'react';
-import { withStyles, Divider, List, ListItemText, ListItem } from '@material-ui/core';
+import { withStyles, Divider, List, ListItemText, ListItem, Theme } from '@material-ui/core';
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
   toolbar: theme.mixins.toolbar
 });
 

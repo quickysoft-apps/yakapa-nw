@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography, Theme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { MainTheme, RegisteredExtension, useInstalledExtensions, ExtensionEvent, registerEvent, findExtension } from '@yakapa/shared';
+import { MainTheme, useInstalledExtensions, ExtensionEvent, registerEvent, findExtension } from '@yakapa/shared';
 import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
 import { useEffect } from 'react';
 
 export const drawerWidth = 241;
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
   root: {
     display: 'flex'
   },

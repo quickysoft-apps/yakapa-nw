@@ -1,20 +1,37 @@
-import React from 'react';
-import { List, ListItem, ListItemIcon } from '@material-ui/core';
-import MailIcon from '@material-ui/icons/Mail';
-import { ExtensionEvent, fireEvent } from '@yakapa/shared';
+import React, { FC } from 'react';
+import { List, ListItem, ListItemIcon, WithStyles, withStyles } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
+import Avatar from '@material-ui/core/Avatar';
+import { ExtensionEvent, fireEvent, BootstrapTooltip } from '@yakapa/shared';
 
-export const Menu = () => {
+const styles = {
+  list: {
+    padding: 0
+  }
+};
+
+interface Props extends WithStyles<typeof styles> {}
+
+const MenuComponent: FC<Props> = props => {
+  const { classes } = props;
+
   const onMenuItemClick = () => {
     fireEvent({ type: ExtensionEvent.ActivateContent, token: chrome.runtime.id });
   };
 
   return (
-    <List>
+    <List className={classes.list}>
       <ListItem button onClick={onMenuItemClick}>
-        <ListItemIcon>
-          <MailIcon />
-        </ListItemIcon>
+        <BootstrapTooltip title="Ajouter un réseau" placement="right">
+          <ListItemIcon>
+            <Avatar>
+              <Add />
+            </Avatar>
+          </ListItemIcon>
+        </BootstrapTooltip>
       </ListItem>
     </List>
   );
 };
+
+export const Menu = withStyles(styles)(MenuComponent);

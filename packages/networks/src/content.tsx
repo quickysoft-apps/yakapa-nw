@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Typography } from '@material-ui/core';
-import { exportExtensionPart, ExtensionPart } from '@yakapa/shared';
+import { exportExtensionPart, ExtensionPart, fireEvent, ExtensionEvent } from '@yakapa/shared';
 
 import { Menu } from './components/Menu';
 
@@ -15,3 +15,4 @@ export const Content = () => {
 
 exportExtensionPart(ExtensionPart.Menu, <Menu />, module);
 exportExtensionPart(ExtensionPart.Content, <Content />, module);
+fireEvent({ type: ExtensionEvent.RenderReady, token: chrome.runtime.id });
