@@ -21,18 +21,18 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "window": {
-    "width": 800,
-    "height": 600,
+    "width": 1024,
+    "height": 768,
     "frame": true,
     "icon": "./assets/pd.png"
   },
   "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/lib,../runner/lib,../networks/lib",
   "build": {
     "appId": "yakapa",
-    "nwVersion": "0.37.1",
+    "nwVersion": "0.38.1",
     "nwFlavor": "normal",
     "overriddenProperties": {
-      "chromium-args": "--enable-logging=stderr --load-extension=lib/extensions/settings,lib/extensions/networks"
+      "chromium-args": "--enable-logging=stderr --load-extension=/Users/lawrence/Dev/nw/release/extensions/settings,/Users/lawrence/Dev/nw/release/extensions/networks"
     },
     "excludes": [
       "_tests_/**/*",

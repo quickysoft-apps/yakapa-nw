@@ -6,7 +6,7 @@ import { npmRun } from '@yakapa/shared';
 type TaskCallback = (err?: Error) => void;
 
 const buildDestination = '../../release';
-const extensionsDist = './lib/extensions/';
+const extensionsDist = '../../release/extensions';
 
 function cleanStart() {
   return del(['lib/*.+(js|html|map)']);
@@ -31,11 +31,17 @@ function createReleaseFolder() {
   return src('*.*', { read: false }).pipe(dest(buildDestination));
 }
 
-function copyExtensions() {
+function copyExtension(extensionName: string) {
   return src('*.*', { read: false })
     .pipe(dest(extensionsDist))
-    .pipe(src('../settings/lib/**/*'))
-    .pipe(dest(`${extensionsDist}/settings/`));
+    .pipe(src(`../${extensionName}/lib/**/*`))
+    .pipe(dest(`${extensionsDist}/${extensionName}/`));
+}
+
+function copyExtensions(cb: TaskCallback) {
+  copyExtension('settings');
+  copyExtension('networks');
+  cb();
 }
 
 async function cleanBuild() {
@@ -54,7 +60,9 @@ async function buildParcel(cb: TaskCallback) {
 }
 
 async function buildNW(cb: TaskCallback) {
-  npmRun('build', ['--tasks', 'win-x64,mac-x64', '--mirror', 'https://dl.nwjs.io/', '.']).then((_: any) => cb());
+  // const platforms = 'win-x64,mac-x64';
+  const platforms = 'mac-x64';
+  npmRun('build', ['--tasks', platforms, '--mirror', 'https://dl.nwjs.io/', '.']).then((_: any) => cb());
 }
 
 export const start = series(cleanStart, startParcel, startNW);

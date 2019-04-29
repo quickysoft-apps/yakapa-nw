@@ -1,18 +1,8 @@
 import React from 'react';
-
-import { Typography } from '@material-ui/core';
 import { exportExtensionPart, ExtensionPart, fireEvent, ExtensionEvent } from '@yakapa/shared';
-
 import { Menu } from './components/Menu';
-
-export const Content = () => {
-  return (
-    <>
-      <Typography>Settings Extension here</Typography>
-    </>
-  );
-};
+import { MainContent } from './components/MainContent';
 
 exportExtensionPart(ExtensionPart.Menu, <Menu />, module);
-exportExtensionPart(ExtensionPart.Content, <Content />, module);
+exportExtensionPart(ExtensionPart.Content, <MainContent />, module);
 fireEvent({ type: ExtensionEvent.RenderReady, token: chrome.runtime.id });
