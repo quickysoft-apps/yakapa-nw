@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { RegisteredExtension, findExtension, fireEvent, ExtensionEvent } from '../extensions';
+import { RegisteredExtension, findExtension, fireEvent, ExtensionEvent, registerEvent } from '../extensions';
 
 let staticInstalledExtensions: RegisteredExtension[] = [];
 
@@ -28,10 +28,10 @@ export const useInstalledExtensions = (extensions: RegisteredExtension[], reload
 
   useEffect(() => {
     installedExtensions.forEach(extension => {
-      // registerEvent({ type: ExtensionEvent.RenderReady, token: extension.id }, () => {
-      //   fireEvent({ type: ExtensionEvent.InjectMenu, token: extension.id });
-      //   fireEvent({ type: ExtensionEvent.InjectContent, token: extension.id });
-      // });
+      registerEvent({ type: ExtensionEvent.RenderReady, token: extension.id }, () => {
+        fireEvent({ type: ExtensionEvent.InjectMenu, token: extension.id });
+        fireEvent({ type: ExtensionEvent.InjectContent, token: extension.id });
+      });
       fireEvent({ type: ExtensionEvent.InjectMenu, token: extension.id });
       fireEvent({ type: ExtensionEvent.InjectContent, token: extension.id });
     });

@@ -1,7 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import { withStyles, Divider, Theme } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
-
+import { withStyles, Divider, Theme, AppBar, Toolbar, Typography } from '@material-ui/core';
 import { RegisteredExtension, fireEvent, ExtensionEvent } from '@yakapa/shared';
 
 const drawerWidth = 241;
@@ -11,13 +9,17 @@ const styles = (theme: Theme) => ({
   root: {
     height: '100%'
   },
+  subMenuBar: {
+    'user-select': 'none',
+    width: `calc(${drawerWidth}px - ${extensionMenuWidth}px)`
+  },
   container: {
     display: 'flex',
     height: '100%'
   },
   menu: {
     width: extensionMenuWidth,
-    backgroundColor: grey[900]
+    backgroundColor: '#212121'
   },
   subMenu: {
     width: `calc(${drawerWidth}px - ${extensionMenuWidth}px)`,
@@ -57,6 +59,15 @@ const ExtensionMenuComponent = (props: Props) => {
               </Fragment>
             );
           })}
+        </div>
+        <div className={classes.subMenu}>
+          <AppBar position="relative" color="paper" className={classes.subMenuBar}>
+            <Toolbar>
+              <Typography variant="h6" color="inherit" noWrap>
+                Yoyoyo
+              </Typography>
+            </Toolbar>
+          </AppBar>
         </div>
       </div>
     </div>

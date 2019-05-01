@@ -25,7 +25,8 @@ const styles = (theme: Theme) => ({
     marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
-    }
+    },
+    backgroundColor: '#303030'
   },
   menuButton: {
     marginRight: 20,
@@ -35,7 +36,8 @@ const styles = (theme: Theme) => ({
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    border: 'none'
   },
   content: {
     flexGrow: 1,

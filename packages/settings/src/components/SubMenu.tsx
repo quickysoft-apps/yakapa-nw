@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles, Divider, List, ListItemText, ListItem, Theme } from '@material-ui/core';
+import { withStyles, Divider, List, ListItemText, ListItem, Theme, ListSubheader } from '@material-ui/core';
 
 const styles = (theme: Theme) => ({
   toolbar: theme.mixins.toolbar
@@ -16,9 +16,9 @@ const SubMenuComponent = (props: Props) => {
     <>
       <div className={classes.toolbar} />
       <Divider />
-      <List>
+      <List subheader={<ListSubheader>Paramètres utilisateur</ListSubheader>}>
         <ListItem button>
-          <ListItemText primary="Une action de l'ext" />
+          <ListItemText primary="Compte" />
         </ListItem>
       </List>
     </>
