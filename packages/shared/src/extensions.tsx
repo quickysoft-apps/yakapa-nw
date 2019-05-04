@@ -1,7 +1,7 @@
 import React, { SFCElement } from 'react';
 import { render } from 'react-dom';
-
-import { MainTheme } from './theme';
+import { MuiThemeProvider, CssBaseline, Theme } from '@material-ui/core';
+import { darkTheme } from './theme';
 
 export enum ExtensionPart {
   Content = 'content',
@@ -110,7 +110,13 @@ export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any
     }
     roots.forEach(root => {
       console.log('Render extension at root element', root.id);
-      render(<MainTheme>{element}</MainTheme>, root);
+      render(
+        <MuiThemeProvider theme={darkTheme as Theme}>
+          <CssBaseline />
+          {element}
+        </MuiThemeProvider>,
+        root
+      );
     });
   };
 };

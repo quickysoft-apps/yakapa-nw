@@ -61,8 +61,8 @@ const ExtensionMenuComponent = (props: Props) => {
           })}
         </div>
         <div className={classes.subMenu}>
-          <AppBar position="relative" color="paper" className={classes.subMenuBar}>
-            <Toolbar>
+          <AppBar position="relative" elevation={1} color="secondary" className={classes.subMenuBar}>
+            <Toolbar variant="dense">
               <Typography variant="h6" color="inherit" noWrap>
                 Yoyoyo
               </Typography>

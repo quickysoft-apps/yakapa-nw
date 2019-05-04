@@ -3,47 +3,50 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography, Theme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { MainTheme, useInstalledExtensions, ExtensionEvent, registerEvent, findExtension } from '@yakapa/shared';
+import { useInstalledExtensions, ExtensionEvent, registerEvent, darkTheme } from '@yakapa/shared';
 import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
 import { useEffect } from 'react';
+import { MuiThemeProvider } from '@material-ui/core';
 
 export const drawerWidth = 241;
 
-const styles = (theme: Theme) => ({
-  root: {
-    display: 'flex'
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0
-    }
-  },
-  appBar: {
-    'user-select': 'none',
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`
+const styles = (theme: Theme) => {
+  return {
+    root: {
+      display: 'flex'
     },
-    backgroundColor: '#303030'
-  },
-  menuButton: {
-    marginRight: 20,
-    [theme.breakpoints.up('sm')]: {
-      display: 'none'
+    drawer: {
+      [theme.breakpoints.up('sm')]: {
+        width: drawerWidth,
+        flexShrink: 0
+      }
+    },
+    appBar: {
+      'user-select': 'none',
+      marginLeft: drawerWidth,
+      [theme.breakpoints.up('sm')]: {
+        width: `calc(100% - ${drawerWidth}px)`
+      },
+      backgroundColor: theme.palette.background.default
+    },
+    menuButton: {
+      marginRight: 20,
+      [theme.breakpoints.up('sm')]: {
+        display: 'none'
+      }
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+      width: drawerWidth,
+      border: 'none'
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing.unit * 3
     }
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-    border: 'none'
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
-  }
-});
+  };
+};
 
 interface Props {
   classes: any;
@@ -70,18 +73,17 @@ const Shell = (props: Props) => {
     });
   }, [installedExtensions]);
 
-  const { classes, container } = props;
+  const { classes, container, theme } = props;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   return (
-    <MainTheme>
-      <CssBaseline />
+    <>
       <div className={classes.root}>
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
+        <AppBar position="fixed" elevation={1} className={classes.appBar}>
+          <Toolbar variant="dense">
             <IconButton color="inherit" aria-label="Open drawer" onClick={handleDrawerToggle} className={classes.menuButton}>
               <MenuIcon />
             </IconButton>
@@ -109,13 +111,19 @@ const Shell = (props: Props) => {
           ))}
         </main>
       </div>
-    </MainTheme>
+    </>
   );
 };
 
 const App = withStyles(styles, { withTheme: true })(Shell);
 
-render(<App />, document.getElementById('root'));
+render(
+  <MuiThemeProvider theme={darkTheme as Theme}>
+    <CssBaseline />
+    <App />
+  </MuiThemeProvider>,
+  document.getElementById('root')
+);
 
 if (module.hot) {
   module.hot.accept(function() {
