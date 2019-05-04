@@ -10,8 +10,8 @@ export const darkTheme = createMuiTheme({
       white: 'rgba(255, 255, 255, 1)'
     },
     background: {
-      paper: 'rgba(44, 44, 44, 1)',
-      default: '#303030'
+      paper: '#2d2d2d',
+      default: '#303030' //used for content
     },
     primary: {
       light: '#d25ced',
@@ -21,8 +21,8 @@ export const darkTheme = createMuiTheme({
     },
     secondary: {
       light: '#595959',
-      main: '#303030',
-      dark: '#070707',
+      main: '#2d2d2d', //used for submenu
+      dark: '#212121', //use for menu
       contrastText: '#fff'
     },
     error: {

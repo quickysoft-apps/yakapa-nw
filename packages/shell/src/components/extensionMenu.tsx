@@ -19,11 +19,11 @@ const styles = (theme: Theme) => ({
   },
   menu: {
     width: extensionMenuWidth,
-    backgroundColor: '#212121'
+    backgroundColor: theme.palette.secondary.dark
   },
   subMenu: {
     width: `calc(${drawerWidth}px - ${extensionMenuWidth}px)`,
-    backgroundColor: '#2d2d2d'
+    backgroundColor: theme.palette.secondary.main
   }
 });
 
@@ -47,6 +47,8 @@ const ExtensionMenuComponent = (props: Props) => {
 
   const { classes, extensions } = props;
 
+  const getElementId = (extension: RegisteredExtension) => `${extension.id}${props.identifier ? `-${props.identifier}` : ''}`;
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -54,20 +56,25 @@ const ExtensionMenuComponent = (props: Props) => {
           {extensions.map((extension, index) => {
             return (
               <Fragment key={extension.shortName}>
-                <div id={`extension-menu-${extension.id}${props.identifier ? `-${props.identifier}` : ''}`} />
+                <div id={`extension-menu-${getElementId(extension)}`} />
                 {index < extensions.length - 1 && <Divider />}
               </Fragment>
             );
           })}
         </div>
         <div className={classes.subMenu}>
-          <AppBar position="relative" elevation={1} color="secondary" className={classes.subMenuBar}>
-            <Toolbar variant="dense">
-              <Typography variant="h6" color="inherit" noWrap>
-                Yoyoyo
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          {extensions.map(extension => {
+            return (
+              <Fragment key={extension.shortName}>
+                <AppBar position="relative" elevation={1} color="secondary" className={classes.subMenuBar}>
+                  <Toolbar variant="dense">
+                    <div id={`extension-submenu-toolbar-${getElementId(extension)}`} />
+                  </Toolbar>
+                </AppBar>
+                <div id={`extension-submenu-content-${getElementId(extension)}`} />
+              </Fragment>
+            );
+          })}
         </div>
       </div>
     </div>
