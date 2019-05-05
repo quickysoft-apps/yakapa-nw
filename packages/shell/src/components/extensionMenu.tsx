@@ -68,7 +68,7 @@ const ExtensionMenuComponent = (props: Props) => {
           {installedExtensions.map((extension, index) => {
             return (
               <div key={extension.shortName} style={{ position: 'relative' }}>
-                <div className={classes.indicator} style={{ display: getCSSDisplayValue(extension) }} />
+                {activeExtensionId === extension.id && <div className={classes.indicator} />}
                 <div id={getElementId(ExtensionPart.Menu, extension)} />
                 {index < installedExtensions.length - 1 && <Divider variant="middle" />}
               </div>

@@ -27,9 +27,10 @@
     "parcel-bundler": "^1.11.0"
   },
   "dependencies": {
+    "@yakapa/api": "^0.0.0",
+    "@yakapa/shared": "^0.0.0",
     "pubnub": "^4.22.0",
     "pubnub-react": "^1.2.0",
-    "@yakapa/shared": "^0.0.0",
-    "@yakapa/api": "^0.0.0"
+    "src": "^1.1.2"
   }
 }

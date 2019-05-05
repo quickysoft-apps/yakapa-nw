@@ -43,9 +43,7 @@ const validateNickname = (value: string) => {
 };
 
 const validateEmailAddress = (value: string): string => {
-  const error = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-    value
-  )
+  const error = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)
     ? ''
     : 'You must enter a valid email address';
   return error;
@@ -98,7 +96,7 @@ function reducer(state: State, action: Actions) {
   }
 }
 
-export const SettingsForm = () => {
+export const AgentSettings = () => {
   const [{ submitted, ...state }, dispatch] = useReducer(reducer, defaultState);
 
   return (
@@ -120,9 +118,7 @@ export const SettingsForm = () => {
         error={state.nicknameError !== ''}
         label={state.nicknameError || 'Nickname'}
         value={state.nickname}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          dispatch({ type: 'SET_NICKNAME', value: e.currentTarget.value })
-        }
+        onChange={(e: ChangeEvent<HTMLInputElement>) => dispatch({ type: 'SET_NICKNAME', value: e.currentTarget.value })}
         margin="normal"
       />
       <TextField
@@ -130,9 +126,7 @@ export const SettingsForm = () => {
         error={state.emailAddressError !== ''}
         label={state.emailAddressError || 'Email Address'}
         value={state.emailAddress}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          dispatch({ type: 'SET_EMAIL_ADDRESS', value: e.currentTarget.value })
-        }
+        onChange={(e: ChangeEvent<HTMLInputElement>) => dispatch({ type: 'SET_EMAIL_ADDRESS', value: e.currentTarget.value })}
         margin="normal"
       />
       <Button type="submit">Save</Button>

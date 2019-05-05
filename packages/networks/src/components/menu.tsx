@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { List, ListItem, ListItemIcon, WithStyles, withStyles } from '@material-ui/core';
+import { List, ListItemIcon, WithStyles, withStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
-import { BootstrapTooltip, fireExtensionActivateEvent, ExtensionPart, ExtensionMenuItem } from '@yakapa/shared';
+import { fireExtensionActivateEvent, ExtensionPart, ExtensionMenuItem } from '@yakapa/shared';
 
 const styles = {
   list: {

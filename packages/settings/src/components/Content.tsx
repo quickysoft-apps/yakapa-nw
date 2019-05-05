@@ -1,10 +1,11 @@
-import React from 'react';
-import { Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import { AgentSettings } from '../pages/AgentSettings';
+
+enum Page {
+  AgentSettings
+}
 
 export const Content = () => {
-  return (
-    <>
-      <Typography>Settings Extension here</Typography>
-    </>
-  );
+  const [page, setPage] = useState<Page>(Page.AgentSettings);
+  return <>{page === Page.AgentSettings && <AgentSettings />}</>;
 };

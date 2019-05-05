@@ -10,10 +10,12 @@ interface Props {
 }
 
 const SubMenuComponent = (props: Props) => {
+  const onAccountClick = () => {};
+
   return (
     <>
       <List subheader={<ListSubheader>Paramètres utilisateur</ListSubheader>}>
-        <ListItem button>
+        <ListItem button onClick={onAccountClick}>
           <ListItemText primary="Compte" />
         </ListItem>
       </List>
