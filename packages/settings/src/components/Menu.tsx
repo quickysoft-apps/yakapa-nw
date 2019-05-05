@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { List, ListItem, ListItemIcon } from '@material-ui/core';
 import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { fireEvent, ExtensionEvent, BootstrapTooltip } from '@yakapa/shared';
+import { BootstrapTooltip, fireExtensionActivateEvent, ExtensionPart } from '@yakapa/shared';
 
 const styles = (theme: Theme) => ({
   home: {
@@ -20,7 +20,7 @@ const MenuComponent: FC<Props> = props => {
   const { classes } = props;
 
   const onMenuItemClick = () => {
-    fireEvent({ type: ExtensionEvent.ActivateContent, token: chrome.runtime.id });
+    fireExtensionActivateEvent(ExtensionPart.Content, chrome.runtime.id);
   };
 
   return (

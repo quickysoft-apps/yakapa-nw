@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { List, ListItem, ListItemIcon, WithStyles, withStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
-import { ExtensionEvent, fireEvent, BootstrapTooltip } from '@yakapa/shared';
+import { BootstrapTooltip, fireExtensionActivateEvent, ExtensionPart } from '@yakapa/shared';
 
 const styles = {
   list: {
@@ -16,7 +16,7 @@ const MenuComponent: FC<Props> = props => {
   const { classes } = props;
 
   const onMenuItemClick = () => {
-    fireEvent({ type: ExtensionEvent.ActivateContent, token: chrome.runtime.id });
+    fireExtensionActivateEvent(ExtensionPart.Content, chrome.runtime.id);
   };
 
   return (

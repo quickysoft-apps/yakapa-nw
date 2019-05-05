@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography, Theme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { useInstalledExtensions, ExtensionEvent, registerEvent, darkTheme } from '@yakapa/shared';
+import { useInstalledExtensions, registerEvent, darkTheme, getExtensionInjectEventType, ExtensionEventKind, ExtensionPart } from '@yakapa/shared';
 import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
 import { useEffect } from 'react';
@@ -68,12 +68,12 @@ const Shell = (props: Props) => {
   useEffect(() => {
     installedExtensions.forEach(extension => {
       if (extension.id) {
-        registerEvent({ type: ExtensionEvent.ActivateContent, token: extension.id }, () => setActiveExtensionId(extension.id));
+        registerEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Activate, ExtensionPart.Content), token: extension.id }, () => setActiveExtensionId(extension.id));
       }
     });
   }, [installedExtensions]);
 
-  const { classes, container, theme } = props;
+  const { classes, container } = props;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

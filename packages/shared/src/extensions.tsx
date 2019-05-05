@@ -4,32 +4,25 @@ import { MuiThemeProvider, CssBaseline, Theme } from '@material-ui/core';
 import { darkTheme } from './theme';
 
 export enum ExtensionPart {
-  Content = 'content',
+  All = 'all',
   Menu = 'menu',
+  ContentToolbar = 'contentToolbar',
+  Content = 'content',
+  SubMenuToolbar = 'submenuToolbar',
   SubMenu = 'submenu'
 }
-
-export enum ExtensionEvent {
-  RenderReady = 'render-ready',
-  InjectContent = 'inject-content',
-  ActivateContent = 'activate-content',
-  InjectMenu = 'inject-menu',
-  InjectSubMenu = 'inject-submenu'
+export enum ExtensionEventKind {
+  Inject = 'inject',
+  Activate = 'activate'
 }
 
 export interface EventIdentifier {
-  type: ExtensionEvent;
+  type: string;
   token?: string;
 }
 
-const getEventId = ({ type, token }: EventIdentifier) => `${type}${token ? `-${token}` : ''}`;
-
 export const getExtensionRootId = (extensionPart: ExtensionPart, extensionId?: string) => `extension-${extensionPart}${extensionId ? `-${extensionId}` : ''}`;
-
-export enum ExtensionRootId {
-  Content = 'extension-content',
-  Menu = ''
-}
+export const getExtensionInjectEventType = (eventKind: ExtensionEventKind, extensionPart: ExtensionPart) => `${eventKind}-${extensionPart}`;
 
 export interface RegisteredExtensionCollection {
   extensions: RegisteredExtension[];
@@ -47,11 +40,29 @@ export const registerEvent = (eventIdentifier: EventIdentifier, eventListener: E
   document.addEventListener(eventId, eventListener);
 };
 
-export const fireEvent = <T extends { [key: string]: string | number | boolean }>(eventIdentifier: EventIdentifier, payload?: T) => {
+export const fireExtensionEvent = <T extends { [key: string]: string | number | boolean }>(eventIdentifier: EventIdentifier, payload?: T) => {
   const eventId = getEventId(eventIdentifier);
   const event = new CustomEvent(eventId, { detail: payload });
   console.log('Fire event', eventId, payload);
   document.dispatchEvent(event);
+};
+
+export const fireExtensionInjectEvent = (extensionPart: ExtensionPart, extensionId?: string) => {
+  if (extensionId) {
+    fireExtensionEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Inject, extensionPart), token: extensionId });
+  }
+};
+
+export const fireExtensionActivateEvent = (extensionPart: ExtensionPart, extensionId?: string) => {
+  if (extensionId) {
+    fireExtensionEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Activate, extensionPart), token: extensionId });
+  }
+};
+
+export const fireExtensionRenderReadyEvent = (extensionId?: string) => {
+  if (extensionId) {
+    fireExtensionEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Inject, ExtensionPart.All), token: extensionId });
+  }
 };
 
 export const findExtension = (extensionName: string): Promise<chrome.management.ExtensionInfo> => {
@@ -77,22 +88,7 @@ export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any
 
   const onInject = () => injectAt(element, getExtensionRootId(part, id));
 
-  switch (part) {
-    case ExtensionPart.Content:
-      registerEvent({ type: ExtensionEvent.InjectContent, token: id }, onInject);
-      break;
-
-    case ExtensionPart.Menu:
-      registerEvent({ type: ExtensionEvent.InjectMenu, token: id }, onInject);
-      break;
-
-    case ExtensionPart.SubMenu:
-      registerEvent({ type: ExtensionEvent.InjectSubMenu, token: id }, onInject);
-      break;
-
-    default:
-      break;
-  }
+  registerEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Inject, part), token: id }, onInject);
 
   if (hotModule.hot) {
     hotModule.hot.accept(function() {
@@ -101,22 +97,24 @@ export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any
       onInject();
     });
   }
+};
 
-  const injectAt = (element: SFCElement<any>, rootId: string) => {
-    console.log('Finding extension root element', rootId);
-    const roots = document.querySelectorAll(`[id^='${rootId}']`);
-    if (!roots.length) {
-      console.log('Extension root element not found', rootId);
-    }
-    roots.forEach(root => {
-      console.log('Render extension at root element', root.id);
-      render(
-        <MuiThemeProvider theme={darkTheme as Theme}>
-          <CssBaseline />
-          {element}
-        </MuiThemeProvider>,
-        root
-      );
-    });
-  };
+const getEventId = ({ type, token }: EventIdentifier) => `${type}${token ? `-${token}` : ''}`;
+
+const injectAt = (element: SFCElement<any>, rootId: string) => {
+  console.log('Finding extension root element', rootId);
+  const roots = document.querySelectorAll(`[id^='${rootId}']`);
+  if (!roots.length) {
+    console.log('Extension root element not found', rootId);
+  }
+  roots.forEach(root => {
+    console.log('Render extension at root element', root.id);
+    render(
+      <MuiThemeProvider theme={darkTheme as Theme}>
+        <CssBaseline />
+        {element}
+      </MuiThemeProvider>,
+      root
+    );
+  });
 };
