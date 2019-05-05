@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { List, ListItem, ListItemIcon } from '@material-ui/core';
+import { List, ListItemIcon } from '@material-ui/core';
 import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { BootstrapTooltip, fireExtensionActivateEvent, ExtensionPart } from '@yakapa/shared';
+import { ExtensionMenuItem, fireExtensionActivateEvent, ExtensionPart } from '@yakapa/shared';
 
 const styles = (theme: Theme) => ({
   home: {
@@ -11,6 +11,16 @@ const styles = (theme: Theme) => ({
   },
   list: {
     padding: 0
+  },
+  button: {
+    '&:hover': {
+      backgroundColor: 'transparent'
+    },
+    '&:focus': {
+      backgroundColor: 'transparent'
+    },
+    hover: {},
+    focus: {}
   }
 });
 
@@ -25,13 +35,11 @@ const MenuComponent: FC<Props> = props => {
 
   return (
     <List className={classes.list}>
-      <ListItem button onClick={onMenuItemClick}>
-        <BootstrapTooltip title="Home" placement="right">
-          <ListItemIcon>
-            <Avatar className={classes.home}>Y</Avatar>
-          </ListItemIcon>
-        </BootstrapTooltip>
-      </ListItem>
+      <ExtensionMenuItem tooltip="Home" onClick={onMenuItemClick}>
+        <ListItemIcon>
+          <Avatar className={classes.home}>Y</Avatar>
+        </ListItemIcon>
+      </ExtensionMenuItem>
     </List>
   );
 };

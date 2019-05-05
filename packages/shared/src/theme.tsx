@@ -9,6 +9,11 @@ export const darkTheme = createMuiTheme({
       elevation1: {
         boxShadow: '0px 2px 0px 0px rgba(0,0,0,0.2)'
       }
+    },
+    MuiTouchRipple: {
+      ripple: {
+        color: '#d4d4d4'
+      }
     }
   },
   palette: {

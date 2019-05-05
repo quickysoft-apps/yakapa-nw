@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { withStyles, Divider, Theme, AppBar, Toolbar } from '@material-ui/core';
-import { RegisteredExtension, fireExtensionInjectEvent, ExtensionPart, getExtensionRootId, registerEvent, getExtensionInjectEventType, ExtensionEventKind } from '@yakapa/shared';
+import { RegisteredExtension, fireExtensionInjectEvent, ExtensionPart, getExtensionRootId } from '@yakapa/shared';
 
 const drawerWidth = 241;
 const extensionMenuWidth = 72;
@@ -24,6 +24,14 @@ const styles = (theme: Theme) => ({
   subMenu: {
     width: `calc(${drawerWidth}px - ${extensionMenuWidth}px)`,
     backgroundColor: theme.palette.secondary.main
+  },
+  indicator: {
+    backgroundColor: theme.palette.secondary.contrastText,
+    top: '13px',
+    width: '4px',
+    position: 'absolute',
+    borderRadius: '0px 3px 3px 0px',
+    height: '36px'
   }
 });
 
@@ -51,16 +59,19 @@ const ExtensionMenuComponent = (props: Props) => {
   const getElementId = (extensionPart: ExtensionPart, extension: RegisteredExtension) =>
     `${getExtensionRootId(extensionPart, extension.id)}-${props.identifier ? `-${props.identifier}` : ''}`;
 
+  const getCSSDisplayValue = (extension: RegisteredExtension) => (activeExtensionId === extension.id ? 'initial' : 'none');
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.menu}>
           {installedExtensions.map((extension, index) => {
             return (
-              <Fragment key={extension.shortName}>
+              <div key={extension.shortName} style={{ position: 'relative' }}>
+                <div className={classes.indicator} style={{ display: getCSSDisplayValue(extension) }} />
                 <div id={getElementId(ExtensionPart.Menu, extension)} />
-                {index < installedExtensions.length - 1 && <Divider />}
-              </Fragment>
+                {index < installedExtensions.length - 1 && <Divider variant="middle" />}
+              </div>
             );
           })}
         </div>
@@ -70,7 +81,7 @@ const ExtensionMenuComponent = (props: Props) => {
               {installedExtensions.map(extension => {
                 return (
                   <Fragment key={extension.shortName}>
-                    <div id={getElementId(ExtensionPart.SubMenuToolbar, extension)} style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }} />
+                    <div id={getElementId(ExtensionPart.SubMenuToolbar, extension)} style={{ display: getCSSDisplayValue(extension) }} />
                   </Fragment>
                 );
               })}
@@ -79,7 +90,7 @@ const ExtensionMenuComponent = (props: Props) => {
           {installedExtensions.map(extension => {
             return (
               <Fragment key={extension.shortName}>
-                <div id={getElementId(ExtensionPart.SubMenu, extension)} style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }} />
+                <div id={getElementId(ExtensionPart.SubMenu, extension)} style={{ display: getCSSDisplayValue(extension) }} />
               </Fragment>
             );
           })}

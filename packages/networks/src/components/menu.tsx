@@ -2,11 +2,21 @@ import React, { FC } from 'react';
 import { List, ListItem, ListItemIcon, WithStyles, withStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
-import { BootstrapTooltip, fireExtensionActivateEvent, ExtensionPart } from '@yakapa/shared';
+import { BootstrapTooltip, fireExtensionActivateEvent, ExtensionPart, ExtensionMenuItem } from '@yakapa/shared';
 
 const styles = {
   list: {
     padding: 0
+  },
+  button: {
+    '&:hover': {
+      backgroundColor: 'transparent'
+    },
+    '&:focus': {
+      backgroundColor: 'transparent'
+    },
+    hover: {},
+    focus: {}
   }
 };
 
@@ -21,15 +31,13 @@ const MenuComponent: FC<Props> = props => {
 
   return (
     <List className={classes.list}>
-      <ListItem button onClick={onMenuItemClick}>
-        <BootstrapTooltip title="Ajouter un réseau" placement="right">
-          <ListItemIcon>
-            <Avatar>
-              <Add />
-            </Avatar>
-          </ListItemIcon>
-        </BootstrapTooltip>
-      </ListItem>
+      <ExtensionMenuItem tooltip="Ajouter un réseau" onClick={onMenuItemClick}>
+        <ListItemIcon>
+          <Avatar>
+            <Add />
+          </Avatar>
+        </ListItemIcon>
+      </ExtensionMenuItem>
     </List>
   );
 };
