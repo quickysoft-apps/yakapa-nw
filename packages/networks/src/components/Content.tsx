@@ -1,11 +1,10 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 
-
-export const MainContent = () => {
+export const Content = () => {
   return (
     <>
-      <Typography>Settings Extension here</Typography>
+      <Typography>Networks Extension here</Typography>
     </>
   );
 };

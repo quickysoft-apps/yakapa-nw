@@ -4,6 +4,13 @@ export const darkTheme = createMuiTheme({
   typography: {
     useNextVariants: true
   },
+  overrides: {
+    MuiPaper: {
+      elevation1: {
+        boxShadow: '0px 2px 0px 0px rgba(0,0,0,0.2)'
+      }
+    }
+  },
   palette: {
     common: {
       black: 'rgba(0, 0, 0, 1)',
@@ -17,12 +24,12 @@ export const darkTheme = createMuiTheme({
       light: '#d25ced',
       main: '#9e26ba',
       dark: '#6b0089',
-      contrastText: 'rgba(201, 248, 243, 1)'
+      contrastText: '#d4d4d4'
     },
     secondary: {
       light: '#595959',
       main: '#2d2d2d', //used for submenu
-      dark: '#212121', //use for menu
+      dark: '#131313', //use for menu
       contrastText: '#fff'
     },
     error: {

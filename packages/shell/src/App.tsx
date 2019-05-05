@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography, Theme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { useInstalledExtensions, registerEvent, darkTheme, getExtensionInjectEventType, ExtensionEventKind, ExtensionPart } from '@yakapa/shared';
+import { useInstalledExtensions, registerEvent, darkTheme, getExtensionInjectEventType, ExtensionEventKind, ExtensionPart, getExtensionRootId } from '@yakapa/shared';
 import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
 import { useEffect } from 'react';
@@ -95,19 +95,27 @@ const Shell = (props: Props) => {
         <nav className={classes.drawer}>
           <Hidden smUp implementation="css">
             <Drawer container={container} open={mobileOpen} onClose={handleDrawerToggle} classes={{ paper: classes.drawerPaper }}>
-              <ExtensionMenu opened={mobileOpen} identifier="mobile" extensions={installedExtensions} />
+              <ExtensionMenu opened={mobileOpen} identifier="mobile" installedExtensions={installedExtensions} activeExtensionId={activeExtensionId} />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
             <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
-              <ExtensionMenu opened={mobileOpen} identifier="desktop" extensions={installedExtensions} />
+              <ExtensionMenu opened={mobileOpen} identifier="desktop" installedExtensions={installedExtensions} activeExtensionId={activeExtensionId} />
             </Drawer>
           </Hidden>
         </nav>
         <main className={classes.content}>
-          <div className={classes.toolbar} />
+          <div className={classes.toolbar}>
+            {installedExtensions.map(extension => (
+              <div
+                key={extension.id}
+                id={getExtensionRootId(ExtensionPart.ContentToolbar, extension.id)}
+                style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }}
+              />
+            ))}
+          </div>
           {installedExtensions.map(extension => (
-            <div key={extension.id} id={`extension-content-${extension.id}`} style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }} />
+            <div key={extension.id} id={getExtensionRootId(ExtensionPart.Content, extension.id)} style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }} />
           ))}
         </main>
       </div>

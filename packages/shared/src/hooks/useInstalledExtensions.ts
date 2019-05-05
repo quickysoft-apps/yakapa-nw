@@ -42,5 +42,8 @@ const injectAllParts = (extensionId?: string) => {
   if (extensionId) {
     fireExtensionInjectEvent(ExtensionPart.Menu, extensionId);
     fireExtensionInjectEvent(ExtensionPart.Content, extensionId);
+    fireExtensionInjectEvent(ExtensionPart.ContentToolbar, extensionId);
+    fireExtensionInjectEvent(ExtensionPart.SubMenu, extensionId);
+    fireExtensionInjectEvent(ExtensionPart.SubMenuToolbar, extensionId);
   }
 };

@@ -1,28 +1,14 @@
 import React from 'react';
-import { withStyles, Divider, List, ListItemText, ListItem, Theme } from '@material-ui/core';
+import { withStyles, Theme, Typography } from '@material-ui/core';
 
-const styles = (theme: Theme) => ({
-  toolbar: theme.mixins.toolbar
-});
+const styles = (theme: Theme) => ({});
 
 interface Props {
   classes: any;
 }
 
 const SubMenuComponent = (props: Props) => {
-  const { classes } = props;
-
-  return (
-    <>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        <ListItem button>
-          <ListItemText primary="Une action de l'ext" />
-        </ListItem>
-      </List>
-    </>
-  );
+  return <Typography>Nothing to display here</Typography>;
 };
 
 export const SubMenu = withStyles(styles, { withTheme: true })(SubMenuComponent);

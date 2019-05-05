@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 
-export const MainContent = () => {
+export const ContentToolbar = () => {
   return (
     <>
-      <Typography>Networks Extension here</Typography>
+      <Typography>Networks toolbar</Typography>
     </>
   );
 };
