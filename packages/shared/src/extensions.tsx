@@ -1,6 +1,6 @@
-import React, { SFCElement } from 'react';
+import React, { ReactElement } from 'react';
 import { render } from 'react-dom';
-import { MuiThemeProvider, CssBaseline, Theme } from '@material-ui/core';
+import { CssBaseline, Theme, MuiThemeProvider } from '@material-ui/core';
 import { darkTheme } from './theme';
 
 export enum ExtensionPart {
@@ -40,7 +40,7 @@ export const registerEvent = (eventIdentifier: EventIdentifier, eventListener: E
   document.addEventListener(eventId, eventListener);
 };
 
-export const fireExtensionEvent = <T extends { [key: string]: string | number | boolean }>(eventIdentifier: EventIdentifier, payload?: T) => {
+export const fireExtensionEvent = <T extends Record<string, string | number | boolean>>(eventIdentifier: EventIdentifier, payload?: T) => {
   const eventId = getEventId(eventIdentifier);
   const event = new CustomEvent(eventId, { detail: payload });
   console.log('Fire event', eventId, payload);
@@ -83,7 +83,7 @@ export const findExtension = (extensionName: string): Promise<chrome.management.
   });
 };
 
-export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any>, hotModule: NodeModule) => {
+export const exportExtensionPart = (part: ExtensionPart, element: ReactElement, hotModule: NodeModule) => {
   const id = chrome.runtime.id;
 
   const onInject = () => injectAt(element, getExtensionRootId(part, id));
@@ -101,7 +101,7 @@ export const exportExtensionPart = (part: ExtensionPart, element: SFCElement<any
 
 const getEventId = ({ type, token }: EventIdentifier) => `${type}${token ? `-${token}` : ''}`;
 
-const injectAt = (element: SFCElement<any>, rootId: string) => {
+const injectAt = (element: ReactElement, rootId: string) => {
   console.log('Finding extension root element', rootId);
   const roots = document.querySelectorAll(`[id^='${rootId}']`);
   if (!roots.length) {

@@ -1,14 +1,5 @@
 import React from 'react';
-import { withStyles, Theme } from '@material-ui/core';
 
-const styles = (theme: Theme) => ({});
-
-interface Props {
-  classes: any;
-}
-
-const SubMenuToolbarComponent = (props: Props) => {
+export const SubMenuToolbar = () => {
   return <></>;
 };
-
-export const SubMenuToolbar = withStyles(styles, { withTheme: true })(SubMenuToolbarComponent);

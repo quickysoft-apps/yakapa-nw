@@ -29,7 +29,7 @@
   "chromium-args": "--enable-logging=stderr --load-extension=../../extensions/react-devtools_3.6.0_0,../settings/lib,../runner/lib,../networks/lib",
   "build": {
     "appId": "yakapa",
-    "nwVersion": "0.38.1",
+    "nwVersion": "0.38.3",
     "nwFlavor": "normal",
     "overriddenProperties": {
       "chromium-args": "--enable-logging=stderr --load-extension=/Users/lawrence/Dev/nw/release/extensions/settings,/Users/lawrence/Dev/nw/release/extensions/networks"
@@ -84,6 +84,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "@material-ui/styles": "^3.0.0-alpha.10",
     "@yakapa/shared": "^0.0.0",
     "express": "^4.16.4",
     "react-loadable": "^5.5.0",

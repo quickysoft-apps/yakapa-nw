@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
-import { List, ListItemIcon, WithStyles, withStyles } from '@material-ui/core';
+import { List, ListItemIcon } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import { Add } from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
 import { fireExtensionActivateEvent, ExtensionPart, ExtensionMenuItem } from '@yakapa/shared';
 
-const styles = {
+const useStyles = makeStyles({
   list: {
     padding: 0
   },
@@ -18,12 +19,10 @@ const styles = {
     hover: {},
     focus: {}
   }
-};
+});
 
-interface Props extends WithStyles<typeof styles> {}
-
-const MenuComponent: FC<Props> = props => {
-  const { classes } = props;
+export const Menu: FC = () => {
+  const classes = useStyles();
 
   const onMenuItemClick = () => {
     fireExtensionActivateEvent(ExtensionPart.Content, chrome.runtime.id);
@@ -41,5 +40,3 @@ const MenuComponent: FC<Props> = props => {
     </List>
   );
 };
-
-export const Menu = withStyles(styles)(MenuComponent);

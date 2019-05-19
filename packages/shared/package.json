@@ -18,5 +18,7 @@
   "devDependencies": {
     "typescript": "^3.3.3333"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@material-ui/styles": "^3.0.0-alpha.10"
+  }
 }

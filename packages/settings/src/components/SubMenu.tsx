@@ -1,20 +1,12 @@
 import React from 'react';
-import { withStyles, List, ListItemText, ListItem, Theme, ListSubheader } from '@material-ui/core';
+import { List, ListItemText, ListItem, ListSubheader } from '@material-ui/core';
 
-const styles = (theme: Theme) => ({
-  toolbar: theme.mixins.toolbar
-});
-
-interface Props {
-  classes: any;
-}
-
-const SubMenuComponent = (props: Props) => {
+export const SubMenu = () => {
   const onAccountClick = () => {};
 
   return (
     <>
-      <List subheader={<ListSubheader>Paramètres utilisateur</ListSubheader>}>
+      <List subheader={<ListSubheader>Identification de l'agent</ListSubheader>}>
         <ListItem button onClick={onAccountClick}>
           <ListItemText primary="Compte" />
         </ListItem>
@@ -22,5 +14,3 @@ const SubMenuComponent = (props: Props) => {
     </>
   );
 };
-
-export const SubMenu = withStyles(styles, { withTheme: true })(SubMenuComponent);
