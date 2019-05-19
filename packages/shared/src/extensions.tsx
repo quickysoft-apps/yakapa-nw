@@ -75,6 +75,7 @@ export const findExtension = (extensionName: string): Promise<chrome.management.
           warnings.forEach(x => warnings.push(x));
         });
         console.log('Extension', extensionName, 'warnings', warnings);
+        console.log(`chrome-extension://${ext.id}`);
         resolve(ext);
       } else {
         reject(new Error(`Extension not found: ${extensionName}`));
