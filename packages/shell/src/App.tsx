@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Typography, Theme } from '@material-ui/core';
+import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Theme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
 import { useInstalledExtensions, registerEvent, darkTheme, getExtensionInjectEventType, ExtensionEventKind, ExtensionPart, getExtensionRootId } from '@yakapa/shared';
@@ -43,6 +43,7 @@ const styles = (theme: Theme) => {
     },
     content: {
       flexGrow: 1,
+      marginTop: 50,
       padding: theme.spacing.unit * 3
     }
   };
@@ -82,16 +83,6 @@ const Shell = (props: Props) => {
   return (
     <>
       <div className={classes.root}>
-        <AppBar position="fixed" elevation={1} className={classes.appBar}>
-          <Toolbar variant="dense">
-            <IconButton color="inherit" aria-label="Open drawer" onClick={handleDrawerToggle} className={classes.menuButton}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              {activeExtensionId ? activeExtensionId : 'Welcome'}
-            </Typography>
-          </Toolbar>
-        </AppBar>
         <nav className={classes.drawer}>
           <Hidden smUp implementation="css">
             <Drawer container={container} open={mobileOpen} onClose={handleDrawerToggle} classes={{ paper: classes.drawerPaper }}>
@@ -105,15 +96,20 @@ const Shell = (props: Props) => {
           </Hidden>
         </nav>
         <main className={classes.content}>
-          <div className={classes.toolbar}>
-            {installedExtensions.map(extension => (
-              <div
-                key={extension.id}
-                id={getExtensionRootId(ExtensionPart.ContentToolbar, extension.id)}
-                style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }}
-              />
-            ))}
-          </div>
+          <AppBar position="fixed" elevation={1} className={classes.appBar}>
+            <Toolbar variant="dense">
+              <IconButton color="inherit" aria-label="Open drawer" onClick={handleDrawerToggle} className={classes.menuButton}>
+                <MenuIcon />
+              </IconButton>
+              {installedExtensions.map(extension => (
+                <div
+                  key={extension.id}
+                  id={getExtensionRootId(ExtensionPart.ContentToolbar, extension.id)}
+                  style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }}
+                />
+              ))}
+            </Toolbar>
+          </AppBar>
           {installedExtensions.map(extension => (
             <div key={extension.id} id={getExtensionRootId(ExtensionPart.Content, extension.id)} style={{ display: activeExtensionId === extension.id ? 'initial' : 'none' }} />
           ))}
@@ -126,7 +122,7 @@ const Shell = (props: Props) => {
 const App = withStyles(styles, { withTheme: true })(Shell);
 
 render(
-  <MuiThemeProvider theme={darkTheme as Theme}>
+  <MuiThemeProvider theme={darkTheme}>
     <CssBaseline />
     <App />
   </MuiThemeProvider>,
