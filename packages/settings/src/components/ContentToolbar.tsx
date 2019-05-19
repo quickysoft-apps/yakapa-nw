@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 export const ContentToolbar = () => {
   return (
     <>
-      <Typography>Settings toolbar</Typography>
+      <Typography>Identification</Typography>
     </>
   );
 };
