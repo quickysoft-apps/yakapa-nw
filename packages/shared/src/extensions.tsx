@@ -13,12 +13,17 @@ export enum ExtensionPart {
 }
 export enum ExtensionEventKind {
   Inject = 'inject',
-  Activate = 'activate'
+  Activate = 'activate',
+  SubActivate = 'subactivate'
 }
 
 export interface EventIdentifier {
   type: string;
   token?: string;
+}
+
+export interface SubActivatePayload {
+  subItemId: string;
 }
 
 export const getExtensionRootId = (extensionPart: ExtensionPart, extensionId?: string) => `extension-${extensionPart}${extensionId ? `-${extensionId}` : ''}`;
@@ -56,6 +61,12 @@ export const fireExtensionInjectEvent = (extensionPart: ExtensionPart, extension
 export const fireExtensionActivateEvent = (extensionPart: ExtensionPart, extensionId?: string) => {
   if (extensionId) {
     fireExtensionEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Activate, extensionPart), token: extensionId });
+  }
+};
+
+export const fireExtensionSubActivateEvent = (subItemId: string, extensionId?: string) => {
+  if (extensionId) {
+    fireExtensionEvent({ type: ExtensionEventKind.SubActivate, token: extensionId }, { subItemId });
   }
 };
 
