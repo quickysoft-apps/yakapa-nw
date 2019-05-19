@@ -6,9 +6,9 @@ export const SubMenu = () => {
 
   return (
     <>
-      <List subheader={<ListSubheader>Identification de l'agent</ListSubheader>}>
+      <List subheader={<ListSubheader>Agent</ListSubheader>}>
         <ListItem button onClick={onAccountClick}>
-          <ListItemText primary="Compte" />
+          <ListItemText primary="Identification" />
         </ListItem>
       </List>
     </>

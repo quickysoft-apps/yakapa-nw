@@ -34,6 +34,7 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "@material-ui/system": "^3.0.0-alpha.2",
     "@yakapa/api": "^0.0.0",
     "@yakapa/shared": "^0.0.0",
     "pacote": "^9.5.0",

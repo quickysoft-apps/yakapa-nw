@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { render } from 'react-dom';
-import { CssBaseline, Theme, MuiThemeProvider } from '@material-ui/core';
+import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import { darkTheme } from './theme';
 
 export enum ExtensionPart {
@@ -110,7 +110,7 @@ const injectAt = (element: ReactElement, rootId: string) => {
   roots.forEach(root => {
     console.log('Render extension at root element', root.id);
     render(
-      <MuiThemeProvider theme={darkTheme as Theme}>
+      <MuiThemeProvider theme={darkTheme}>
         <CssBaseline />
         {element}
       </MuiThemeProvider>,
