@@ -2,7 +2,7 @@ import React, { useState, FC, useEffect } from 'react';
 import { Formik, FormikActions, FormikProps, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { prisma, Agent } from '@yakapa/api';
-import { Button, Card, CardContent, CardActions, Theme, withStyles, WithStyles } from '@material-ui/core';
+import { Button, Card, CardContent, CardActions, withStyles, WithStyles } from '@material-ui/core';
 import { useLocalStorage } from '@yakapa/shared';
 
 const styles = {
@@ -36,7 +36,7 @@ const useAgent = (id?: string) => {
   return agent;
 };
 
-const AgentSettingsComponent: FC<WithStyles> = props => {
+const AgentIdentificationComponent: FC<WithStyles> = props => {
   const { classes } = props;
   const [editMode, setEditMode] = useState(false);
   const [agentId, setAgentId] = useLocalStorage('agentId');
@@ -140,4 +140,4 @@ const AgentSettingsComponent: FC<WithStyles> = props => {
   );
 };
 
-export const AgentSettings = withStyles(styles, { withTheme: true })(AgentSettingsComponent);
+export const AgentIdentification = withStyles(styles, { withTheme: true })(AgentIdentificationComponent);

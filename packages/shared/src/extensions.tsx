@@ -22,8 +22,8 @@ export interface EventIdentifier {
   token?: string;
 }
 
-export interface SubActivatePayload {
-  subItemId: string;
+export interface SubActivatePayload<T> {
+  subItemId: T;
 }
 
 export const getExtensionRootId = (extensionPart: ExtensionPart, extensionId?: string) => `extension-${extensionPart}${extensionId ? `-${extensionId}` : ''}`;
@@ -43,6 +43,12 @@ export const registerEvent = (eventIdentifier: EventIdentifier, eventListener: E
   console.log('Register event', eventId);
   document.removeEventListener(eventId, eventListener);
   document.addEventListener(eventId, eventListener);
+};
+
+export const unregisterEvent = (eventIdentifier: EventIdentifier, eventListener: EventListenerOrEventListenerObject) => {
+  const eventId = getEventId(eventIdentifier);
+  console.log('Unregister event', eventId);
+  document.removeEventListener(eventId, eventListener);
 };
 
 export const fireExtensionEvent = <T extends Record<string, string | number | boolean>>(eventIdentifier: EventIdentifier, payload?: T) => {

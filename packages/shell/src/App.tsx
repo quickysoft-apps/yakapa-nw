@@ -3,7 +3,16 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { withStyles, AppBar, CssBaseline, Drawer, Hidden, IconButton, Toolbar, Theme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useState } from 'react';
-import { useInstalledExtensions, registerEvent, darkTheme, getExtensionInjectEventType, ExtensionEventKind, ExtensionPart, getExtensionRootId } from '@yakapa/shared';
+import {
+  useInstalledExtensions,
+  registerEvent,
+  unregisterEvent,
+  darkTheme,
+  getExtensionInjectEventType,
+  ExtensionEventKind,
+  ExtensionPart,
+  getExtensionRootId
+} from '@yakapa/shared';
 import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
 import { useEffect } from 'react';
@@ -68,9 +77,13 @@ const Shell = (props: Props) => {
 
   useEffect(() => {
     installedExtensions.forEach(extension => {
+      const eventIdentifier = { type: getExtensionInjectEventType(ExtensionEventKind.Activate, ExtensionPart.Content), token: extension.id };
+      const handler = () => setActiveExtensionId(extension.id);
       if (extension.id) {
-        registerEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Activate, ExtensionPart.Content), token: extension.id }, () => setActiveExtensionId(extension.id));
+        registerEvent(eventIdentifier, handler);
       }
+
+      return () => unregisterEvent(eventIdentifier, handler);
     });
   }, [installedExtensions]);
 
