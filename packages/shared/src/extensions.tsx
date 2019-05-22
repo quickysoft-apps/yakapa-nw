@@ -38,6 +38,8 @@ export type RegisteredExtension = Partial<chrome.management.ExtensionInfo> & {
   hidden?: boolean;
 };
 
+export type EventPayload = Record<string, string | number | boolean>;
+
 export const registerEvent = (eventIdentifier: EventIdentifier, eventListener: EventListenerOrEventListenerObject) => {
   const eventId = getEventId(eventIdentifier);
   console.log('Register event', eventId);
@@ -51,34 +53,39 @@ export const unregisterEvent = (eventIdentifier: EventIdentifier, eventListener:
   document.removeEventListener(eventId, eventListener);
 };
 
-export const fireExtensionEvent = <T extends Record<string, string | number | boolean>>(eventIdentifier: EventIdentifier, payload?: T) => {
+export const fireEvent = <T extends EventPayload>(eventIdentifier: EventIdentifier, payload?: T) => {
   const eventId = getEventId(eventIdentifier);
   const event = new CustomEvent(eventId, { detail: payload });
   console.log('Fire event', eventId, payload);
   document.dispatchEvent(event);
 };
 
+export const fireExtensionEvent = <T extends EventPayload>(type: string, payload?: T) => {
+  const eventIdentifier = { type, token: chrome.runtime.id };
+  fireEvent(eventIdentifier, payload);
+};
+
 export const fireExtensionInjectEvent = (extensionPart: ExtensionPart, extensionId?: string) => {
   if (extensionId) {
-    fireExtensionEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Inject, extensionPart), token: extensionId });
+    fireEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Inject, extensionPart), token: extensionId });
   }
 };
 
 export const fireExtensionActivateEvent = (extensionPart: ExtensionPart, extensionId?: string) => {
   if (extensionId) {
-    fireExtensionEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Activate, extensionPart), token: extensionId });
+    fireEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Activate, extensionPart), token: extensionId });
   }
 };
 
 export const fireExtensionSubActivateEvent = (subItemId: string, extensionId?: string) => {
   if (extensionId) {
-    fireExtensionEvent({ type: ExtensionEventKind.SubActivate, token: extensionId }, { subItemId });
+    fireEvent({ type: ExtensionEventKind.SubActivate, token: extensionId }, { subItemId });
   }
 };
 
 export const fireExtensionRenderReadyEvent = (extensionId?: string) => {
   if (extensionId) {
-    fireExtensionEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Inject, ExtensionPart.All), token: extensionId });
+    fireEvent({ type: getExtensionInjectEventType(ExtensionEventKind.Inject, ExtensionPart.All), token: extensionId });
   }
 };
 

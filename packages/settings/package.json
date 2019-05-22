@@ -27,12 +27,8 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@material-ui/styles": "^3.0.0-alpha.10",
-    "@material-ui/system": "^3.0.0-alpha.2",
     "@yakapa/api": "^0.0.0",
     "@yakapa/shared": "^0.0.0",
-    "formik": "^1.5.4",
-    "formik-material-ui": "^0.0.16",
     "pubnub": "^4.22.0",
     "pubnub-react": "^1.2.0",
     "src": "^1.1.2"

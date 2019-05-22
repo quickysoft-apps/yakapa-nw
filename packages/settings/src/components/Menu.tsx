@@ -24,7 +24,7 @@ const styles = (theme: Theme) => ({
   }
 });
 
-interface Props extends WithStyles<typeof styles> {}
+type Props = WithStyles<typeof styles>;
 
 const MenuComponent: FC<Props> = props => {
   const { classes } = props;

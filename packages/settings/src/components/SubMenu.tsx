@@ -22,11 +22,9 @@ export const SubMenu = () => {
   );
 
   return (
-    <>
-      <List subheader={<ListSubheader>Agent</ListSubheader>}>
-        <Item id={SettingsSubItem.Identification} text="Identification" />
-        <Item id={SettingsSubItem.Test} text="Test" />
-      </List>
-    </>
+    <List subheader={<ListSubheader>Agent</ListSubheader>}>
+      <Item id={SettingsSubItem.Identification} text="Identification" />
+      <Item id={SettingsSubItem.Test} text="Test" />
+    </List>
   );
 };

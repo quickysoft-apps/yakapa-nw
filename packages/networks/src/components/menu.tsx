@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { List, ListItemIcon } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { List, ListItemIcon, Theme, withStyles, WithStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
-import { fireExtensionActivateEvent, ExtensionPart, ExtensionMenuItem } from '@yakapa/shared';
+import { fireExtensionActivateEvent, ExtensionPart, ExtensionMenuItem, fireExtensionEvent } from '@yakapa/shared';
+import { Events } from '../events';
 
-const useStyles = makeStyles({
+const styles = (theme: Theme) => ({
   list: {
     padding: 0
   },
@@ -21,16 +21,22 @@ const useStyles = makeStyles({
   }
 });
 
-export const Menu: FC = () => {
-  const classes = useStyles();
+type Props = WithStyles<typeof styles>;
+
+const MenuComponent: FC<Props> = props => {
+  const { classes } = props;
 
   const onMenuItemClick = () => {
     fireExtensionActivateEvent(ExtensionPart.Content, chrome.runtime.id);
   };
 
+  const onAddNetworkClick = () => {
+    fireExtensionEvent(Events.OpenAddNetworkDialogEvent);
+  };
+
   return (
     <List className={classes.list}>
-      <ExtensionMenuItem tooltip="Ajouter un réseau" onClick={onMenuItemClick}>
+      <ExtensionMenuItem tooltip="Ajouter un réseau" onClick={onAddNetworkClick}>
         <ListItemIcon>
           <Avatar>
             <Add />
@@ -40,3 +46,5 @@ export const Menu: FC = () => {
     </List>
   );
 };
+
+export const Menu = withStyles(styles, { withTheme: true })(MenuComponent);

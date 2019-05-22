@@ -8,8 +8,8 @@
     "@types/jest": "^24.0.5",
     "@types/node": "^11.10.5",
     "@types/parcel-bundler": "^1.10.2",
-    "@types/react": "16.8.3",
-    "@types/react-dom": "16.8.2",
+    "@types/react": "16.8.18",
+    "@types/react-dom": "16.8.4",
     "@types/webpack-env": "^1.13.8",
     "jest": "^24.5.0",
     "lerna-update-wizard": "^0.11.1",
@@ -21,8 +21,12 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
-    "react": "16.8.2",
-    "react-dom": "16.8.2"
+    "@material-ui/styles": "^3.0.0-alpha.10",
+    "@material-ui/system": "^3.0.0-alpha.2",
+    "formik": "^1.5.7",
+    "formik-material-ui": "^0.0.16",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
   },
   "scripts": {
     "start": "lerna run start --stream watch",

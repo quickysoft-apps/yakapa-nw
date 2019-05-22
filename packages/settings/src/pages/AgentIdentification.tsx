@@ -18,10 +18,7 @@ interface FormValues {
   email: string;
 }
 
-interface Errors {
-  nickname?: string;
-  email?: string;
-}
+type Errors = Partial<FormValues>;
 
 const useAgent = (id?: string) => {
   const [agent, setAgent] = useState<Agent | undefined>(undefined);
