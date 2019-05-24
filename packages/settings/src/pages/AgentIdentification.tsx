@@ -70,7 +70,8 @@ const AgentIdentificationComponent: FC<WithStyles> = props => {
   const submit = async (values: FormValues, actions: FormikActions<FormValues>) => {
     try {
       let agent: Agent;
-      if (agentId) {
+      const exists = agentId ? await prisma.$exists.agent({ id: agentId }) : false;
+      if (exists) {
         agent = await prisma.updateAgent({
           data: {
             nickname: values.nickname,

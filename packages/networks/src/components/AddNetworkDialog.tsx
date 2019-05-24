@@ -51,8 +51,9 @@ export const AddNetworkDialog: FC<Props> = props => {
 
   const submit = async (values: FormValues, actions: FormikActions<FormValues>) => {
     try {
-      //TODO: call api for network creation
-      console.log(values);
+      await prisma.createNetwork({ name: values.networkName, master: { connect: { id: agentId } } });
+    } catch (e) {
+      console.error(e.message);
     } finally {
       actions.setSubmitting(false);
       setOpen(false);

@@ -7,4 +7,5 @@ exportExtensionPart(ExtensionPart.Content, <Content />, module);
 exportExtensionPart(ExtensionPart.ContentToolbar, <ContentToolbar />, module);
 exportExtensionPart(ExtensionPart.SubMenu, <SubMenu />, module);
 exportExtensionPart(ExtensionPart.SubMenuToolbar, <SubMenuToolbar />, module);
+
 fireExtensionRenderReadyEvent(chrome.runtime.id);

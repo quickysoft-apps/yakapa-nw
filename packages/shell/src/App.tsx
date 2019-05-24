@@ -11,7 +11,9 @@ import {
   getExtensionInjectEventType,
   ExtensionEventKind,
   ExtensionPart,
-  getExtensionRootId
+  getExtensionRootId,
+  useLocalStorage,
+  EventPayload
 } from '@yakapa/shared';
 import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
