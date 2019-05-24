@@ -10,6 +10,8 @@ export const typeDefs = /* GraphQL */ `type Agent {
   email: String!
   tag: String
   updatedAt: DateTime!
+  ownedNetworks(where: NetworkWhereInput, orderBy: NetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Network!]
+  networks(where: NetworkWhereInput, orderBy: NetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Network!]
 }
 
 type AgentConnection {
@@ -23,6 +25,8 @@ input AgentCreateInput {
   nickname: String!
   email: String!
   tag: String
+  ownedNetworks: NetworkCreateManyWithoutMasterInput
+  networks: NetworkCreateManyWithoutSlavesInput
 }
 
 input AgentCreateManyWithoutEndUserInput {
@@ -30,10 +34,38 @@ input AgentCreateManyWithoutEndUserInput {
   connect: [AgentWhereUniqueInput!]
 }
 
+input AgentCreateManyWithoutNetworksInput {
+  create: [AgentCreateWithoutNetworksInput!]
+  connect: [AgentWhereUniqueInput!]
+}
+
+input AgentCreateOneWithoutOwnedNetworksInput {
+  create: AgentCreateWithoutOwnedNetworksInput
+  connect: AgentWhereUniqueInput
+}
+
 input AgentCreateWithoutEndUserInput {
   nickname: String!
   email: String!
   tag: String
+  ownedNetworks: NetworkCreateManyWithoutMasterInput
+  networks: NetworkCreateManyWithoutSlavesInput
+}
+
+input AgentCreateWithoutNetworksInput {
+  endUser: EndUserCreateOneWithoutAgentsInput
+  nickname: String!
+  email: String!
+  tag: String
+  ownedNetworks: NetworkCreateManyWithoutMasterInput
+}
+
+input AgentCreateWithoutOwnedNetworksInput {
+  endUser: EndUserCreateOneWithoutAgentsInput
+  nickname: String!
+  email: String!
+  tag: String
+  networks: NetworkCreateManyWithoutSlavesInput
 }
 
 type AgentEdge {
@@ -166,6 +198,8 @@ input AgentUpdateInput {
   nickname: String
   email: String
   tag: String
+  ownedNetworks: NetworkUpdateManyWithoutMasterInput
+  networks: NetworkUpdateManyWithoutSlavesInput
 }
 
 input AgentUpdateManyDataInput {
@@ -192,15 +226,52 @@ input AgentUpdateManyWithoutEndUserInput {
   updateMany: [AgentUpdateManyWithWhereNestedInput!]
 }
 
+input AgentUpdateManyWithoutNetworksInput {
+  create: [AgentCreateWithoutNetworksInput!]
+  delete: [AgentWhereUniqueInput!]
+  connect: [AgentWhereUniqueInput!]
+  set: [AgentWhereUniqueInput!]
+  disconnect: [AgentWhereUniqueInput!]
+  update: [AgentUpdateWithWhereUniqueWithoutNetworksInput!]
+  upsert: [AgentUpsertWithWhereUniqueWithoutNetworksInput!]
+  deleteMany: [AgentScalarWhereInput!]
+  updateMany: [AgentUpdateManyWithWhereNestedInput!]
+}
+
 input AgentUpdateManyWithWhereNestedInput {
   where: AgentScalarWhereInput!
   data: AgentUpdateManyDataInput!
+}
+
+input AgentUpdateOneRequiredWithoutOwnedNetworksInput {
+  create: AgentCreateWithoutOwnedNetworksInput
+  update: AgentUpdateWithoutOwnedNetworksDataInput
+  upsert: AgentUpsertWithoutOwnedNetworksInput
+  connect: AgentWhereUniqueInput
 }
 
 input AgentUpdateWithoutEndUserDataInput {
   nickname: String
   email: String
   tag: String
+  ownedNetworks: NetworkUpdateManyWithoutMasterInput
+  networks: NetworkUpdateManyWithoutSlavesInput
+}
+
+input AgentUpdateWithoutNetworksDataInput {
+  endUser: EndUserUpdateOneWithoutAgentsInput
+  nickname: String
+  email: String
+  tag: String
+  ownedNetworks: NetworkUpdateManyWithoutMasterInput
+}
+
+input AgentUpdateWithoutOwnedNetworksDataInput {
+  endUser: EndUserUpdateOneWithoutAgentsInput
+  nickname: String
+  email: String
+  tag: String
+  networks: NetworkUpdateManyWithoutSlavesInput
 }
 
 input AgentUpdateWithWhereUniqueWithoutEndUserInput {
@@ -208,10 +279,26 @@ input AgentUpdateWithWhereUniqueWithoutEndUserInput {
   data: AgentUpdateWithoutEndUserDataInput!
 }
 
+input AgentUpdateWithWhereUniqueWithoutNetworksInput {
+  where: AgentWhereUniqueInput!
+  data: AgentUpdateWithoutNetworksDataInput!
+}
+
+input AgentUpsertWithoutOwnedNetworksInput {
+  update: AgentUpdateWithoutOwnedNetworksDataInput!
+  create: AgentCreateWithoutOwnedNetworksInput!
+}
+
 input AgentUpsertWithWhereUniqueWithoutEndUserInput {
   where: AgentWhereUniqueInput!
   update: AgentUpdateWithoutEndUserDataInput!
   create: AgentCreateWithoutEndUserInput!
+}
+
+input AgentUpsertWithWhereUniqueWithoutNetworksInput {
+  where: AgentWhereUniqueInput!
+  update: AgentUpdateWithoutNetworksDataInput!
+  create: AgentCreateWithoutNetworksInput!
 }
 
 input AgentWhereInput {
@@ -288,6 +375,12 @@ input AgentWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  ownedNetworks_every: NetworkWhereInput
+  ownedNetworks_some: NetworkWhereInput
+  ownedNetworks_none: NetworkWhereInput
+  networks_every: NetworkWhereInput
+  networks_some: NetworkWhereInput
+  networks_none: NetworkWhereInput
   AND: [AgentWhereInput!]
   OR: [AgentWhereInput!]
   NOT: [AgentWhereInput!]
@@ -303,6 +396,10 @@ type AggregateAgent {
 }
 
 type AggregateEndUser {
+  count: Int!
+}
+
+type AggregateNetwork {
   count: Int!
 }
 
@@ -630,6 +727,12 @@ type Mutation {
   upsertEndUser(where: EndUserWhereUniqueInput!, create: EndUserCreateInput!, update: EndUserUpdateInput!): EndUser!
   deleteEndUser(where: EndUserWhereUniqueInput!): EndUser
   deleteManyEndUsers(where: EndUserWhereInput): BatchPayload!
+  createNetwork(data: NetworkCreateInput!): Network!
+  updateNetwork(data: NetworkUpdateInput!, where: NetworkWhereUniqueInput!): Network
+  updateManyNetworks(data: NetworkUpdateManyMutationInput!, where: NetworkWhereInput): BatchPayload!
+  upsertNetwork(where: NetworkWhereUniqueInput!, create: NetworkCreateInput!, update: NetworkUpdateInput!): Network!
+  deleteNetwork(where: NetworkWhereUniqueInput!): Network
+  deleteManyNetworks(where: NetworkWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -642,6 +745,275 @@ enum MutationType {
   CREATED
   UPDATED
   DELETED
+}
+
+type Network {
+  id: ID!
+  name: String!
+  description: String
+  master: Agent!
+  slaves(where: AgentWhereInput, orderBy: AgentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Agent!]
+}
+
+type NetworkConnection {
+  pageInfo: PageInfo!
+  edges: [NetworkEdge]!
+  aggregate: AggregateNetwork!
+}
+
+input NetworkCreateInput {
+  name: String!
+  description: String
+  master: AgentCreateOneWithoutOwnedNetworksInput!
+  slaves: AgentCreateManyWithoutNetworksInput
+}
+
+input NetworkCreateManyWithoutMasterInput {
+  create: [NetworkCreateWithoutMasterInput!]
+  connect: [NetworkWhereUniqueInput!]
+}
+
+input NetworkCreateManyWithoutSlavesInput {
+  create: [NetworkCreateWithoutSlavesInput!]
+  connect: [NetworkWhereUniqueInput!]
+}
+
+input NetworkCreateWithoutMasterInput {
+  name: String!
+  description: String
+  slaves: AgentCreateManyWithoutNetworksInput
+}
+
+input NetworkCreateWithoutSlavesInput {
+  name: String!
+  description: String
+  master: AgentCreateOneWithoutOwnedNetworksInput!
+}
+
+type NetworkEdge {
+  node: Network!
+  cursor: String!
+}
+
+enum NetworkOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type NetworkPreviousValues {
+  id: ID!
+  name: String!
+  description: String
+}
+
+input NetworkScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  AND: [NetworkScalarWhereInput!]
+  OR: [NetworkScalarWhereInput!]
+  NOT: [NetworkScalarWhereInput!]
+}
+
+type NetworkSubscriptionPayload {
+  mutation: MutationType!
+  node: Network
+  updatedFields: [String!]
+  previousValues: NetworkPreviousValues
+}
+
+input NetworkSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: NetworkWhereInput
+  AND: [NetworkSubscriptionWhereInput!]
+  OR: [NetworkSubscriptionWhereInput!]
+  NOT: [NetworkSubscriptionWhereInput!]
+}
+
+input NetworkUpdateInput {
+  name: String
+  description: String
+  master: AgentUpdateOneRequiredWithoutOwnedNetworksInput
+  slaves: AgentUpdateManyWithoutNetworksInput
+}
+
+input NetworkUpdateManyDataInput {
+  name: String
+  description: String
+}
+
+input NetworkUpdateManyMutationInput {
+  name: String
+  description: String
+}
+
+input NetworkUpdateManyWithoutMasterInput {
+  create: [NetworkCreateWithoutMasterInput!]
+  delete: [NetworkWhereUniqueInput!]
+  connect: [NetworkWhereUniqueInput!]
+  set: [NetworkWhereUniqueInput!]
+  disconnect: [NetworkWhereUniqueInput!]
+  update: [NetworkUpdateWithWhereUniqueWithoutMasterInput!]
+  upsert: [NetworkUpsertWithWhereUniqueWithoutMasterInput!]
+  deleteMany: [NetworkScalarWhereInput!]
+  updateMany: [NetworkUpdateManyWithWhereNestedInput!]
+}
+
+input NetworkUpdateManyWithoutSlavesInput {
+  create: [NetworkCreateWithoutSlavesInput!]
+  delete: [NetworkWhereUniqueInput!]
+  connect: [NetworkWhereUniqueInput!]
+  set: [NetworkWhereUniqueInput!]
+  disconnect: [NetworkWhereUniqueInput!]
+  update: [NetworkUpdateWithWhereUniqueWithoutSlavesInput!]
+  upsert: [NetworkUpsertWithWhereUniqueWithoutSlavesInput!]
+  deleteMany: [NetworkScalarWhereInput!]
+  updateMany: [NetworkUpdateManyWithWhereNestedInput!]
+}
+
+input NetworkUpdateManyWithWhereNestedInput {
+  where: NetworkScalarWhereInput!
+  data: NetworkUpdateManyDataInput!
+}
+
+input NetworkUpdateWithoutMasterDataInput {
+  name: String
+  description: String
+  slaves: AgentUpdateManyWithoutNetworksInput
+}
+
+input NetworkUpdateWithoutSlavesDataInput {
+  name: String
+  description: String
+  master: AgentUpdateOneRequiredWithoutOwnedNetworksInput
+}
+
+input NetworkUpdateWithWhereUniqueWithoutMasterInput {
+  where: NetworkWhereUniqueInput!
+  data: NetworkUpdateWithoutMasterDataInput!
+}
+
+input NetworkUpdateWithWhereUniqueWithoutSlavesInput {
+  where: NetworkWhereUniqueInput!
+  data: NetworkUpdateWithoutSlavesDataInput!
+}
+
+input NetworkUpsertWithWhereUniqueWithoutMasterInput {
+  where: NetworkWhereUniqueInput!
+  update: NetworkUpdateWithoutMasterDataInput!
+  create: NetworkCreateWithoutMasterInput!
+}
+
+input NetworkUpsertWithWhereUniqueWithoutSlavesInput {
+  where: NetworkWhereUniqueInput!
+  update: NetworkUpdateWithoutSlavesDataInput!
+  create: NetworkCreateWithoutSlavesInput!
+}
+
+input NetworkWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  master: AgentWhereInput
+  slaves_every: AgentWhereInput
+  slaves_some: AgentWhereInput
+  slaves_none: AgentWhereInput
+  AND: [NetworkWhereInput!]
+  OR: [NetworkWhereInput!]
+  NOT: [NetworkWhereInput!]
+}
+
+input NetworkWhereUniqueInput {
+  id: ID
 }
 
 interface Node {
@@ -662,6 +1034,9 @@ type Query {
   endUser(where: EndUserWhereUniqueInput!): EndUser
   endUsers(where: EndUserWhereInput, orderBy: EndUserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EndUser]!
   endUsersConnection(where: EndUserWhereInput, orderBy: EndUserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EndUserConnection!
+  network(where: NetworkWhereUniqueInput!): Network
+  networks(where: NetworkWhereInput, orderBy: NetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Network]!
+  networksConnection(where: NetworkWhereInput, orderBy: NetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NetworkConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -671,6 +1046,7 @@ type Query {
 type Subscription {
   agent(where: AgentSubscriptionWhereInput): AgentSubscriptionPayload
   endUser(where: EndUserSubscriptionWhereInput): EndUserSubscriptionPayload
+  network(where: NetworkSubscriptionWhereInput): NetworkSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 

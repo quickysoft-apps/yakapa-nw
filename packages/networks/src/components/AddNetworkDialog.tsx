@@ -2,8 +2,10 @@ import React, { FC, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button } from '@material-ui/core';
 import { Formik, FormikActions, FormikProps, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useExtensionEvent } from '@yakapa/shared';
+import { useExtensionEvent, useLocalStorage } from '@yakapa/shared';
 import { Events } from '../events';
+
+import { prisma, Network } from '@yakapa/api';
 
 interface Props {
   open?: boolean;
@@ -17,15 +19,34 @@ type Errors = Partial<FormValues>;
 
 export const AddNetworkDialog: FC<Props> = props => {
   const [open, setOpen] = useState(!!props.open);
+  const [agentId, setAgentId] = useLocalStorage('agentId');
   useExtensionEvent(Events.OpenAddNetworkDialogEvent, () => setOpen(true));
 
   const validate = (values: FormValues) => {
     let errors: Errors = {};
 
-    //TODO: async validate uniqueness of network name ?
-    //TODO: validate characters (regex)
+    const networkName = values.networkName ? values.networkName.toLowerCase() : undefined;
 
-    return errors;
+    // Network name
+    if (!networkName) {
+      errors.networkName = 'Obligatoire';
+    } else if (!/^[^\\/?%*:|"<>]+$/.test(values.networkName)) {
+      errors.networkName = 'Nom du réseau non valide';
+    }
+
+    if (Object.keys(errors).length) {
+      return errors;
+    }
+
+    //Async validate uniqueness of network name
+    return prisma.$exists.network({ name: networkName, master: { id: agentId } }).then(result => {
+      if (result) {
+        errors.networkName = 'Nom de réseau déjà utilisé';
+      }
+      if (Object.keys(errors).length) {
+        throw errors;
+      }
+    });
   };
 
   const submit = async (values: FormValues, actions: FormikActions<FormValues>) => {

@@ -12,6 +12,8 @@ type Agent @model {
   email: String! @unique
   tag: String @isUnique
   updatedAt: DateTime!
+  ownedNetworks: [Network!] @relation(name: "MasterAgentOnNetwork")
+  networks: [Network!] @relation(name: "SlaveAgentOnNetwork")
 }
 
 type EndUser @model {
@@ -22,4 +24,12 @@ type EndUser @model {
   id: ID! @unique
   updatedAt: DateTime!
   users: [User!]! @relation(name: "UserOnEndUser")
+}
+
+type Network @model {
+  id: ID! @unique
+  name: String!
+  description: String
+  master: Agent! @relation(name: "MasterAgentOnNetwork")
+  slaves: [Agent!] @relation(name: "SlaveAgentOnNetwork")
 }
