@@ -6,8 +6,10 @@
     "@types/del": "^3.0.1",
     "@types/gulp": "^4.0.5",
     "@types/jest": "^24.0.5",
+    "@types/lowdb": "^1.0.9",
     "@types/node": "^11.10.5",
     "@types/parcel-bundler": "^1.10.2",
+    "@types/pouchdb": "^6.3.3",
     "@types/react": "16.8.18",
     "@types/react-dom": "16.8.4",
     "@types/webpack-env": "^1.13.8",
@@ -25,6 +27,7 @@
     "@material-ui/system": "^3.0.0-alpha.2",
     "formik": "^1.5.7",
     "formik-material-ui": "^0.0.16",
+    "pouchdb": "^7.0.0",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },

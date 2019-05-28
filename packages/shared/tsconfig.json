@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": { "*": ["types/*"] },
     "jsx": "react",
-    "outDir": "lib"
+    "outDir": "lib",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"]
 }

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button } from '@material-ui/core';
 import { Formik, FormikActions, FormikProps, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useExtensionEvent, useLocalStorage } from '@yakapa/shared';
+import { useExtensionEvent, useLocalDB } from '@yakapa/shared';
 import { Events } from '../events';
 
 import { prisma, Network } from '@yakapa/api';
@@ -19,7 +19,7 @@ type Errors = Partial<FormValues>;
 
 export const AddNetworkDialog: FC<Props> = props => {
   const [open, setOpen] = useState(!!props.open);
-  const [agentId, setAgentId] = useLocalStorage('agentId');
+  const [agentId, setAgentId] = useLocalDB('agentId');
   useExtensionEvent(Events.OpenAddNetworkDialogEvent, () => setOpen(true));
 
   const validate = (values: FormValues) => {

@@ -3,7 +3,7 @@ import { Formik, FormikActions, FormikProps, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { prisma, Agent } from '@yakapa/api';
 import { Button, Card, CardContent, CardActions, withStyles, WithStyles } from '@material-ui/core';
-import { useLocalStorage } from '@yakapa/shared';
+import { useLocalDB } from '@yakapa/shared';
 
 const styles = {
   buttonsContainer: {
@@ -36,7 +36,7 @@ const useAgent = (id?: string) => {
 const AgentIdentificationComponent: FC<WithStyles> = props => {
   const { classes } = props;
   const [editMode, setEditMode] = useState(false);
-  const [agentId, setAgentId] = useLocalStorage('agentId');
+  const [agentId, setAgentId] = useLocalDB('agentId');
   const agent = useAgent(agentId);
 
   const validate = (values: FormValues) => {

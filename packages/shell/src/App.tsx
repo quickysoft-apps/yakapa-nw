@@ -11,13 +11,12 @@ import {
   getExtensionInjectEventType,
   ExtensionEventKind,
   ExtensionPart,
-  getExtensionRootId,
-  useLocalStorage,
-  EventPayload
+  getExtensionRootId
 } from '@yakapa/shared';
 import extensions from '../extensions.json';
 import { ExtensionMenu } from './components/extensionMenu';
 import { useEffect } from 'react';
+
 import { MuiThemeProvider } from '@material-ui/core';
 
 export const drawerWidth = 241;
