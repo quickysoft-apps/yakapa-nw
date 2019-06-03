@@ -2,11 +2,15 @@ import { useEffect } from 'react';
 
 import { registerEvent, unregisterEvent, EventIdentifier } from '../extensions';
 
-export const useExtensionEvent = (type: string, handler: EventListenerOrEventListenerObject) => {
+export interface CustomEventListener<T> {
+  (evt: CustomEvent<T>): void;
+}
+
+export const useExtensionEvent = <T>(type: string, handler: CustomEventListener<T>) => {
   const eventIdentifier: EventIdentifier = { type, token: chrome.runtime.id };
   useEffect(() => {
-    registerEvent(eventIdentifier, handler);
-    return () => unregisterEvent(eventIdentifier, handler);
+    registerEvent(eventIdentifier, handler as EventListenerOrEventListenerObject);
+    return () => unregisterEvent(eventIdentifier, handler as EventListenerOrEventListenerObject);
   }, []);
   return eventIdentifier;
 };

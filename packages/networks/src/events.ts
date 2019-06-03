@@ -1,3 +1,4 @@
 export enum Events {
-  OpenAddNetworkDialogEvent = 'openAddNetworkDialogEvent'
+  OpenAddNetworkDialog = 'openAddNetworkDialogEvent',
+  SelectNetwork = 'selectNetworkEvent'
 }
