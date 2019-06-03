@@ -1,9 +1,10 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, { useState, FC } from 'react';
 import { Formik, FormikActions, FormikProps, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { prisma, Agent } from '@yakapa/api';
 import { Button, Card, CardContent, CardActions, withStyles, WithStyles } from '@material-ui/core';
 import { useLocalDB } from '@yakapa/shared';
+import { useCurrentAgent } from '@yakapa/api';
 
 const styles = {
   buttonsContainer: {
@@ -20,24 +21,11 @@ interface FormValues {
 
 type Errors = Partial<FormValues>;
 
-const useAgent = (id?: string) => {
-  const [agent, setAgent] = useState<Agent | undefined>(undefined);
-
-  useEffect(() => {
-    if (id) {
-      prisma.agent({ id }).then(agent => {
-        setAgent(agent);
-      });
-    }
-  }, [id]);
-  return agent;
-};
-
 const AgentIdentificationComponent: FC<WithStyles> = props => {
   const { classes } = props;
   const [editMode, setEditMode] = useState(false);
   const [agentId, setAgentId] = useLocalDB('agentId');
-  const agent = useAgent(agentId);
+  const agent = useCurrentAgent();
 
   const validate = (values: FormValues) => {
     let errors: Errors = {};
