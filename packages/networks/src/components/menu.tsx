@@ -8,7 +8,7 @@ import { useCurrentNetworks } from '@yakapa/api';
 
 import { Events } from '../events';
 
-const styles = (theme: Theme) => ({
+const styles = {
   list: {
     padding: 0
   },
@@ -22,7 +22,7 @@ const styles = (theme: Theme) => ({
     hover: {},
     focus: {}
   }
-});
+};
 
 type Props = WithStyles<typeof styles>;
 
@@ -32,8 +32,8 @@ const MenuComponent: FC<Props> = props => {
   const networks = useCurrentNetworks();
   useExtensionEvent<{ id: string }>(Events.SelectNetwork, e => setCurrentNetworkId(e.detail.id));
 
-  const onMenuItemClick = () => {
-    //fireExtensionActivateEvent(ExtensionPart.Content, chrome.runtime.id);
+  const onMenuItemClick = (id: string) => () => {
+    fireExtensionEvent(Events.SelectNetwork, { id });
   };
 
   const onAddNetworkClick = () => {
@@ -46,7 +46,7 @@ const MenuComponent: FC<Props> = props => {
         networks.map(network => {
           const { initials, color } = useLetterAvatar(network.name);
           return (
-            <ExtensionMenuItem tooltip={network.name} onClick={onMenuItemClick}>
+            <ExtensionMenuItem key={network.id} selected={currentNetworkId === network.id} tooltip={network.name} onClick={onMenuItemClick(network.id)}>
               <ListItemIcon>
                 <Avatar style={{ backgroundColor: color }}>{initials}</Avatar>
               </ListItemIcon>
