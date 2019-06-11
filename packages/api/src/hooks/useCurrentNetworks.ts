@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocalDB } from '@yakapa/shared';
 import { Network, prisma } from '../generated/prisma-client';
 
-export const useCurrentNetworks = () => {
+export const useCurrentNetworks = (updatedId?: string) => {
   const [agentId] = useLocalDB<string>('agentId');
   const [networks, setNetworks] = useState<Network[] | undefined>(undefined);
 
@@ -18,7 +18,7 @@ export const useCurrentNetworks = () => {
       .then(result => {
         setNetworks(result);
       });
-  }, [agentId]);
+  }, [agentId, updatedId]);
 
   return networks;
 };

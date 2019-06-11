@@ -1,4 +1,5 @@
 export enum Events {
   OpenAddNetworkDialog = 'openAddNetworkDialogEvent',
-  SelectNetwork = 'selectNetworkEvent'
+  SelectNetwork = 'selectNetworkEvent',
+  NewNetwork = 'newNetworkEvent'
 }

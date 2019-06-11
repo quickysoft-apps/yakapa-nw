@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { List, ListItemIcon, Theme, WithStyles, withStyles } from '@material-ui/core';
+import { List, ListItemIcon, WithStyles, withStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -28,9 +28,16 @@ type Props = WithStyles<typeof styles>;
 
 const MenuComponent: FC<Props> = props => {
   const { classes } = props;
-  const [currentNetworkId, setCurrentNetworkId] = useState<string | undefined>(undefined);
-  const networks = useCurrentNetworks();
-  useExtensionEvent<{ id: string }>(Events.SelectNetwork, e => setCurrentNetworkId(e.detail.id));
+  const [updatedNetworkId, updateNetworks] = useState<string | updatedNetworkId>(undefined);
+  const networks = useCurrentNetworks(updatedNetworkId);
+  const [currentNetworkId, setCurrentNetworkId] = useState<string | updatedNetworkId>(networks && networks.length ? networks[0].id : undefined);
+  useExtensionEvent<{ id: string }>(Events.SelectNetwork, e => {
+    setCurrentNetworkId(e.detail.id);
+  });
+  useExtensionEvent<{ id: string }>(Events.NewNetwork, e => {
+    updateNetworks(e.detail.id);
+    setCurrentNetworkId(e.detail.id);
+  });
 
   const onMenuItemClick = (id: string) => () => {
     fireExtensionEvent(Events.SelectNetwork, { id });
